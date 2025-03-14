@@ -1,16 +1,58 @@
-# confieapp
+# Freeway Insurance - Localizador de Oficinas
 
-A new Flutter project.
+## Descripción
 
-## Getting Started
+Módulo de localización para la aplicación Freeway Insurance. Este módulo permite:
 
-This project is a starting point for a Flutter application.
+- Obtener la ubicación actual del dispositivo
+- Mostrar oficinas cercanas ordenadas por distancia
+- Ver detalles de cada oficina (dirección, horario, etc.)
+- Visualizar ubicaciones en un mapa
 
-A few resources to get you started if this is your first Flutter project:
+## Estructura del Proyecto
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+El proyecto sigue una arquitectura de Clean Architecture:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+lib/
+└── locatordevice/
+    ├── di/                   # Dependency Injection
+    ├── domain/               # Reglas de negocio y entidades
+    │   ├── entities/         # Modelos de dominio
+    │   ├── repositories/     # Interfaces de repositorios
+    │   └── usecases/         # Casos de uso
+    ├── data/                 # Implementaciones de datos
+    │   ├── datasources/      # Fuentes de datos
+    │   └── repositories/     # Implementaciones de repositorios
+    └── presentation/         # Capa de presentación
+        ├── bloc/             # Gestión de estado
+        ├── pages/            # Pantallas
+        └── widgets/          # Componentes reutilizables
+```
+
+## Dependencias
+
+- flutter_bloc (BLoC para gestión de estado)
+- get_it (inyección de dependencias)
+- geolocator (servicios de localización)
+
+## Instalación
+
+1. Asegúrate de tener configurado Flutter correctamente
+2. Clona este repositorio
+3. Ejecuta `flutter pub get` para descargar las dependencias
+4. Ejecuta `flutter run` para iniciar la aplicación
+
+## Uso
+
+Para utilizar el módulo de localización en el menú:
+
+```dart
+import 'package:freeway/locatordevice/locator_device_module.dart';
+
+// ...
+
+onPressed: () {
+  LocatorDeviceModule.navigateToLocationView(context);
+}
+```

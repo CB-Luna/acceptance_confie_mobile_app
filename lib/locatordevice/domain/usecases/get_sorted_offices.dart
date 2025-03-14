@@ -1,16 +1,19 @@
-import '../entities/location.dart';
-import '../entities/office.dart';
-import '../repositories/office_repository.dart';
+import 'package:flutter/foundation.dart';
+
+import '../repositories/location_repository.dart';
 
 class GetSortedOffices {
-  final OfficeRepository repository;
+  final LocationRepository repository;
 
   GetSortedOffices(this.repository);
 
-  Future<List<Office>> call(Location currentLocation) async {
-    final offices = await repository.getOfficesWithDistances(currentLocation);
-    offices.sort((a, b) => (a.distance ?? double.infinity)
-        .compareTo(b.distance ?? double.infinity));
-    return offices;
+  Future<List<Map<String, dynamic>>> execute() async {
+    try {
+      debugPrint('GetSortedOffices: Executing use case');
+      return await repository.getSortedOffices();
+    } catch (e) {
+      debugPrint('GetSortedOffices: Error executing use case: $e');
+      rethrow;
+    }
   }
 }

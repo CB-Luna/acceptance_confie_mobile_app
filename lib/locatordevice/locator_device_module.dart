@@ -13,29 +13,73 @@ class LocatorDeviceModule {
   ///
   /// This method should be called from the menu when the location option is selected
   static Future<void> navigateToLocationView(BuildContext context) async {
-    // Store the current context navigator before async operations
-    final navigator = Navigator.of(context);
+    try {
+      // Add debugging info
+      debugPrint('LocatorDeviceModule: Starting navigation to location view');
+      
+      // Store the current context navigator before async operations
+      final navigator = Navigator.of(context);
 
-    // Initialize dependencies if not already done
-    if (!_initialized) {
-      await di.init();
-      _initialized = true;
+      // Initialize dependencies if not already done
+      if (!_initialized) {
+        debugPrint('LocatorDeviceModule: Initializing dependencies');
+        try {
+          await di.init();
+          _initialized = true;
+          debugPrint('LocatorDeviceModule: Dependencies initialized successfully');
+        } catch (e) {
+          debugPrint('LocatorDeviceModule: Error initializing dependencies: $e');
+          // Verificar si el contexto sigue montado antes de usarlo
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error initializing location services: $e')),
+            );
+          }
+          return;
+        }
+      }
+
+      // Check if the context is still valid before navigating
+      if (!context.mounted) {
+        debugPrint('LocatorDeviceModule: Context no longer mounted');
+        return;
+      }
+
+      // Verify dependencies are available
+      try {
+        final getCurrentLocation = di.sl.get<GetCurrentLocation>();
+        final getSortedOffices = di.sl.get<GetSortedOffices>();
+        debugPrint('LocatorDeviceModule: Dependencies retrieved successfully');
+        
+        // Navigate to the location view with required dependencies
+        debugPrint('LocatorDeviceModule: Navigating to LocationDetailsView');
+        await navigator.push(
+          MaterialPageRoute(
+            settings: RouteSettings(
+              arguments: {
+                'getCurrentLocation': getCurrentLocation,
+                'getSortedOffices': getSortedOffices,
+              },
+            ),
+            builder: (context) => const LocationDetailsView(),
+          ),
+        );
+        debugPrint('LocatorDeviceModule: Navigation completed');
+      } catch (e) {
+        debugPrint('LocatorDeviceModule: Error retrieving dependencies: $e');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error accessing location services: $e')),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('LocatorDeviceModule: Unexpected error: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Unexpected error: $e')),
+        );
+      }
     }
-
-    // Check if the context is still valid before navigating
-    if (!context.mounted) return;
-
-    // Navigate to the location view with required dependencies
-    await navigator.push(
-      MaterialPageRoute(
-        settings: RouteSettings(
-          arguments: {
-            'getCurrentLocation': di.sl.get<GetCurrentLocation>(),
-            'getSortedOffices': di.sl.get<GetSortedOffices>(),
-          },
-        ),
-        builder: (context) => const LocationDetailsView(),
-      ),
-    );
   }
 }

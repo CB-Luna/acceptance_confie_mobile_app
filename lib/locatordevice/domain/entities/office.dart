@@ -1,31 +1,28 @@
 import 'location.dart';
 
 class Office {
-  final String id;
+  final int id;
   final String name;
   final String address;
   final Location location;
-  final String? phoneNumber;
-  final String? schedule;
+  final String phone;
   final double? distance;
 
-  const Office({
+  Office({
     required this.id,
     required this.name,
     required this.address,
     required this.location,
-    this.phoneNumber,
-    this.schedule,
+    required this.phone,
     this.distance,
   });
 
   Office copyWith({
-    String? id,
+    int? id,
     String? name,
     String? address,
     Location? location,
-    String? phoneNumber,
-    String? schedule,
+    String? phone,
     double? distance,
   }) {
     return Office(
@@ -33,8 +30,7 @@ class Office {
       name: name ?? this.name,
       address: address ?? this.address,
       location: location ?? this.location,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      schedule: schedule ?? this.schedule,
+      phone: phone ?? this.phone,
       distance: distance ?? this.distance,
     );
   }

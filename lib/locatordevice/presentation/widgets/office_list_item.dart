@@ -33,14 +33,8 @@ class OfficeListItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(office.address),
-                  if (office.phoneNumber != null) ...[
-                    const SizedBox(height: 4),
-                    Text(office.phoneNumber!),
-                  ],
-                  if (office.schedule != null) ...[
-                    const SizedBox(height: 4),
-                    Text(office.schedule!),
-                  ],
+                  const SizedBox(height: 4),
+                  Text(office.phone),
                 ],
               ),
             ),

@@ -1,67 +1,67 @@
-// Comment out the get_it import until the package is added
-// import 'package:get_it/get_it.dart';
+import 'package:flutter/foundation.dart';
 
-import '../data/datasources/location_datasource.dart';
-import '../data/datasources/office_datasource.dart';
+import '../data/datasources/location_data_source.dart';
 import '../data/repositories/location_repository_impl.dart';
-import '../data/repositories/office_repository_impl.dart';
 import '../domain/repositories/location_repository.dart';
-import '../domain/repositories/office_repository.dart';
 import '../domain/usecases/get_current_location.dart';
 import '../domain/usecases/get_sorted_offices.dart';
-import '../presentation/bloc/location_bloc.dart';
 
-// Temporary Service Locator implementation until get_it is available
+/// Simple service locator without external dependencies
 class ServiceLocator {
-  static final ServiceLocator _singleton = ServiceLocator._internal();
-  factory ServiceLocator() => _singleton;
+  static final ServiceLocator _instance = ServiceLocator._internal();
+  factory ServiceLocator() => _instance;
   ServiceLocator._internal();
 
-  final Map<String, dynamic> _instances = {};
-
-  T get<T>() {
-    return _instances[T.toString()] as T;
+  final Map<Type, Object> _dependencies = {};
+  
+  /// Register a dependency
+  void registerSingleton<T extends Object>(T instance) {
+    _dependencies[T] = instance;
   }
-
-  void registerFactory<T>(T Function() factory) {
-    _instances[T.toString()] = factory();
+  
+  /// Get a registered dependency
+  T get<T extends Object>() {
+    final instance = _dependencies[T];
+    if (instance == null) {
+      throw Exception('Type $T not registered in service locator');
+    }
+    return instance as T;
   }
-
-  void registerLazySingleton<T>(T Function() factory) {
-    _instances[T.toString()] = factory();
+  
+  /// Check if a dependency is registered
+  bool isRegistered<T extends Object>() {
+    return _dependencies.containsKey(T);
   }
 }
 
+// Use our custom service locator
 final sl = ServiceLocator();
 
+/// Initializes dependencies for the LocatorDevice module
 Future<void> init() async {
-  // Bloc
-  sl.registerFactory(
-    () => LocationBloc(
-      getCurrentLocation: sl.get<GetCurrentLocation>(),
-      getSortedOffices: sl.get<GetSortedOffices>(),
-    ),
-  );
+  debugPrint('Initializing Locator Device dependencies...');
 
-  // Use cases
-  sl.registerLazySingleton(
-      () => GetCurrentLocation(sl.get<LocationRepository>()));
-  sl.registerLazySingleton(() => GetSortedOffices(sl.get<OfficeRepository>()));
+  try {
+    // Create instances in the correct order
+    final locationDataSource = LocationDataSourceImpl();
+    sl.registerSingleton<LocationDataSource>(locationDataSource);
+    debugPrint('Registered LocationDataSource');
+    
+    final locationRepository = LocationRepositoryImpl(locationDataSource: locationDataSource);
+    sl.registerSingleton<LocationRepository>(locationRepository);
+    debugPrint('Registered LocationRepository');
+    
+    final getCurrentLocation = GetCurrentLocation(locationRepository);
+    sl.registerSingleton<GetCurrentLocation>(getCurrentLocation);
+    debugPrint('Registered GetCurrentLocation');
+    
+    final getSortedOffices = GetSortedOffices(locationRepository);
+    sl.registerSingleton<GetSortedOffices>(getSortedOffices);
+    debugPrint('Registered GetSortedOffices');
 
-  // Repositories
-  sl.registerLazySingleton<LocationRepository>(
-    () => LocationRepositoryImpl(sl.get<LocationDataSource>()),
-  );
-  sl.registerLazySingleton<OfficeRepository>(
-    () => OfficeRepositoryImpl(
-        sl.get<OfficeDataSource>(), sl.get<LocationRepository>()),
-  );
-
-  // Data sources
-  sl.registerLazySingleton<LocationDataSource>(
-    () => LocationDataSourceImpl(),
-  );
-  sl.registerLazySingleton<OfficeDataSource>(
-    () => OfficeDataSourceImpl(),
-  );
+    debugPrint('All dependencies registered successfully');
+  } catch (e) {
+    debugPrint('Error registering dependencies: $e');
+    rethrow; // Re-throw to be caught by the caller
+  }
 }

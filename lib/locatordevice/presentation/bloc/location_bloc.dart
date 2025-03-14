@@ -1,98 +1,55 @@
 import 'dart:async';
 
-// Remove the unused import
-// import '../../domain/entities/location.dart';
+import 'package:flutter/foundation.dart';
+import 'package:geolocator/geolocator.dart';
+
 import '../../domain/usecases/get_current_location.dart';
 import '../../domain/usecases/get_sorted_offices.dart';
-import 'location_event.dart';
-import 'location_state.dart';
 
-// Simple Emitter class to replace the one from flutter_bloc
-typedef Emitter<S> = void Function(S state);
+// Simple implementation to avoid adding a state management package dependency
+class LocationBloc {
+  final GetCurrentLocation _getCurrentLocation;
+  final GetSortedOffices _getSortedOffices;
 
-// Basic BLoC implementation without using flutter_bloc
-abstract class Bloc<E, S> {
-  final _stateController = StreamController<S>.broadcast();
+  // Stream controllers for location states
+  final _locationController = StreamController<Position>.broadcast();
+  Stream<Position> get locationStream => _locationController.stream;
 
-  S _state;
-  S get state => _state;
-  Stream<S> get stream => _stateController.stream;
+  final _officesController =
+      StreamController<List<Map<String, dynamic>>>.broadcast();
+  Stream<List<Map<String, dynamic>>> get officesStream =>
+      _officesController.stream;
 
-  Bloc(this._state) {
-    _stateController.add(_state);
-  }
+  final _errorController = StreamController<String>.broadcast();
+  Stream<String> get errorStream => _errorController.stream;
 
-  void emit(S state) {
-    _state = state;
-    if (!_stateController.isClosed) {
-      _stateController.add(state);
-    }
-  }
+  LocationBloc(this._getCurrentLocation, this._getSortedOffices);
 
-  void close() {
-    _stateController.close();
-  }
-}
-
-class LocationBloc extends Bloc<LocationEvent, LocationState> {
-  final GetCurrentLocation getCurrentLocation;
-  final GetSortedOffices getSortedOffices;
-  final _eventController = StreamController<LocationEvent>();
-
-  LocationBloc({
-    required this.getCurrentLocation,
-    required this.getSortedOffices,
-  }) : super(LocationInitial()) {
-    _eventController.stream.listen(_mapEventToState);
-  }
-
-  void add(LocationEvent event) {
-    if (!_eventController.isClosed) {
-      _eventController.add(event);
-    }
-  }
-
-  @override
-  void close() {
-    _eventController.close();
-    super.close();
-  }
-
-  void _mapEventToState(LocationEvent event) async {
-    if (event is LoadUserLocation) {
-      await _onLoadUserLocation(event);
-    } else if (event is LoadOffices) {
-      await _onLoadOffices(event);
-    }
-  }
-
-  Future<void> _onLoadUserLocation(LoadUserLocation event) async {
-    emit(LocationLoading());
+  Future<void> loadCurrentLocation() async {
     try {
-      final location = await getCurrentLocation();
-      if (location != null) {
-        emit(LocationLoaded(location));
-      } else {
-        emit(LocationError('Could not get current location'));
-      }
+      debugPrint('LocationBloc: Loading current location');
+      final position = await _getCurrentLocation.execute();
+      _locationController.add(position);
     } catch (e) {
-      emit(LocationError(e.toString()));
+      debugPrint('LocationBloc: Error loading location: $e');
+      _errorController.add(e.toString());
     }
   }
 
-  Future<void> _onLoadOffices(LoadOffices event) async {
+  Future<void> loadNearbyOffices() async {
     try {
-      if (state is LocationLoaded) {
-        final currentLocation = (state as LocationLoaded).location;
-        emit(LocationAndOfficesLoading(currentLocation));
-
-        final offices = await getSortedOffices(currentLocation);
-        emit(LocationAndOfficesLoaded(currentLocation, offices));
-      } else {
-        emit(LocationError('Location not loaded yet'));
-      }
+      debugPrint('LocationBloc: Loading nearby offices');
+      final offices = await _getSortedOffices.execute();
+      _officesController.add(offices);
     } catch (e) {
-      emit(LocationError(e.toString()));
+      debugPrint('LocationBloc: Error loading offices: $e');
+      _errorController.add(e.toString());
     }
+  }
+
+  void dispose() {
+    _locationController.close();
+    _officesController.close();
+    _errorController.close();
   }
 }

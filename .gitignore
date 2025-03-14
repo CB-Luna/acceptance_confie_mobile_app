@@ -43,3 +43,24 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Archivos y carpetas de Flutter/Dart
+.packages
+ios/Pods/
+android/.gradle/
+
+# Archivos de IDE
+.vscode/
+
+# Archivos generados por Flutter
+.pubspec.lock
+
+# No ignorar pubspec.yaml
+!pubspec.yaml
+
+# Archivos de configuración local
+.env
+
+# Archivos generados durante la compilación
+*.g.dart
+*.freezed.dart
