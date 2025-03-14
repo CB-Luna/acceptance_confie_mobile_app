@@ -12,7 +12,6 @@ import 'providers/auth_provider.dart';
 import 'providers/home_policy_provider.dart';
 import 'providers/notification_provider.dart';
 import 'providers/theme_provider.dart';
-import 'services/location_service.dart';
 import 'utils/app_restart.dart';
 
 // Clave global para reiniciar la aplicación
@@ -28,7 +27,17 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
   debugPrint('Iniciando aplicación Freeway Insurance');
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => HomePolicyProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,34 +46,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppRestart(
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => AuthProvider()),
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
-          ChangeNotifierProvider(create: (_) => LocationService()),
-          ChangeNotifierProvider(create: (_) => HomePolicyProvider()),
-          ChangeNotifierProvider(create: (_) => NotificationProvider()),
-        ],
-        child: Consumer<ThemeProvider>(
-          builder: (context, themeProvider, child) {
-            return MaterialApp(
-              navigatorKey: navigatorKey,
-              title: 'Freeway Insurance',
-              theme: themeProvider.currentTheme,
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => const SplashScreen(nextScreen: LoginPage()),
-                '/login': (context) => const LoginPage(),
-                '/home': (context) => const HomePage(),
-                '/submit-claim': (context) => const SubmitClaimPage(),
-                '/profile': (context) => const ProfilePage(),
-                '/add-insurance': (context) => const AddInsurancePage(),
-                '/location': (context) => const LocationPage(),
-              },
-            );
-          },
-        ),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'Freeway Insurance',
+            theme: themeProvider.currentTheme,
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const SplashScreen(nextScreen: LoginPage()),
+              '/login': (context) => const LoginPage(),
+              '/home': (context) => const HomePage(),
+              '/submit-claim': (context) => const SubmitClaimPage(),
+              '/profile': (context) => const ProfilePage(),
+              '/add-insurance': (context) => const AddInsurancePage(),
+              '/location': (context) => const LocationPage(),
+            },
+          );
+        },
       ),
     );
   }

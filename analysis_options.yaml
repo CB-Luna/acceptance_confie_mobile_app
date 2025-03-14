@@ -31,7 +31,7 @@ analyzer:
     prefer_const_constructors: warning
     prefer_final_locals: warning
     avoid_print: warning
-    todo: warning
+    todo: info
 
   # Habilitar análisis detallado
   strong-mode:

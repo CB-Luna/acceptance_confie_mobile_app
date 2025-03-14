@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/office_location.dart';
-import '../../services/directions_service.dart';
 
 class LocationDetailsView extends StatefulWidget {
   final OfficeLocation office;
@@ -442,9 +441,7 @@ class _LocationDetailsViewState extends State<LocationDetailsView> {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.directions),
                         label: const Text('Get Directions'),
-                        onPressed: () {
-                          _getDirections();
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
@@ -511,14 +508,6 @@ class _LocationDetailsViewState extends State<LocationDetailsView> {
     final ByteData data = await rootBundle.load(assetPath);
     final Uint8List bytes = data.buffer.asUint8List();
     return BitmapDescriptor.bytes(bytes);
-  }
-
-  // Método para obtener direcciones a la oficina seleccionada
-  void _getDirections() {
-    // Utilizamos el servicio de direcciones para navegar a la oficina
-    // El servicio se encarga de verificar permisos, detectar disponibilidad de geolocalización
-    // y abrir Google Maps con la ruta desde la ubicación actual hasta la oficina
-    DirectionsService.navigateToOffice(context, widget.office);
   }
 
   // Método para buscar otras oficinas cercanas

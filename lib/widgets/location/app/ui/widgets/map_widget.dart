@@ -74,6 +74,8 @@ class MapWidgetState extends State<MapWidget> {
 
   // Método consolidado para inicializar la ubicación
   Future<void> _initializeLocation() async {
+    if (!mounted) return;
+
     setState(() {
       _isLoadingCurrentLocation = true;
     });
@@ -81,8 +83,7 @@ class MapWidgetState extends State<MapWidget> {
     try {
       // Paso 1: Verificar los permisos de ubicación
       final hasPermission = await _mapService.checkLocationPermission();
-
-      if (!mounted) return; // Comprobar si el widget sigue montado
+      if (!mounted) return;
 
       setState(() {
         _locationPermissionGranted = hasPermission;
@@ -96,16 +97,16 @@ class MapWidgetState extends State<MapWidget> {
         _setDefaultPosition();
 
         // Mostrar un mensaje al usuario
-        if (mounted) {
-          SnackbarHelper.showErrorSnackBar(
-            context,
-            'Se requieren permisos de ubicación para mostrar tu posición actual.',
-            duration: const Duration(seconds: 5),
-          );
-        }
+        if (!mounted) return;
+        SnackbarHelper.showErrorSnackBar(
+          context,
+          'Se requieren permisos de ubicación para mostrar tu posición actual.',
+          duration: const Duration(seconds: 5),
+        );
       }
     } catch (e) {
       debugPrint('Error inicializando ubicación: $e');
+      if (!mounted) return;
 
       // Si hay un error, usar la posición predeterminada
       _setDefaultPosition();
@@ -127,6 +128,8 @@ class MapWidgetState extends State<MapWidget> {
 
   // Método optimizado para obtener la ubicación actual
   Future<void> _getCurrentLocation({bool isInitial = false}) async {
+    if (!mounted) return;
+
     setState(() {
       _isLoadingCurrentLocation = true;
     });
@@ -135,6 +138,7 @@ class MapWidgetState extends State<MapWidget> {
       // Si es una solicitud no inicial y no tenemos permisos, intentar obtenerlos
       if (!isInitial && !_locationPermissionGranted) {
         final hasPermission = await _mapService.checkLocationPermission();
+        if (!mounted) return;
 
         setState(() {
           _locationPermissionGranted = hasPermission;
@@ -142,6 +146,8 @@ class MapWidgetState extends State<MapWidget> {
 
         if (!hasPermission) {
           _setDefaultPosition();
+          if (!mounted) return;
+
           SnackbarHelper.showErrorSnackBar(
             context,
             'No se concedieron permisos de ubicación. Usando ubicación predeterminada.',
@@ -153,6 +159,8 @@ class MapWidgetState extends State<MapWidget> {
 
       // Obtener ubicación actual usando el servicio
       final location = await _mapService.getCurrentLocation();
+      if (!mounted) return;
+
       final currentPosition = LatLng(location.latitude, location.longitude);
 
       // Añadir un marcador en la ubicación actual
@@ -174,7 +182,7 @@ class MapWidgetState extends State<MapWidget> {
           _initialLocationObtained = true;
         });
       } else if (mapController != null) {
-        mapController!.animateCamera(
+        await mapController!.animateCamera(
           CameraUpdate.newLatLngZoom(
             currentPosition,
             15,
@@ -189,6 +197,7 @@ class MapWidgetState extends State<MapWidget> {
       );
     } catch (e) {
       debugPrint('Error obteniendo ubicación: $e');
+      if (!mounted) return;
 
       if (isInitial) {
         _setDefaultPosition();
@@ -214,21 +223,42 @@ class MapWidgetState extends State<MapWidget> {
       _currentLocationAddress = null;
     });
 
-    String address;
     try {
-      address = await _mapService.getAddressFromCoordinates(lat, lng);
+      // Asegurarnos de que estamos usando las coordenadas correctas
+      final actualLat = lat;
+      final actualLng = lng;
+
+      // Verificar que las coordenadas son válidas
+      if (actualLat == 0 || actualLng == 0) {
+        throw Exception('Coordenadas no válidas');
+      }
+
+      // Obtener la dirección usando las coordenadas actuales
+      final address =
+          await _mapService.getAddressFromCoordinates(actualLat, actualLng);
+
+      if (!mounted) return;
+
+      // Verificar que la dirección no está vacía
+      if (address.isEmpty) {
+        throw Exception('No se pudo obtener la dirección');
+      }
+
+      setState(() {
+        _currentLocationAddress = address;
+        _isLoadingAddress = false;
+        _isLoadingCurrentLocation = false;
+      });
     } catch (e) {
       debugPrint('Error obteniendo dirección: $e');
-      address = 'No se pudo determinar la dirección';
+      if (!mounted) return;
+
+      setState(() {
+        _currentLocationAddress = 'No se pudo determinar la dirección actual';
+        _isLoadingAddress = false;
+        _isLoadingCurrentLocation = false;
+      });
     }
-
-    if (!mounted) return;
-
-    setState(() {
-      _currentLocationAddress = address;
-      _isLoadingAddress = false;
-      _isLoadingCurrentLocation = false;
-    });
   }
 
   // Carga el icono personalizado para oficinas
@@ -396,11 +426,10 @@ class MapWidgetState extends State<MapWidget> {
   void _clearMarkers() {
     _markerController.clearMarkers();
     setState(() {
-      _showOfficePanel =
-          false; // Ocultar el panel cuando se borran los marcadores
+      _showOfficePanel = false;
       _formattedAddress = null;
       _currentLocationAddress = null;
-    }); // Actualizar la UI
+    });
 
     SnackbarHelper.showBlueSnackBar(
       context,

@@ -1,21 +1,11 @@
-import 'dart:convert';
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 
+import '../../data/office_data.dart';
 import '../entities/location.dart';
 
 class MapService {
-  // API keys para Google Maps según la plataforma
-  static const String _androidApiKey =
-      'AIzaSyDPBzpzGaeI5URw33AuqMZKVkZvvJIfbKc';
-  static const String _iosApiKey = 'AIzaSyA8xjmcodT9GFHF9ExkhhMarGEMue5JtpY';
-
-  // Seleccionar la API key correcta según la plataforma
-  static String get _apiKey => Platform.isIOS ? _iosApiKey : _androidApiKey;
-
   // Método para verificar y solicitar permisos de ubicación
   Future<bool> checkLocationPermission({bool requestIfDenied = true}) async {
     bool serviceEnabled;
@@ -146,148 +136,48 @@ class MapService {
     double longitude,
   ) async {
     try {
-      // Verificar si estamos en modo de desarrollo o prueba
-      // En ese caso, podemos usar una solución alternativa para evitar problemas de API key
-      if (await _shouldUseOfflineGeocoding()) {
-        return _getOfflineAddress(latitude, longitude);
+      // Primero verificar si las coordenadas coinciden con alguna oficina conocida
+      final officeAddress = _getOfficeAddress(latitude, longitude);
+      if (officeAddress != null) {
+        return officeAddress;
       }
 
-      // URL para la API de geocodificación inversa de Google con parámetros adicionales
-      final url =
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&result_type=street_address|route|premise|point_of_interest&language=es&key=$_apiKey';
+      final List<geocoding.Placemark> placemarks = 
+          await geocoding.placemarkFromCoordinates(latitude, longitude);
+      
+      if (placemarks.isEmpty) return 'Dirección no encontrada';
 
-      debugPrint('🔍 Requesting address for: ($latitude, $longitude)');
+      final place = placemarks.first;
+      final List<String> addressParts = [];
 
-      // Hacer la solicitud HTTP
-      final response = await http.get(Uri.parse(url));
-
-      // Verificar si la respuesta es exitosa
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        debugPrint('Google Maps API response status: ${data['status']}');
-
-        // Verificar si hay un mensaje de error de autorización
-        if (data.containsKey('error_message') &&
-            (data['error_message'] as String).contains('not authorized')) {
-          debugPrint(
-              '⚠️ API Key authorization error: ${data['error_message']}',);
-          return _getOfflineAddress(latitude, longitude);
-        }
-
-        // Verificar si la respuesta contiene resultados
-        if (data['results'] != null && (data['results'] as List).isNotEmpty) {
-          // Extraer la dirección formateada del primer resultado
-          final address = data['results'][0]['formatted_address'] as String;
-          debugPrint('✅ Address received: $address');
-          return address;
-        }
-
-        // Si no hay resultados con los filtros anteriores, intentar sin filtros
-        final urlWithoutFilters =
-            'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&language=es&key=$_apiKey';
-
-        final responseWithoutFilters =
-            await http.get(Uri.parse(urlWithoutFilters));
-
-        if (responseWithoutFilters.statusCode == 200) {
-          final dataWithoutFilters = json.decode(responseWithoutFilters.body);
-
-          if (dataWithoutFilters['results'] != null &&
-              (dataWithoutFilters['results'] as List).isNotEmpty) {
-            final address =
-                dataWithoutFilters['results'][0]['formatted_address'] as String;
-            debugPrint('✅ Address received (without filters): $address');
-            return address;
-          }
-        }
-
-        // Si no hay resultados, usar la solución alternativa
-        debugPrint('⚠️ No address results found, using offline geocoding');
-        return _getOfflineAddress(latitude, longitude);
-      } else {
-        // Si la solicitud HTTP falla, usar la solución alternativa
-        debugPrint(
-            '❌ HTTP error: ${response.statusCode}, using offline geocoding',);
-        return _getOfflineAddress(latitude, longitude);
+      // Construir dirección más detallada y en español
+      if (place.street?.isNotEmpty ?? false) addressParts.add(place.street!);
+      if (place.subLocality?.isNotEmpty ?? false) addressParts.add(place.subLocality!);
+      if (place.locality?.isNotEmpty ?? false) addressParts.add(place.locality!);
+      if (place.administrativeArea?.isNotEmpty ?? false) {
+        addressParts.add('${place.administrativeArea!}, ${place.country ?? ""}');
       }
+
+      return addressParts.join(', ');
     } catch (e) {
-      // Capturar cualquier excepción y usar la solución alternativa
-      debugPrint('❌ Error getting address: $e, using offline geocoding');
-      return _getOfflineAddress(latitude, longitude);
+      debugPrint('Error en geocodificación: $e');
+      return _getOfficeAddress(latitude, longitude) ?? 
+             'Ubicación cerca de San Diego, CA';
     }
   }
 
-  // Método para verificar si debemos usar geocodificación offline
-  Future<bool> _shouldUseOfflineGeocoding() async {
-    try {
-      // Hacer una solicitud de prueba para verificar si la API key funciona
-      final testUrl =
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=0,0&key=$_apiKey';
-      final response = await http.get(Uri.parse(testUrl));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        // Si hay un mensaje de error de autorización, usar geocodificación offline
-        return data.containsKey('error_message') &&
-            (data['error_message'] as String).contains('not authorized');
+  String? _getOfficeAddress(double latitude, double longitude) {
+    // Obtener las oficinas de OfficeData
+    final offices = OfficeData.getOffices();
+    
+    // Buscar una coincidencia exacta o cercana
+    for (final office in offices) {
+      // Aumentar el margen de error para coincidencias (aproximadamente 500 metros)
+      if ((office.latitude - latitude).abs() < 0.005 &&
+          (office.longitude - longitude).abs() < 0.005) {
+        return '${office.address}\n${office.secondaryAddress}';
       }
-      return true; // Si hay algún error en la solicitud, usar geocodificación offline
-    } catch (e) {
-      return true; // Si hay alguna excepción, usar geocodificación offline
     }
-  }
-
-  // Método para obtener una dirección sin usar la API de Google Maps
-  String _getOfflineAddress(double latitude, double longitude) {
-    // Coordenadas conocidas con sus direcciones correspondientes
-    final knownLocations = {
-      // Coordenadas del ejemplo proporcionado
-      '33.990230,-118.276891':
-          '1244 E 61st St, Los Angeles, CA 90001, Estados Unidos',
-
-      // Otras ubicaciones comunes (puedes añadir más según sea necesario)
-      '34.052235,-118.243683': 'Downtown Los Angeles, CA, Estados Unidos',
-      '33.770050,-118.193741': 'Long Beach, CA, Estados Unidos',
-      '34.142508,-118.255075': 'Glendale, CA, Estados Unidos',
-      '33.835293,-117.914505': 'Anaheim, CA, Estados Unidos',
-      '33.745472,-117.867653': 'Santa Ana, CA, Estados Unidos',
-    };
-
-    // Redondear las coordenadas para buscar coincidencias aproximadas
-    final roundedLat = latitude.toStringAsFixed(6);
-    final roundedLon = longitude.toStringAsFixed(6);
-    final key = '$roundedLat,$roundedLon';
-
-    // Buscar una coincidencia exacta
-    if (knownLocations.containsKey(key)) {
-      return knownLocations[key]!;
-    }
-
-    // Si no hay coincidencia exacta, buscar la ubicación más cercana
-    double minDistance = double.infinity;
-    String closestAddress = 'Dirección cercana a ($latitude, $longitude)';
-
-    knownLocations.forEach((coords, address) {
-      final parts = coords.split(',');
-      final lat = double.parse(parts[0]);
-      final lon = double.parse(parts[1]);
-
-      // Calcular distancia euclidiana (simplificada)
-      final distance = (lat - latitude) * (lat - latitude) +
-          (lon - longitude) * (lon - longitude);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestAddress = address;
-      }
-    });
-
-    // Si la distancia es muy grande, devolver un mensaje genérico
-    if (minDistance > 0.01) {
-      // Umbral arbitrario
-      return 'Dirección en Los Angeles, CA, Estados Unidos';
-    }
-
-    return closestAddress;
+    return null;
   }
 }

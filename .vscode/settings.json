@@ -32,7 +32,7 @@
     "dart.warnWhenEditingFilesOutsideWorkspace": true,
     "dart.renameFilesWithClasses": "prompt",
     "dart.checkForSdkUpdates": true,
-    "dart.flutterSdkPath": "",
+    "dart.flutterSdkPath": "/Users/joslop/development/flutter",
     "dart.devToolsLocation": "external",
     "dart.previewFlutterUiGuides": true,
     "dart.previewFlutterUiGuidesCustomTracking": true,
