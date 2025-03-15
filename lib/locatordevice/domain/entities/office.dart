@@ -1,37 +1,45 @@
-import 'location.dart';
-
 class Office {
-  final int id;
+  final String id;
   final String name;
   final String address;
-  final Location location;
-  final String phone;
-  final double? distance;
+  final String? phone;
+  final double latitude;
+  final double longitude;
+  final double distanceInMiles;
 
   Office({
     required this.id,
     required this.name,
     required this.address,
-    required this.location,
-    required this.phone,
-    this.distance,
+    required this.latitude,
+    required this.longitude,
+    this.phone,
+    this.distanceInMiles = 0,
   });
 
-  Office copyWith({
-    int? id,
-    String? name,
-    String? address,
-    Location? location,
-    String? phone,
-    double? distance,
-  }) {
+  // Método para convertir desde un Map
+  factory Office.fromMap(Map<String, dynamic> map) {
     return Office(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      address: address ?? this.address,
-      location: location ?? this.location,
-      phone: phone ?? this.phone,
-      distance: distance ?? this.distance,
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      address: map['address'] ?? '',
+      phone: map['phone'],
+      latitude: map['latitude'] ?? 0.0,
+      longitude: map['longitude'] ?? 0.0,
+      distanceInMiles: map['distanceInMiles'] ?? 0.0,
     );
+  }
+
+  // Método para convertir a Map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'address': address,
+      'phone': phone,
+      'latitude': latitude,
+      'longitude': longitude,
+      'distanceInMiles': distanceInMiles,
+    };
   }
 }

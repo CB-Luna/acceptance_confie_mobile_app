@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/office.dart';
 import '../bloc/location_state.dart';
-import 'office_list_item.dart';
+import 'office_list_item.dart' as list_item;
 
 class LocationBottomSheet extends StatelessWidget {
   final LocationState state;
@@ -55,7 +55,7 @@ class LocationBottomSheet extends StatelessWidget {
                   itemCount: offices.length,
                   separatorBuilder: (_, __) => const Divider(),
                   itemBuilder: (context, index) =>
-                      OfficeListItem(office: offices[index]),
+                      list_item.OfficeListItem(office: offices[index]),
                 ),
         ],
       ),

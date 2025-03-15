@@ -33,19 +33,19 @@ class OfficeListItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(office.address),
-                  const SizedBox(height: 4),
-                  Text(office.phone),
+                  if (office.phone != null) ...[
+                    const SizedBox(height: 4),
+                    Text(office.phone!),
+                  ],
                 ],
               ),
             ),
-            if (office.distance != null) ...[
-              Text(
-                '${(office.distance! / 1000).toStringAsFixed(1)} km',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              '${office.distanceInMiles.toStringAsFixed(1)} mi',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-            ],
+            ),
           ],
         ),
       ),

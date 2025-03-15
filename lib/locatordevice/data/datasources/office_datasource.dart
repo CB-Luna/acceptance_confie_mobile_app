@@ -18,10 +18,10 @@ class OfficeDataSourceImpl implements OfficeDataSource {
       {
         'id': 1,
         'name': 'Seguro de auto en Chula Vista',
-        'latitude': 32.611196, // Coordenadas corregidas para Chula Vista
-        'longitude': -117.059724,
-        'address': '1295 Broadway #201, Chula Vista, CA 91911',
-        'secondaryAddress': 'California, Chula Vista, 91911, USA',
+        'latitude': 32.6024602, // Coordenadas corregidas para Chula Vista
+        'longitude': -117.0804273,
+        'address': '624 Palomar St Ste 701, CA 91911',
+        'secondaryAddress': 'Chula Vista, California, 91911 USA',
         'isOpen': true,
         'closeHours': '8pm',
         'distanceInMiles': 0, // Se calculará dinámicamente
@@ -34,10 +34,10 @@ class OfficeDataSourceImpl implements OfficeDataSource {
       {
         'id': 2,
         'name': 'Seguro de auto en National City',
-        'latitude': 32.678076, // Coordenadas corregidas para National City
-        'longitude': -117.099606,
+        'latitude': 32.6773538, // Coordenadas corregidas para National City
+        'longitude': -117.0962897,
         'address': '1401 E Plaza Blvd #E, National City, CA 91950',
-        'secondaryAddress': 'California, National City, 91950, USA',
+        'secondaryAddress': 'National City, California, , 91950, USA',
         'isOpen': true,
         'closeHours': '8pm',
         'distanceInMiles': 0, // Se calculará dinámicamente

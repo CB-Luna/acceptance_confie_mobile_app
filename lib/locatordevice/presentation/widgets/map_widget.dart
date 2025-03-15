@@ -50,7 +50,7 @@ class MapWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               Text(
-                'Distancia: ${(offices!.first.distance! / 1000).toStringAsFixed(2)} km',
+                'Distancia: ${offices!.first.distanceInMiles.toStringAsFixed(2)} millas',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
