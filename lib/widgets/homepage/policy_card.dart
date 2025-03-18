@@ -229,7 +229,7 @@ class PolicyCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 SizedBox(
-                  width: 82,
+                  width: 79,
                   height: 38,
                   child: ElevatedButton(
                     onPressed: () {

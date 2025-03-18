@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/menu/circle_nav_bar.dart';
+import '../../../widgets/homepage/header_section.dart';
 import '../controllers/location_controller.dart';
 import '../widgets/loading_view.dart';
 import '../widgets/location_error_view.dart';
@@ -15,7 +17,8 @@ class LocationDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args == null) {
       return const Scaffold(
         body: Center(
@@ -45,11 +48,14 @@ class LocationDetailsViewContent extends StatefulWidget {
   const LocationDetailsViewContent({super.key});
 
   @override
-  State<LocationDetailsViewContent> createState() => _LocationDetailsViewContentState();
+  State<LocationDetailsViewContent> createState() =>
+      _LocationDetailsViewContentState();
 }
 
-class _LocationDetailsViewContentState extends State<LocationDetailsViewContent> {
-  final DraggableScrollableController _scrollController = DraggableScrollableController();
+class _LocationDetailsViewContentState
+    extends State<LocationDetailsViewContent> {
+  final DraggableScrollableController _scrollController =
+      DraggableScrollableController();
 
   @override
   void dispose() {
@@ -78,19 +84,32 @@ class _LocationDetailsViewContentState extends State<LocationDetailsViewContent>
     return Consumer<LocationController>(
       builder: (context, controller, _) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('Nearby Locations'),
-            elevation: 0,
-            actions: [
-              if (controller.state.isEmulatorOrSimulator)
-                IconButton(
-                  icon: const Icon(Icons.location_searching),
-                  tooltip: 'Cambiar ubicación simulada',
-                  onPressed: () => _showLocationDialog(context, controller),
-                ),
-            ],
+          appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(73),
+            child: Padding(
+              padding: EdgeInsets.only(top: 40),
+              child: HeaderSection(),
+            ),
           ),
           body: _buildBody(context, controller),
+          bottomNavigationBar: Transform.translate(
+            offset: const Offset(0, -20),
+            child: CircleNavBar(
+              selectedPos: 2,
+              onTap: (index) {
+                if (index == 0) {
+                  Navigator.pushReplacementNamed(context, '/home');
+                } else if (index == 1) {
+                  Navigator.pushReplacementNamed(context, '/add-insurance');
+                }
+              },
+              tabItems: [
+                TabData(Icons.home_outlined, 'My Products'),
+                TabData(Icons.verified_user_outlined, '+ Add Insurance'),
+                TabData(Icons.location_on_outlined, 'Location'),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -100,19 +119,21 @@ class _LocationDetailsViewContentState extends State<LocationDetailsViewContent>
     if (controller.state.isLoading) {
       return const LoadingView();
     }
-    
+
     if (controller.state.errorMessage != null) {
       return LocationErrorView(
         errorMessage: controller.state.errorMessage!,
         onRetry: () => controller.retry(),
       );
     }
-    
+
     return _buildMainContent(context, controller);
   }
 
   Widget _buildMainContent(
-      BuildContext context, LocationController controller,) {
+    BuildContext context,
+    LocationController controller,
+  ) {
     final state = controller.state;
 
     return Stack(
@@ -128,7 +149,8 @@ class _LocationDetailsViewContentState extends State<LocationDetailsViewContent>
                 : const LatLng(32.715738, -117.161084), // San Diego por defecto
             zoom: 14.0,
           ),
-          myLocationEnabled: !state.isEmulatorOrSimulator, // Desactivar en emuladores
+          myLocationEnabled:
+              !state.isEmulatorOrSimulator, // Desactivar en emuladores
           myLocationButtonEnabled: false,
           markers: state.markers,
           onMapCreated: (GoogleMapController mapController) {
@@ -137,8 +159,9 @@ class _LocationDetailsViewContentState extends State<LocationDetailsViewContent>
           zoomControlsEnabled: true,
           compassEnabled: true,
           mapToolbarEnabled: true,
-          liteModeEnabled: defaultTargetPlatform == TargetPlatform.android && 
-                           state.isEmulatorOrSimulator, // Usar lite mode solo en emuladores Android
+          liteModeEnabled: defaultTargetPlatform == TargetPlatform.android &&
+              state
+                  .isEmulatorOrSimulator, // Usar lite mode solo en emuladores Android
           trafficEnabled: false, // Desactivar tráfico para mejor rendimiento
         ),
 
@@ -176,47 +199,6 @@ class _LocationDetailsViewContentState extends State<LocationDetailsViewContent>
           },
         ),
       ],
-    );
-  }
-
-  void _showLocationDialog(
-      BuildContext context, LocationController controller,) {
-    // Coordenadas de San Diego
-    const double sandiegoLat = 32.715738;
-    const double sandiegoLng = -117.161084;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Establecer ubicación personalizada'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Selecciona una ubicación cercana a las oficinas:'),
-            const SizedBox(height: 16),
-            ListTile(
-              title: const Text('San Diego (cerca de las oficinas)'),
-              onTap: () {
-                controller.setCustomLocation(sandiegoLat, sandiegoLng);
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: const Text('Usar ubicación del emulador'),
-              onTap: () {
-                controller.retry();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancelar'),
-          ),
-        ],
-      ),
     );
   }
 }

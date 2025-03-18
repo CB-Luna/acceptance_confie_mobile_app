@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
             Positioned(
               left: 0,
               right: 0,
-              bottom: -8, // Cambiado de -15 a -8 para ajustar la posición
+              bottom: -5, // Cambiado de -10 a -5 para ajustar la posición
               child: CircleNavBar(
                 selectedPos: _selectedIndex,
                 onTap: (index) {

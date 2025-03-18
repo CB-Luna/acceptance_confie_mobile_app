@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart' show launchUrl;
+
 import '../../domain/entities/office.dart';
 
 class OfficeList extends StatelessWidget {
@@ -50,7 +52,7 @@ class OfficeList extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'Oficinas cercanas',
+              'Nearest Office',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -103,30 +105,126 @@ class OfficeListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Text('${index + 1}'),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Open Now • Closes at 7pm',
+            style: TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          Text(
+            '${office.distanceInMiles.toStringAsFixed(2)} miles',
+            style: const TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ],
       ),
-      title: Text(office.name),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(office.address),
-          if (office.phone != null)
-            Text(
-              'Tel: ${office.phone}',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+          Text(
+            office.address,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
-          Text('${office.distanceInMiles.toStringAsFixed(2)} miles'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                office.name,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              const Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Color(0xFFFFC73C),
+                    size: 18,
+                  ),
+                  Text(
+                    '4.5',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                // Botón para llamar
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Acción para llamar a la oficina
+                    launchUrl(Uri.parse('tel:${office.phone}'));
+                  },
+                  icon: const Icon(
+                    Icons.phone_in_talk_outlined,
+                    color: Colors.white,
+                  ),
+                  label: const Text('Call Office'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(
+                      0xFF0A4DA2,
+                    ), // Azul oscuro
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // Botón para obtener direcciones
+                OutlinedButton.icon(
+                  onPressed: onDirectionsTap,
+                  icon: const Icon(
+                    Icons.directions,
+                    color: Color(0xFF0A4DA2),
+                  ),
+                  label: const Text(
+                    'Get Directions',
+                    style: TextStyle(color: Color(0xFF0A4DA2)),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color(0xFF0A4DA2),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       isThreeLine: true,
-      trailing: IconButton(
-        icon: const Icon(Icons.directions),
-        onPressed: onDirectionsTap,
-      ),
       onTap: onTap,
     );
   }

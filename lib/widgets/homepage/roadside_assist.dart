@@ -185,7 +185,7 @@ class RoadsideAssist extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 SizedBox(
-                  width: 140,
+                  width: 130,
                   height: 38,
                   child: ElevatedButton(
                     onPressed: () {
@@ -219,7 +219,7 @@ class RoadsideAssist extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 SizedBox(
-                  width: 100,
+                  width: 90,
                   height: 38,
                   child: ElevatedButton(
                     onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../locatordevice/locator_device_module.dart';
 import '../utils/menu/circle_nav_bar.dart';
 import '../widgets/homepage/header_section.dart';
 import '../widgets/insproducts/insurance_card.dart';
@@ -96,7 +97,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
         ),
       ),
       bottomNavigationBar: Transform.translate(
-        offset: const Offset(0, -15),
+        offset: const Offset(0, -10),
         child: CircleNavBar(
           selectedPos: _selectedIndex,
           onTap: (index) {
@@ -112,7 +113,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                 );
                 break;
               case 2: // Location
-                // TODO: Implementar navegación a Location
+                LocatorDeviceModule.navigateToLocationView(context);
                 break;
             }
           },
