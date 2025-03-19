@@ -73,9 +73,12 @@ class LocationController extends ChangeNotifier {
   LocationState _state = LocationState();
   LocationState get state => _state;
 
-  // Coordenadas por defecto para simuladores (San Diego)
+  // Coordenadas por defecto para simuladores (San Diego) Sin covertura
   static const double defaultLat = 32.715738;
   static const double defaultLng = -117.161084;
+  // Coordenadas por defecto para emuladores (San Diego) Con covertura
+  // static const double defaultLat = 32.6708864;
+  // static const double defaultLng = -117.1033635;
 
   LocationController({
     required this.getCurrentLocation,
@@ -267,9 +270,9 @@ class LocationController extends ChangeNotifier {
         ...office.toMap(),
         'distanceInMiles': distanceInMiles,
       });
-      
+
       updatedOffices.add(updatedOffice);
-      
+
       // Filtrar oficinas dentro del radio de búsqueda
       if (distanceInMiles <= state.searchRadiusInMiles) {
         nearbyOffices.add(updatedOffice);
@@ -280,7 +283,7 @@ class LocationController extends ChangeNotifier {
     updatedOffices.sort(
       (a, b) => a.distanceInMiles.compareTo(b.distanceInMiles),
     );
-    
+
     nearbyOffices.sort(
       (a, b) => a.distanceInMiles.compareTo(b.distanceInMiles),
     );
@@ -291,7 +294,7 @@ class LocationController extends ChangeNotifier {
       // Si estamos mostrando todas las oficinas, mantener ese estado
       showAllOffices: state.showAllOffices,
     );
-    
+
     // Actualizar el círculo de cobertura para reflejar el radio de búsqueda
     _updateCoverageCircle();
   }
@@ -307,7 +310,7 @@ class LocationController extends ChangeNotifier {
   // Método para actualizar el círculo de cobertura
   void _updateCoverageCircle() {
     if (state.currentPosition == null) return;
-    
+
     final circles = <Circle>{};
     circles.add(
       Circle(
@@ -320,7 +323,7 @@ class LocationController extends ChangeNotifier {
         radius: state.searchRadiusInMiles * 1609.34,
         fillColor: Colors.blue.withOpacity(0.15), // Color azul transparente
         strokeColor: Colors.blue.withOpacity(0.5),
-        strokeWidth: 1, 
+        strokeWidth: 1,
       ),
     );
 
@@ -354,7 +357,7 @@ class LocationController extends ChangeNotifier {
     );
 
     _updateState(markers: currentMarkers);
-    
+
     // Actualizar el círculo de cobertura
     _updateCoverageCircle();
   }
@@ -445,7 +448,7 @@ class LocationController extends ChangeNotifier {
     // Incrementar el radio de búsqueda en 1 milla
     final newRadius = state.searchRadiusInMiles + 1.0;
     _updateState(searchRadiusInMiles: newRadius, showAllOffices: false);
-    
+
     // Recalcular las oficinas cercanas con el nuevo radio
     _calculateDistancesToOffices();
   }
