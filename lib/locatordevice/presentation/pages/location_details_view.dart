@@ -135,9 +135,12 @@ class _LocationDetailsViewContentState
   }
 
   // Widget para mostrar cuando no hay permisos de ubicación
-  Widget _buildNoPermissionContent(BuildContext context, LocationController controller) {
+  Widget _buildNoPermissionContent(
+    BuildContext context,
+    LocationController controller,
+  ) {
     final state = controller.state;
-    
+
     return Column(
       children: [
         // Mapa con ubicación por defecto (sin marcador de ubicación actual)
@@ -146,7 +149,7 @@ class _LocationDetailsViewContentState
           child: GoogleMap(
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                state.currentPosition?.latitude ?? 32.715738, 
+                state.currentPosition?.latitude ?? 32.715738,
                 state.currentPosition?.longitude ?? -117.161084,
               ),
               zoom: 10.0,
