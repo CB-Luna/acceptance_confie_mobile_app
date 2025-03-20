@@ -17,7 +17,7 @@ class LocationState {
   final String? errorMessage;
   final Set<Marker> markers;
   final Set<Circle> circles;
-  final bool isEmulatorOrSimulator;
+  final bool hasLocationPermission;
   final double searchRadiusInMiles; // Radio de búsqueda en millas
   final bool showAllOffices; // Indica si se deben mostrar todas las oficinas
 
@@ -29,7 +29,7 @@ class LocationState {
     this.errorMessage,
     this.markers = const {},
     this.circles = const {},
-    this.isEmulatorOrSimulator = false,
+    this.hasLocationPermission = true,
     this.searchRadiusInMiles = 1.0, // Por defecto, 1 milla
     this.showAllOffices = false,
   });
@@ -42,7 +42,7 @@ class LocationState {
     String? errorMessage,
     Set<Marker>? markers,
     Set<Circle>? circles,
-    bool? isEmulatorOrSimulator,
+    bool? hasLocationPermission,
     double? searchRadiusInMiles,
     bool? showAllOffices,
   }) {
@@ -54,8 +54,8 @@ class LocationState {
       errorMessage: errorMessage ?? this.errorMessage,
       markers: markers ?? this.markers,
       circles: circles ?? this.circles,
-      isEmulatorOrSimulator:
-          isEmulatorOrSimulator ?? this.isEmulatorOrSimulator,
+      hasLocationPermission:
+          hasLocationPermission ?? this.hasLocationPermission,
       searchRadiusInMiles: searchRadiusInMiles ?? this.searchRadiusInMiles,
       showAllOffices: showAllOffices ?? this.showAllOffices,
     );
@@ -88,13 +88,12 @@ class LocationController extends ChangeNotifier {
 
   Future<void> initialize() async {
     try {
-      await _detectIfEmulator();
+      await _checkAndRequestLocationPermission();
 
-      // Si estamos en un emulador, usar ubicación por defecto sin solicitar permisos
-      if (_state.isEmulatorOrSimulator) {
-        await _useDefaultLocationForEmulator();
+      // Si no tiene permisos, usar ubicación por defecto sin solicitar permisos
+      if (!_state.hasLocationPermission) {
+        await _useDefaultLocation();
       } else {
-        await _checkAndRequestLocationPermission();
         await _loadCurrentLocation();
       }
 
@@ -123,7 +122,7 @@ class LocationController extends ChangeNotifier {
     String? errorMessage,
     Set<Marker>? markers,
     Set<Circle>? circles,
-    bool? isEmulatorOrSimulator,
+    bool? hasLocationPermission,
     double? searchRadiusInMiles,
     bool? showAllOffices,
   }) {
@@ -135,25 +134,17 @@ class LocationController extends ChangeNotifier {
       errorMessage: errorMessage,
       markers: markers,
       circles: circles,
-      isEmulatorOrSimulator: isEmulatorOrSimulator,
+      hasLocationPermission: hasLocationPermission,
       searchRadiusInMiles: searchRadiusInMiles,
       showAllOffices: showAllOffices,
     );
     notifyListeners();
   }
 
-  Future<void> _detectIfEmulator() async {
-    final isEmulator = await deviceInfo.isEmulatorOrSimulator();
-    _updateState(isEmulatorOrSimulator: isEmulator);
-
-    if (isEmulator) {
-      debugPrint('Detectado emulador/simulador - usando ubicación simulada');
-    }
-  }
-
   Future<void> _checkAndRequestLocationPermission() async {
     final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
+      _updateState(hasLocationPermission: false);
       throw Exception('Location services are disabled');
     }
 
@@ -161,12 +152,59 @@ class LocationController extends ChangeNotifier {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        _updateState(hasLocationPermission: false);
         throw Exception('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
+      _updateState(hasLocationPermission: false);
       throw Exception('Location permissions are permanently denied');
+    }
+
+    // Si llegamos aquí, tenemos permisos
+    _updateState(hasLocationPermission: true);
+  }
+
+  /// Solicita permisos de ubicación y actualiza el estado
+  Future<void> requestLocationPermission() async {
+    try {
+      _updateState(isLoading: true, errorMessage: null);
+
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        _updateState(
+          isLoading: false,
+          hasLocationPermission: false,
+          errorMessage: 'Location services are disabled',
+        );
+        return;
+      }
+
+      final LocationPermission permission =
+          await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        _updateState(
+          isLoading: false,
+          hasLocationPermission: false,
+          errorMessage: 'Location permissions are denied',
+        );
+        return;
+      }
+
+      // Si llegamos aquí, tenemos permisos
+      _updateState(hasLocationPermission: true);
+
+      // Reiniciar la inicialización
+      await initialize();
+    } catch (e) {
+      _updateState(
+        isLoading: false,
+        hasLocationPermission: false,
+        errorMessage: 'Error requesting location permission: ${e.toString()}',
+      );
     }
   }
 
@@ -186,9 +224,9 @@ class LocationController extends ChangeNotifier {
     }
   }
 
-  // Método para usar ubicación por defecto en emuladores
-  Future<void> _useDefaultLocationForEmulator() async {
-    debugPrint('Usando ubicación por defecto para emulador/simulador');
+  // Método para usar ubicación por defecto en caso de no tener permisos
+  Future<void> _useDefaultLocation() async {
+    debugPrint('Usando ubicación por defecto cuando no hay permisos');
     final newPosition = Position(
       latitude: defaultLat,
       longitude: defaultLng,
@@ -207,8 +245,8 @@ class LocationController extends ChangeNotifier {
       isLoading: false,
     );
 
-    // Agregamos el marcador para la ubicación simulada
-    _updateCurrentLocationMarker();
+    // No quiero que se agregre el marcador para la ubicación simulada
+    // _updateCurrentLocationMarker();
   }
 
   void _startLocationTracking() {
@@ -349,7 +387,7 @@ class LocationController extends ChangeNotifier {
         ),
         infoWindow: InfoWindow(
           title: 'Mi ubicación actual',
-          snippet: state.isEmulatorOrSimulator ? 'Ubicación simulada' : null,
+          snippet: state.hasLocationPermission ? null : 'Ubicación simulada',
         ),
         icon: customIcon,
         zIndex: 2,
@@ -419,28 +457,44 @@ class LocationController extends ChangeNotifier {
     }
   }
 
-  void setCustomLocation(double latitude, double longitude) {
-    final newPosition = Position(
-      latitude: latitude,
-      longitude: longitude,
-      timestamp: DateTime.now(),
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      altitudeAccuracy: 0,
-      headingAccuracy: 0,
-    );
+  /// Busca oficinas cercanas a un código postal
+  Future<void> searchByZipCode(String zipCode) async {
+    try {
+      _updateState(isLoading: true, errorMessage: null);
 
-    _updateState(currentPosition: newPosition);
-    _updateCurrentLocationMarker();
-    updateMapPosition();
-    _calculateDistancesToOffices();
-  }
+      // TODO: Implementar la búsqueda de coordenadas por código postal
+      // Por ahora, usaremos coordenadas fijas para simular
+      final double latitude = 32.715738; // San Diego
+      final double longitude = -117.161084;
 
-  void setEmulatorMode(bool value) {
-    _updateState(isEmulatorOrSimulator: value);
+      final newPosition = Position(
+        latitude: latitude,
+        longitude: longitude,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0,
+        altitudeAccuracy: 0,
+        headingAccuracy: 0,
+      );
+
+      _updateState(
+        currentPosition: newPosition,
+        isLoading: false,
+      );
+
+      // Actualizar marcador y cargar oficinas
+      _updateCurrentLocationMarker();
+      updateMapPosition();
+      await _loadOffices();
+    } catch (e) {
+      _updateState(
+        isLoading: false,
+        errorMessage: 'Error searching by zip code: ${e.toString()}',
+      );
+    }
   }
 
   // Método para expandir el radio de búsqueda

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,7 @@ import '../widgets/loading_view.dart';
 import '../widgets/location_error_view.dart';
 import '../widgets/map_buttons.dart';
 import '../widgets/office_list.dart';
-import '../widgets/simulator_banner.dart';
+import '../widgets/zip_code_input_view.dart';
 
 class LocationDetailsView extends StatelessWidget {
   const LocationDetailsView({super.key});
@@ -120,6 +119,11 @@ class _LocationDetailsViewContentState
       return const LoadingView();
     }
 
+    // Si no hay permisos de ubicación, mostrar la vista de entrada de código postal
+    if (!controller.state.hasLocationPermission) {
+      return _buildNoPermissionContent(context, controller);
+    }
+
     if (controller.state.errorMessage != null) {
       return LocationErrorView(
         errorMessage: controller.state.errorMessage!,
@@ -128,6 +132,44 @@ class _LocationDetailsViewContentState
     }
 
     return _buildMainContent(context, controller);
+  }
+
+  // Widget para mostrar cuando no hay permisos de ubicación
+  Widget _buildNoPermissionContent(BuildContext context, LocationController controller) {
+    final state = controller.state;
+    
+    return Column(
+      children: [
+        // Mapa con ubicación por defecto (sin marcador de ubicación actual)
+        Expanded(
+          flex: 1,
+          child: GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                state.currentPosition?.latitude ?? 32.715738, 
+                state.currentPosition?.longitude ?? -117.161084,
+              ),
+              zoom: 10.0,
+            ),
+            markers: state.markers,
+            circles: state.circles,
+            myLocationEnabled: false,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: true,
+            compassEnabled: true,
+            mapToolbarEnabled: true,
+            trafficEnabled: false,
+          ),
+        ),
+        // Vista de entrada de código postal
+        ZipCodeInputView(
+          onUseCurrentLocation: () {
+            // Intentar solicitar permisos de ubicación nuevamente
+            controller.requestLocationPermission();
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildMainContent(
@@ -160,9 +202,6 @@ class _LocationDetailsViewContentState
           zoomControlsEnabled: true,
           compassEnabled: true,
           mapToolbarEnabled: true,
-          liteModeEnabled: defaultTargetPlatform == TargetPlatform.android &&
-              state
-                  .isEmulatorOrSimulator, // Usar lite mode solo en emuladores Android
           trafficEnabled: false, // Desactivar tráfico para mejor rendimiento
         ),
 
@@ -171,12 +210,6 @@ class _LocationDetailsViewContentState
           onLocationPressed: () => controller.updateMapPosition(),
           onToggleListPressed: _toggleBottomSheet,
         ),
-
-        // Banner de simulador/emulador
-        if (state.isEmulatorOrSimulator)
-          SimulatorBanner(
-            onClose: () => controller.setEmulatorMode(false),
-          ),
 
         // Lista de oficinas
         DraggableScrollableSheet(
