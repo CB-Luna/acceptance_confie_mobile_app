@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class ProfileAvatarName extends StatelessWidget {
   final String userName;
   final bool showName;
+  final String? userAvatar; // URL del avatar del usuario
 
   const ProfileAvatarName({
-    required this.userName, super.key,
+    required this.userName, 
+    super.key,
     this.showName = true,
+    this.userAvatar,
   });
 
   @override
@@ -36,10 +39,22 @@ class ProfileAvatarName extends StatelessWidget {
             ],
           ),
           child: ClipOval(
-            child: Image.asset(
-              'assets/home/icons/human_avatar.png',
-              fit: BoxFit.cover,
-            ),
+            child: userAvatar != null
+                ? Image.network(
+                    userAvatar!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Si hay un error al cargar la imagen, mostrar la imagen por defecto
+                      return Image.asset(
+                        'assets/home/icons/human_avatar.png',
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/home/icons/human_avatar.png',
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
         // Nombre (opcional)

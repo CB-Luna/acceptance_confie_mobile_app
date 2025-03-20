@@ -7,6 +7,8 @@ class User {
   final int customerId; // Añadido para poder hacer la llamada a la API
   final String? email; // Añadido para información de contacto
   final String? phone; // Añadido para información de contacto
+  final String? avatar; // URL de la imagen de avatar del usuario
+  final String? languageCode; // Código de idioma del usuario (ej: 'en_US', 'es_MX')
 
   User({
     required this.username,
@@ -17,5 +19,7 @@ class User {
     required this.customerId,
     this.email,
     this.phone,
+    this.avatar,
+    this.languageCode,
   });
 }

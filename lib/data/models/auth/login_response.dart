@@ -12,10 +12,20 @@ class LoginResponse {
   @JsonKey(name: 'customer_name')
   final String customerName;
 
+  /// URL de la imagen de avatar del usuario
+  @JsonKey(name: 'avatar')
+  final String? avatar;
+
+  /// Código de idioma del usuario (ej: 'en_US', 'es_MX')
+  @JsonKey(name: 'language_code')
+  final String? languageCode;
+
   LoginResponse({
     required this.message,
     required this.customerId,
     required this.customerName,
+    this.avatar,
+    this.languageCode,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>

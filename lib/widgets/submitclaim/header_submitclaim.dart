@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth_provider.dart';
 
 class SubmitClaimHeader extends StatelessWidget {
   const SubmitClaimHeader({super.key});
@@ -59,10 +62,22 @@ class SubmitClaimHeader extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, '/profile');
                 },
-                child: const CircleAvatar(
-                  radius: 16,
-                  backgroundImage:
-                      AssetImage('assets/profile/human_avatar.png'),
+                child: Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    final avatar = authProvider.currentUser?.avatar;
+                    
+                    return CircleAvatar(
+                      radius: 16,
+                      backgroundImage: avatar != null
+                          ? NetworkImage(avatar)
+                          : const AssetImage('assets/profile/human_avatar.png') as ImageProvider,
+                      onBackgroundImageError: avatar != null
+                          ? (exception, stackTrace) {
+                              // Si hay un error al cargar la imagen, usar la imagen por defecto
+                            }
+                          : null,
+                    );
+                  },
                 ),
               ),
             ],

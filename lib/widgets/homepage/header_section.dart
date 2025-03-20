@@ -15,6 +15,7 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final notificationProvider = Provider.of<NotificationProvider>(context);
     final notificationCount = notificationProvider.notificationCount;
@@ -126,12 +127,28 @@ class HeaderSection extends StatelessWidget {
                   Navigator.of(context).pushNamed('/profile');
                 },
                 child: ClipOval(
-                  child: Image.asset(
-                    'assets/home/icons/human_avatar.png',
-                    width: 33,
-                    height: 33,
-                    fit: BoxFit.cover,
-                  ),
+                  child: authProvider.currentUser?.avatar != null
+                      ? Image.network(
+                          authProvider.currentUser!.avatar!,
+                          width: 33,
+                          height: 33,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            // Si hay un error al cargar la imagen, mostrar la imagen por defecto
+                            return Image.asset(
+                              'assets/home/icons/human_avatar.png',
+                              width: 33,
+                              height: 33,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          'assets/home/icons/human_avatar.png',
+                          width: 33,
+                          height: 33,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               const SizedBox(width: 16),

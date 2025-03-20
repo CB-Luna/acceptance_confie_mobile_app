@@ -62,6 +62,7 @@ class ProfilePage extends StatelessWidget {
                   child: ProfileAvatarName(
                     userName: user != null ? user.fullName : 'User',
                     showName: false,
+                    userAvatar: user?.avatar,
                   ),
                 ),
               ],

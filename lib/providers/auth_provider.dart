@@ -26,6 +26,8 @@ class AuthProvider with ChangeNotifier {
       debugPrint('AuthProvider - Respuesta de login: ${response.message}');
       debugPrint('AuthProvider - Customer ID: ${response.customerId}');
       debugPrint('AuthProvider - Customer Name: ${response.customerName}');
+      debugPrint('AuthProvider - Avatar: ${response.avatar}');
+      debugPrint('AuthProvider - Language Code: ${response.languageCode}');
 
       if (response.message == 'Login Successful') {
         _currentUser = User(
@@ -37,6 +39,8 @@ class AuthProvider with ChangeNotifier {
           customerId: response.customerId,
           email: '$username@example.com',
           phone: '+1 (555) 123-4567',
+          avatar: response.avatar,
+          languageCode: response.languageCode,
         );
 
         debugPrint('AuthProvider - Usuario creado: ${_currentUser!.fullName}');
