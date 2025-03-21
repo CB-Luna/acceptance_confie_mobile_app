@@ -119,9 +119,13 @@ class _LocationDetailsViewContentState
       return const LoadingView();
     }
 
-    // Si no hay permisos de ubicación, mostrar la vista de entrada de código postal
+    // Si no hay permisos de ubicación, validar si hay codigo postal buscado para mostrar la vista de entrada de código postal
     if (!controller.state.hasLocationPermission) {
-      return _buildNoPermissionContent(context, controller);
+      if (controller.state.hasSearchedByZipCode) {
+        return _buildMainContent(context, controller);
+      } else {
+        return _buildNoPermissionContent(context, controller);
+      }
     }
 
     if (controller.state.errorMessage != null) {

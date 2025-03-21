@@ -20,6 +20,7 @@ class LocationState {
   final Set<Marker> markers;
   final Set<Circle> circles;
   final bool hasLocationPermission;
+  final bool hasSearchedByZipCode;
   final double searchRadiusInMiles; // Radio de búsqueda en millas
   final bool showAllOffices; // Indica si se deben mostrar todas las oficinas
 
@@ -32,6 +33,7 @@ class LocationState {
     this.markers = const {},
     this.circles = const {},
     this.hasLocationPermission = true,
+    this.hasSearchedByZipCode = false,
     this.searchRadiusInMiles = 1.0, // Por defecto, 1 milla
     this.showAllOffices = false,
   });
@@ -45,6 +47,7 @@ class LocationState {
     Set<Marker>? markers,
     Set<Circle>? circles,
     bool? hasLocationPermission,
+    bool? hasSearchedByZipCode,
     double? searchRadiusInMiles,
     bool? showAllOffices,
   }) {
@@ -58,6 +61,7 @@ class LocationState {
       circles: circles ?? this.circles,
       hasLocationPermission:
           hasLocationPermission ?? this.hasLocationPermission,
+      hasSearchedByZipCode: hasSearchedByZipCode ?? this.hasSearchedByZipCode,
       searchRadiusInMiles: searchRadiusInMiles ?? this.searchRadiusInMiles,
       showAllOffices: showAllOffices ?? this.showAllOffices,
     );
@@ -125,6 +129,7 @@ class LocationController extends ChangeNotifier {
     Set<Marker>? markers,
     Set<Circle>? circles,
     bool? hasLocationPermission,
+    bool? hasSearchedByZipCode,
     double? searchRadiusInMiles,
     bool? showAllOffices,
   }) {
@@ -137,6 +142,7 @@ class LocationController extends ChangeNotifier {
       markers: markers,
       circles: circles,
       hasLocationPermission: hasLocationPermission,
+      hasSearchedByZipCode: hasSearchedByZipCode,
       searchRadiusInMiles: searchRadiusInMiles,
       showAllOffices: showAllOffices,
     );
@@ -471,6 +477,7 @@ class LocationController extends ChangeNotifier {
       if (nearbyOffices.isEmpty) {
         _updateState(
           isLoading: false,
+          hasSearchedByZipCode: false,
           errorMessage:
               'No se encontraron oficinas cercanas al código postal: $zipCode',
         );
@@ -513,6 +520,7 @@ class LocationController extends ChangeNotifier {
         isLoading: false,
         offices: domainOffices,
         nearbyOffices: domainOffices,
+        hasSearchedByZipCode: true,
       );
 
       // Actualizar posición del mapa y marcar oficinas
