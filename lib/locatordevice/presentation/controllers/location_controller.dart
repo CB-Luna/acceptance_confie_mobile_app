@@ -5,9 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../core/platform/device_info.dart';
-import '../../../data/models/office/office.dart' as office_model;
+import '../../../data/models/office/office.dart';
 import '../../../data/services/office_service.dart';
-import '../../domain/entities/office.dart';
 import '../../domain/usecases/get_current_location.dart';
 import '../../domain/usecases/get_offices.dart';
 
@@ -278,7 +277,8 @@ class LocationController extends ChangeNotifier {
 
   Future<void> _loadOffices() async {
     try {
-      final offices = await getOffices.execute();
+      final offices =
+          await getOffices.execute(currentPosition: state.currentPosition);
       _updateState(offices: offices);
 
       if (state.currentPosition != null) {
@@ -300,35 +300,21 @@ class LocationController extends ChangeNotifier {
     final List<Office> nearbyOffices = [];
 
     for (var office in state.offices) {
-      final double distanceInMeters = Geolocator.distanceBetween(
-        state.currentPosition!.latitude,
-        state.currentPosition!.longitude,
-        office.latitude,
-        office.longitude,
-      );
-
-      final double distanceInMiles = distanceInMeters * 0.000621371;
-
-      final updatedOffice = Office.fromMap({
-        ...office.toMap(),
-        'distanceInMiles': distanceInMiles,
-      });
-
-      updatedOffices.add(updatedOffice);
+      updatedOffices.add(office);
 
       // Filtrar oficinas dentro del radio de búsqueda
-      if (distanceInMiles <= state.searchRadiusInMiles) {
-        nearbyOffices.add(updatedOffice);
+      if (office.distance <= state.searchRadiusInMiles) {
+        nearbyOffices.add(office);
       }
     }
 
     // Ordenar por distancia
     updatedOffices.sort(
-      (a, b) => a.distanceInMiles.compareTo(b.distanceInMiles),
+      (a, b) => a.distance.compareTo(b.distance),
     );
 
     nearbyOffices.sort(
-      (a, b) => a.distanceInMiles.compareTo(b.distanceInMiles),
+      (a, b) => a.distance.compareTo(b.distance),
     );
 
     _updateState(
@@ -420,7 +406,7 @@ class LocationController extends ChangeNotifier {
         position: LatLng(office.latitude, office.longitude),
         infoWindow: InfoWindow(
           title: office.name,
-          snippet: office.address,
+          snippet: office.streetAddress,
         ),
         icon: AssetMapBitmap('assets/prefix.png', width: 40, height: 40),
         zIndex: 1,
@@ -471,7 +457,7 @@ class LocationController extends ChangeNotifier {
       final officeService = OfficeService();
 
       // Obtener las oficinas cercanas al código postal
-      final List<office_model.Office> nearbyOffices =
+      final List<Office> nearbyOffices =
           await officeService.getNearbyOfficesByZipCode(zipCode);
 
       if (nearbyOffices.isEmpty) {
@@ -499,27 +485,11 @@ class LocationController extends ChangeNotifier {
         headingAccuracy: 0,
       );
 
-      // Convertir las oficinas del modelo al formato de dominio
-      final List<Office> domainOffices = nearbyOffices
-          .map(
-            (office) => Office(
-              id: office.locationId.toString(),
-              name: office.name,
-              address:
-                  '${office.streetAddress}, ${office.city}, ${office.state} ${office.postalCode}',
-              phone: office.phone,
-              latitude: office.latitude,
-              longitude: office.longitude,
-              distanceInMiles: office.distance,
-            ),
-          )
-          .toList();
-
       _updateState(
         currentPosition: newPosition,
         isLoading: false,
-        offices: domainOffices,
-        nearbyOffices: domainOffices,
+        offices: nearbyOffices,
+        nearbyOffices: nearbyOffices,
         hasSearchedByZipCode: true,
       );
 

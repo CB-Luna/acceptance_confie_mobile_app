@@ -1,39 +1,40 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../entities/office.dart';
-import '../repositories/office_repository.dart';
+import '../../../data/models/office/office.dart';
+import '../../../data/services/office_service.dart';
 
 class GetOffices {
-  final OfficeRepository repository;
+  final OfficeService officeService;
 
-  GetOffices(this.repository);
+  GetOffices(this.officeService);
 
   Future<List<Office>> execute({Position? currentPosition}) async {
     try {
       debugPrint('GetOffices: Executing use case');
-      final offices = await repository.getOffices();
+
+      List<Office> offices;
 
       if (currentPosition != null) {
-        // Calcular distancias y ordenar si tenemos una posición actual
-        final officesWithDistances = offices.map((office) {
-          final distanceInMeters = Geolocator.distanceBetween(
-            currentPosition.latitude,
-            currentPosition.longitude,
-            office.latitude,
-            office.longitude,
-          );
+        // Si tenemos la posición actual, usar las coordenadas para obtener oficinas cercanas
+        offices = await officeService.getNearbyOfficesByLocation(
+          currentPosition.latitude,
+          currentPosition.longitude,
+        );
+      } else {
+        // Si no tenemos posición, usar un código postal predeterminado
+        // Esto solo debería ocurrir en casos excepcionales
+        offices = await officeService.getNearbyOfficesByZipCode('91911');
+      }
 
-          return Office.fromMap({
-            ...office.toMap(),
-            'distanceInMiles':
-                distanceInMeters * 0.000621371, // Convertir a millas
-          });
-        }).toList();
+      // Asegurarnos de que todas las oficinas tengan distancia calculada
+      // Esto es importante porque algunas APIs podrían no incluir la distancia
+      if (currentPosition != null) {
+        final officesWithDistances = offices.toList();
 
         // Ordenar por distancia
         officesWithDistances.sort(
-          (a, b) => a.distanceInMiles.compareTo(b.distanceInMiles),
+          (a, b) => a.distance.compareTo(b.distance),
         );
 
         return officesWithDistances;

@@ -1,16 +1,31 @@
 class OfficeRequest {
-  final String zipCode;
+  final String? zipCode;
+  final double? latitude;
+  final double? longitude;
   final int count;
 
   OfficeRequest({
-    required this.zipCode,
+    this.zipCode,
+    this.latitude,
+    this.longitude,
     this.count = 5,
-  });
+  }) : assert(
+          (zipCode != null) || (latitude != null && longitude != null),
+          'Debe proporcionar un código postal o coordenadas (latitud/longitud)',
+        );
 
   Map<String, dynamic> toJson() {
-    return {
-      'zc': zipCode,
-      'count': count,
-    };
+    if (zipCode != null) {
+      return {
+        'zc': zipCode,
+        'count': count,
+      };
+    } else {
+      return {
+        'lat': latitude,
+        'lon': longitude,
+        'count': count,
+      };
+    }
   }
 }

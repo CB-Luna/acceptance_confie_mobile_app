@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
-import '../../domain/entities/office.dart';
+import '../../../data/models/office/office.dart';
 import 'no_nearby_offices_view.dart';
 
 class OfficeList extends StatelessWidget {
@@ -56,7 +56,7 @@ class OfficeList extends StatelessWidget {
           ),
 
           // Si showNoNearbyOfficesView es true, mostrar el mensaje de no hay oficinas cercanas
-          if (showNoNearbyOfficesView) ...[            
+          if (showNoNearbyOfficesView) ...[
             // Contenido cuando no hay oficinas cercanas
             Expanded(
               child: Padding(
@@ -67,7 +67,7 @@ class OfficeList extends StatelessWidget {
                 ),
               ),
             ),
-          ] else ...[            
+          ] else ...[
             // Título
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -138,7 +138,7 @@ class OfficeListItem extends StatelessWidget {
             ),
           ),
           Text(
-            '${office.distanceInMiles.toStringAsFixed(2)} miles',
+            '${office.distance.toStringAsFixed(2)} miles',
             style: const TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class OfficeListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            office.address,
+            office.streetAddress,
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,

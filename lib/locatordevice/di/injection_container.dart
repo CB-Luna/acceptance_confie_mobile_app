@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core/platform/device_info.dart';
+import '../../../data/services/office_service.dart';
 import '../data/datasources/location_data_source.dart';
-import '../data/datasources/office_datasource.dart';
 import '../data/repositories/location_repository_impl.dart';
-import '../data/repositories/office_repository_impl.dart';
 import '../domain/repositories/location_repository.dart';
-import '../domain/repositories/office_repository.dart';
 import '../domain/usecases/get_current_location.dart';
 import '../domain/usecases/get_offices.dart';
 import '../presentation/bloc/location_bloc.dart';
@@ -54,21 +52,19 @@ Future<void> init() async {
     final locationDataSource = LocationDataSourceImpl();
     sl.registerSingleton<LocationDataSource>(locationDataSource);
 
-    final officeDataSource = OfficeDataSourceImpl();
-    sl.registerSingleton<OfficeDataSource>(officeDataSource);
-
     // Repositories
     final locationRepository = LocationRepositoryImpl(locationDataSource);
     sl.registerSingleton<LocationRepository>(locationRepository);
-
-    final officeRepository = OfficeRepositoryImpl(officeDataSource);
-    sl.registerSingleton<OfficeRepository>(officeRepository);
+    
+    // Services
+    final officeService = OfficeService();
+    sl.registerSingleton<OfficeService>(officeService);
 
     // Use cases
     final getCurrentLocation = GetCurrentLocation(locationRepository);
     sl.registerSingleton<GetCurrentLocation>(getCurrentLocation);
 
-    final getOffices = GetOffices(officeRepository);
+    final getOffices = GetOffices(officeService);
     sl.registerSingleton<GetOffices>(getOffices);
 
     // BLoC

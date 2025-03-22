@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../domain/entities/office.dart';
+import '../../../data/models/office/office.dart';
 import '../../domain/usecases/get_current_location.dart';
 import '../../domain/usecases/get_offices.dart';
 
