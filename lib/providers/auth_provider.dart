@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -7,9 +8,14 @@ import '../models/user_model.dart';
 /// Provider para manejar la autenticación del usuario
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   User? _currentUser;
   String? _errorMessage;
   bool _isAuthenticated = false;
+
+  // Claves para almacenamiento seguro
+  static const String _usernameKey = 'auth_username';
+  static const String _passwordKey = 'auth_password';
 
   // Getters
   User? get currentUser => _currentUser;
@@ -45,7 +51,8 @@ class AuthProvider with ChangeNotifier {
 
         debugPrint('AuthProvider - Usuario creado: ${_currentUser!.fullName}');
         debugPrint(
-            'AuthProvider - Customer ID del usuario: ${_currentUser!.customerId}',);
+          'AuthProvider - Customer ID del usuario: ${_currentUser!.customerId}',
+        );
 
         _isAuthenticated = true;
         notifyListeners();
@@ -129,6 +136,50 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
+      return false;
+    }
+  }
+
+  /// Guarda las credenciales del usuario para uso con autenticación biométrica
+  Future<bool> saveCredentials(String username, String password) async {
+    try {
+      await _secureStorage.write(key: _usernameKey, value: username);
+      await _secureStorage.write(key: _passwordKey, value: password);
+      debugPrint('Credenciales guardadas correctamente');
+      return true;
+    } catch (e) {
+      debugPrint('Error al guardar credenciales: $e');
+      return false;
+    }
+  }
+
+  /// Elimina las credenciales guardadas
+  Future<bool> deleteCredentials() async {
+    try {
+      await _secureStorage.delete(key: _usernameKey);
+      await _secureStorage.delete(key: _passwordKey);
+      debugPrint('Credenciales eliminadas correctamente');
+      return true;
+    } catch (e) {
+      debugPrint('Error al eliminar credenciales: $e');
+      return false;
+    }
+  }
+
+  /// Inicia sesión usando las credenciales guardadas
+  Future<bool> loginWithSavedCredentials() async {
+    try {
+      final username = await _secureStorage.read(key: _usernameKey);
+      final password = await _secureStorage.read(key: _passwordKey);
+
+      if (username == null || password == null) {
+        _errorMessage = 'No hay credenciales guardadas';
+        return false;
+      }
+
+      return await login(username, password);
+    } catch (e) {
+      _errorMessage = 'Error while retrieving credentials: $e';
       return false;
     }
   }

@@ -9,6 +9,7 @@ import 'pages/profile_page.dart';
 import 'pages/splash_screen.dart';
 import 'pages/submit_claim_page.dart';
 import 'providers/auth_provider.dart';
+import 'providers/biometric_provider.dart';
 import 'providers/home_policy_provider.dart';
 import 'providers/notification_provider.dart';
 import 'providers/theme_provider.dart';
@@ -34,6 +35,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => HomePolicyProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => BiometricProvider()),
       ],
       child: const MyApp(),
     ),

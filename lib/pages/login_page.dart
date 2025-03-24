@@ -3,6 +3,7 @@ import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../providers/biometric_provider.dart';
 import '../widgets/theme/app_theme.dart';
 import 'signup_page.dart';
 
@@ -19,6 +20,93 @@ class LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscureText = true;
+  bool _isBiometricAvailable = false;
+  bool _isBiometricEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Verificar si la biometría está disponible y habilitada
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkBiometricStatus();
+    });
+  }
+
+  Future<void> _checkBiometricStatus() async {
+    final biometricProvider =
+        Provider.of<BiometricProvider>(context, listen: false);
+    setState(() {
+      _isBiometricAvailable = biometricProvider.isAvailable;
+      _isBiometricEnabled = biometricProvider.isEnabled;
+    });
+
+    // Nota: Eliminamos la autenticación automática por razones de seguridad
+    // Es mejor que el usuario inicie manualmente el proceso de autenticación biométrica
+  }
+
+  /// Intenta autenticar al usuario usando biometría
+  ///
+  /// Devuelve true si la autenticación fue exitosa, false en caso contrario
+  Future<bool> _authenticateWithBiometrics() async {
+    try {
+      final biometricProvider =
+          Provider.of<BiometricProvider>(context, listen: false);
+      final success = await biometricProvider.authenticate();
+
+      if (!success) {
+        // Si la autenticación biométrica falló, mostrar un mensaje
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Authentication failed with biometrics.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return false;
+      }
+
+      if (mounted) {
+        // Si la autenticación biométrica fue exitosa, iniciar sesión
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        setState(() {
+          _isLoading = true;
+        });
+
+        // Obtener las credenciales guardadas y hacer login
+        final loginSuccess = await authProvider.loginWithSavedCredentials();
+
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (!loginSuccess && mounted) {
+          // Si el login falló, mostrar un mensaje
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(authProvider.errorMessage ?? 'Failed to login.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return false;
+        }
+
+        return loginSuccess;
+      }
+
+      return false;
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +223,41 @@ class LoginPageState extends State<LoginPage> {
                             ),
                     ),
                   ),
+
+                  // Botón de biometría si está disponible
+                  if (_isBiometricAvailable)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Consumer<BiometricProvider>(
+                        builder: (context, biometricProvider, child) {
+                          return IconButton(
+                            icon: Icon(
+                              biometricProvider.biometricType.contains('Face')
+                                  ? Icons.face_outlined
+                                  : Icons.fingerprint,
+                              size: 40,
+                              color: AppTheme.primaryColor,
+                            ),
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    final success =
+                                        await _authenticateWithBiometrics();
+                                    if (success && mounted) {
+                                      // Si la autenticación fue exitosa, navegar a la pantalla principal
+                                      await Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                        '/home',
+                                        (route) => false,
+                                      );
+                                    }
+                                  },
+                            tooltip:
+                                'Acceder con ${biometricProvider.biometricType}',
+                          );
+                        },
+                      ),
+                    ),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -185,10 +308,19 @@ class LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      final success = await context.read<AuthProvider>().login(
-            _usernameController.text,
-            _passwordController.text,
-          );
+      final authProvider = context.read<AuthProvider>();
+      final success = await authProvider.login(
+        _usernameController.text,
+        _passwordController.text,
+      );
+
+      // Si el login fue exitoso y la biometría está disponible y habilitada, guardar las credenciales
+      if (success && _isBiometricAvailable && _isBiometricEnabled) {
+        await authProvider.saveCredentials(
+          _usernameController.text,
+          _passwordController.text,
+        );
+      }
 
       setState(() => _isLoading = false);
 
@@ -198,8 +330,8 @@ class LoginPageState extends State<LoginPage> {
           (route) => false,
         );
       } else if (mounted) {
-        final errorMessage = context.read<AuthProvider>().errorMessage ??
-            'Error de autenticación';
+        final errorMessage =
+            authProvider.errorMessage ?? 'Authentication error.';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),
