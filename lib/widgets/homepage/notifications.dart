@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/notification_model.dart';
@@ -106,6 +107,7 @@ class NotificationsWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const LoadingView(message: 'Cargando notificaciones...'),
             // Add Products Section
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.0),

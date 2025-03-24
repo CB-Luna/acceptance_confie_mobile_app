@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingView extends StatelessWidget {
   final String message;
@@ -21,10 +22,13 @@ class LoadingView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              indicatorColor ?? Colors.blue,
-            ),
+          SpinKitWaveSpinner(
+            color: indicatorColor ?? const Color(0xFF0046B9),
+            trackColor: const Color(0xFF78BE00),
+            waveColor: const Color(0xFF0046B9),
+            curve: Curves.decelerate,
+            size: 60.0,
+            duration: const Duration(milliseconds: 1200),
           ),
           const SizedBox(height: 16),
           if (message.isNotEmpty)
@@ -63,9 +67,9 @@ class LoadingView extends StatelessWidget {
     BuildContext context, {
     String message = 'Cargando...',
     Color overlayColor = Colors.black54,
-    Color? indicatorColor,
-    Color? backgroundColor = Colors.white,
-    Color? textColor = Colors.black87,
+    Color? indicatorColor = Colors.blue,
+    Color? backgroundColor,
+    Color? textColor = Colors.white,
   }) {
     final overlayEntry = OverlayEntry(
       builder: (context) => Container(
@@ -73,7 +77,7 @@ class LoadingView extends StatelessWidget {
         child: LoadingView(
           message: message,
           backgroundColor: backgroundColor,
-          indicatorColor: indicatorColor ?? Colors.blue,
+          indicatorColor: indicatorColor,
           textColor: textColor,
         ),
       ),
