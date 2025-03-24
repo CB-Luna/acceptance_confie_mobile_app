@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/insproducts/motorcycle_insurance_page.dart'
+    show MotorcycleInsurancePage;
+import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/services/location_service.dart';
 import '../../pages/home_page.dart';
 import '../../utils/menu/circle_nav_bar.dart';
 import '../../widgets/common/custom_dialog.dart';
-import 'motorcycle_insurance_page.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'zip_code_dialog.dart';
 
 class VehicleInsuranceGrid extends StatefulWidget {
   const VehicleInsuranceGrid({super.key});
@@ -14,6 +18,8 @@ class VehicleInsuranceGrid extends StatefulWidget {
 }
 
 class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
+  final LocationService _locationService = LocationService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +131,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       onTap: () {
         switch (title) {
           case 'Auto':
-            _showWebPageDialog(context);
+            _handleAutoInsurance(context);
             break;
           case 'Motorcycle':
             _showMotorcycleDialog(context);
@@ -169,15 +175,108 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     );
   }
 
+  // Método para manejar el seguro de auto con geolocalización
+  Future<void> _handleAutoInsurance(BuildContext context) async {
+    try {
+      // Verificar si los servicios de ubicación están habilitados
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        // Si los servicios de ubicación no están habilitados, mostrar diálogo sin código postal
+        if (!context.mounted) return;
+        await _showZipCodeDialog(context, null);
+        return;
+      }
+
+      // Verificar permisos de ubicación
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          // Si los permisos son denegados, mostrar diálogo sin código postal
+          if (!context.mounted) return;
+          await _showZipCodeDialog(context, null);
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        // Si los permisos están denegados permanentemente, mostrar diálogo sin código postal
+        if (!context.mounted) return;
+        await _showZipCodeDialog(context, null);
+        return;
+      }
+
+      // Obtener la posición actual
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Realizar reverse geocoding para obtener el código postal
+      final String? zipCode = await _locationService.getZipCodeFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      // Mostrar el diálogo con el código postal obtenido
+      if (!context.mounted) return;
+      await _showZipCodeDialog(context, zipCode);
+    } catch (e) {
+      debugPrint('Error al obtener la ubicación: $e');
+      // En caso de error, mostrar diálogo sin código postal
+      if (!context.mounted) return;
+      await _showZipCodeDialog(context, null);
+    }
+  }
+
+  // Método para mostrar el diálogo de código postal
+  Future<void> _showZipCodeDialog(
+    BuildContext context,
+    String? initialZipCode,
+  ) async {
+    final String? zipCode = await ZipCodeDialog.show(
+      context: context,
+      initialZipCode: initialZipCode,
+    );
+
+    if (zipCode != null && context.mounted) {
+      // Validar el código postal con la API de Zippopotam
+      final placeInfo = await _locationService.validateZipCode(zipCode);
+
+      if (placeInfo != null && context.mounted) {
+        // Si el código postal es válido, mostrar el diálogo de página web
+        await _showWebPageDialog(
+          context,
+          zipCode,
+          placeInfo['placeName'],
+          placeInfo['stateAbbreviation'],
+        );
+      } else if (context.mounted) {
+        // Si el código postal no es válido, mostrar un mensaje de error
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid ZIP code. Please try again.')),
+        );
+      }
+    }
+  }
+
   // Método para mostrar el diálogo de página web
-  Future<void> _showWebPageDialog(BuildContext context) async {
+  Future<void> _showWebPageDialog(
+    BuildContext context,
+    String zipCode,
+    String placeName,
+    String stateAbbreviation,
+  ) async {
     final bool? result = await CustomDialog.show(
       context: context,
-      title: 'Web Page Inside the App',
-      content: 'You are about to open a web page within the app to complete this action. Please follow the instructions there.',
+      title: 'Continue to Auto Insurance Quote',
+      content:
+          'You are about to get a quote for auto insurance in $placeName, $stateAbbreviation ($zipCode). Would you like to proceed?',
+      confirmText: 'Continue',
+      cancelText: 'Cancel',
       onConfirm: () async {
         // Abrir la URL en el navegador
-        final Uri url = Uri.parse('https://www.freeway.com/');
+        final Uri url = Uri.parse(
+            'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya');
         try {
           if (await canLaunchUrl(url)) {
             await launchUrl(url, mode: LaunchMode.inAppWebView);
@@ -190,7 +289,8 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Could not open the website. Please try again later.'),
+                content:
+                    Text('Could not open the website. Please try again later.'),
                 duration: Duration(seconds: 3),
               ),
             );
@@ -205,7 +305,8 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     final bool? result = await CustomDialog.show(
       context: context,
       title: 'Motorcycle Insurance',
-      content: 'You\'re about to get a quote for motorcycle insurance. Would you like to proceed?',
+      content:
+          'You\'re about to get a quote for motorcycle insurance. Would you like to proceed?',
       confirmText: 'Get Quote',
       cancelText: 'Not Now',
       onConfirm: () {

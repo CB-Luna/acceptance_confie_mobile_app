@@ -44,7 +44,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   json_serializable: ^6.7.1
-  mockito: ^5.4.4
+  mockito: ^5.4.5
   # API REST dev dependencies
   retrofit_generator: ^7.0.8
 
