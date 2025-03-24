@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/auth_provider.dart';
 import '../widgets/theme/app_theme.dart';
 import 'signup_page.dart';
@@ -81,9 +83,11 @@ class LoginPageState extends State<LoginPage> {
                           AppTheme.inputDecoration(labelText: 'Password')
                               .copyWith(
                         suffixIcon: IconButton(
-                          icon: Icon(_obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,),
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
                           onPressed: () {
                             setState(() {
                               _obscureText = !_obscureText;
@@ -123,10 +127,7 @@ class LoginPageState extends State<LoginPage> {
                           ? const SizedBox(
                               width: 24,
                               height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
+                              child: LoadingView(message: 'Loading...'),
                             )
                           : const Text(
                               'Login',

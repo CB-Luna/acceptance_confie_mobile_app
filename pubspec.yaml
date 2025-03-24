@@ -78,6 +78,7 @@ flutter:
     - assets/products/4.0x/
     - assets/products/vehiclepng/4.0x/
     - assets/location/
+    - assets/loading/
 
 flutter_launcher_icons:
   android: true

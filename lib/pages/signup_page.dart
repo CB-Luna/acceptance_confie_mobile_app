@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/auth_provider.dart';
 import '../widgets/theme/app_theme.dart';
 import 'home_page.dart';
@@ -223,7 +225,7 @@ class SignUpPageState extends State<SignUpPage> {
                     onPressed: _isLoading ? null : _signUp,
                     style: AppTheme.primaryButtonStyle,
                     child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const LoadingView(message: 'Loading...')
                         : const Text(
                             'Sign Up',
                             style: TextStyle(fontSize: 16),

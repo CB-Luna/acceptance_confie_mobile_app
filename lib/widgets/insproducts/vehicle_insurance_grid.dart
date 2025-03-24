@@ -188,8 +188,8 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     // Mostrar un indicador de progreso
     final overlay = LoadingView.showOverlay(
       context,
-      message: 'Obteniendo tu ubicación...', // Sin acentos
-      indicatorColor: Colors.blue,
+      message: 'Obteniendo tu ubicación...',
+      indicatorColor: const Color(0xFF0046B9),
       textColor: Colors.white,
     );
 

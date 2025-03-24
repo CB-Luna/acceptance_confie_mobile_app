@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 
 import '../../domain/entities/office.dart';
 import '../bloc/location_state.dart';
@@ -28,7 +29,7 @@ class LocationBottomSheet extends StatelessWidget {
   Widget _buildLoading() {
     return const SizedBox(
       height: 200,
-      child: Center(child: CircularProgressIndicator()),
+      child: Center(child: LoadingView(message: 'Loading...')),
     );
   }
 

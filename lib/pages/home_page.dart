@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
 
 import '../locatordevice/locator_device_module.dart';
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
       // Mostrar un indicador de carga mientras se redirige
       return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: LoadingView(message: 'Loading...'),
         ),
       );
     }

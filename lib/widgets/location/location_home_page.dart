@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 
 import '../../locatordevice/di/injection_container.dart' as di;
 import '../../locatordevice/locator_device_module.dart';
@@ -39,7 +40,7 @@ class _LocationHomePageState extends State<LocationHomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: LoadingView(message: 'Loading...'),
       ),
     );
   }

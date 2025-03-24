@@ -22,15 +22,37 @@ class LoadingView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SpinKitWaveSpinner(
-            color: indicatorColor ?? const Color(0xFF0046B9),
-            trackColor: const Color(0xFF78BE00),
-            waveColor: const Color(0xFF0046B9),
-            curve: Curves.decelerate,
-            size: 60.0,
-            duration: const Duration(milliseconds: 1200),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Círculo base blanco
+              Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              // Animación de onda azul
+              const SpinKitWaveSpinner(
+                color: Color(0xFF0046B9),
+                trackColor: Color(0xFF78BE00),
+                waveColor: Color(0xFF78BE00),
+                curve: Curves.decelerate,
+                size: 60.0,
+                duration: Duration(milliseconds: 1500),
+              ),
+              // Imagen del logo
+              Image.asset(
+                'assets/loading/freeway_logo.png',
+                width: 35,
+                height: 35,
+                fit: BoxFit.contain,
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           if (message.isNotEmpty)
             Material(
               color: Colors.transparent,

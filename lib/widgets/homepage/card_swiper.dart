@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
@@ -13,7 +14,9 @@ class CardSwiperSection extends StatefulWidget {
   final String policyNumber;
 
   const CardSwiperSection({
-    required this.user, required this.policyNumber, super.key,
+    required this.user,
+    required this.policyNumber,
+    super.key,
   });
 
   @override
@@ -64,7 +67,7 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
             height: 170,
             width: double.infinity,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: LoadingView(message: 'Loading policies...'),
             ),
           );
         }
@@ -73,7 +76,8 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         debugPrint('Total vehicles: ${policyProvider.vehicles.length}');
         for (var vehicle in policyProvider.vehicles) {
           debugPrint(
-              'Vehicle: ${vehicle.plate}, policy_type_id: ${vehicle.policyTypeId}, provider_id: ${vehicle.providerId}',);
+            'Vehicle: ${vehicle.plate}, policy_type_id: ${vehicle.policyTypeId}, provider_id: ${vehicle.providerId}',
+          );
         }
 
         // Si hay un error, mostrar tarjetas predeterminadas
@@ -90,10 +94,12 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         debugPrint('Auto Policies (type 2): ${autoPolicies.length}');
         if (autoPolicies.isNotEmpty) {
           for (final vehicle in autoPolicies) {
-            cards.add(PolicyCard(
-              user: widget.user,
-              vehicle: vehicle,
-            ),);
+            cards.add(
+              PolicyCard(
+                user: widget.user,
+                vehicle: vehicle,
+              ),
+            );
           }
         }
 
@@ -102,10 +108,12 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         debugPrint('Roadside Policies (type 1): ${roadsidePolicies.length}');
         if (roadsidePolicies.isNotEmpty) {
           for (final vehicle in roadsidePolicies) {
-            cards.add(RoadsideAssist(
-              policyNumber: vehicle.plate,
-              vehicle: vehicle,
-            ),);
+            cards.add(
+              RoadsideAssist(
+                policyNumber: vehicle.plate,
+                vehicle: vehicle,
+              ),
+            );
           }
         }
 
@@ -114,11 +122,13 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         debugPrint('Inactive Policies (type 3): ${inactivePolicies.length}');
         if (inactivePolicies.isNotEmpty) {
           for (final vehicle in inactivePolicies) {
-            cards.add(PolicyInactiveCard(
-              user: widget.user,
-              policyNumber: vehicle.plate,
-              vehicle: vehicle,
-            ),);
+            cards.add(
+              PolicyInactiveCard(
+                user: widget.user,
+                policyNumber: vehicle.plate,
+                vehicle: vehicle,
+              ),
+            );
           }
         }
 
@@ -168,8 +178,9 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
                   cardBuilder:
                       (context, index, percentThresholdX, percentThresholdY) =>
                           SizedBox(
-                              width: double.infinity,
-                              child: cards[index % cards.length],),
+                    width: double.infinity,
+                    child: cards[index % cards.length],
+                  ),
                   allowedSwipeDirection:
                       const AllowedSwipeDirection.symmetric(horizontal: true),
                   isLoop: true,
