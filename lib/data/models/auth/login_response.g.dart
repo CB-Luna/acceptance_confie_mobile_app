@@ -8,18 +8,17 @@ part of 'login_response.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      message: json['message'] as String,
-      customerId: (json['customer_id'] as num).toInt(),
-      customerName: json['customer_name'] as String,
-      avatar: json['avatar'] as String?,
-      languageCode: json['language_code'] as String?,
+      token: json['token'] as String?,
+      requiresTwoFactor: json['requiresTwoFactor'] as bool? ?? false,
+      errors: (json['errors'] as List<dynamic>?)
+              ?.map((e) => ErrorModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
-      'message': instance.message,
-      'customer_id': instance.customerId,
-      'customer_name': instance.customerName,
-      'avatar': instance.avatar,
-      'language_code': instance.languageCode,
+      'token': instance.token,
+      'requiresTwoFactor': instance.requiresTwoFactor,
+      'errors': instance.errors,
     };

@@ -1,35 +1,43 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'error_model.dart';
 
 part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
-  final String message;
-
-  @JsonKey(name: 'customer_id')
-  final int customerId;
-
-  @JsonKey(name: 'customer_name')
-  final String customerName;
-
-  /// URL de la imagen de avatar del usuario
-  @JsonKey(name: 'avatar')
-  final String? avatar;
-
-  /// Código de idioma del usuario (ej: 'en_US', 'es_MX')
-  @JsonKey(name: 'language_code')
-  final String? languageCode;
+  final String? token;
+  final bool requiresTwoFactor;
+  final List<ErrorModel> errors;
 
   LoginResponse({
-    required this.message,
-    required this.customerId,
-    required this.customerName,
-    this.avatar,
-    this.languageCode,
+    this.token,
+    this.requiresTwoFactor = false,
+    this.errors = const [],
   });
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseFromJson(json);
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    List<ErrorModel> errorsList = [];
+    if (json['errors'] != null) {
+      if (json['errors'] is List) {
+        errorsList = (json['errors'] as List)
+            .map((e) => ErrorModel.fromJson(e))
+            .toList();
+      }
+    }
+
+    return LoginResponse(
+      token: json['token'],
+      requiresTwoFactor: json['requiresTwoFactor'] ?? false,
+      errors: errorsList,
+    );
+  }
+
+  bool get hasErrors => errors.isNotEmpty;
+
+  String get errorMessage {
+    if (!hasErrors) return '';
+    return errors.map((e) => '${e.field}: ${e.message}').join(', ');
+  }
 
   Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
 }

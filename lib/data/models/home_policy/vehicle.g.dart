@@ -11,18 +11,18 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) => Vehicle(
       plate: json['plate'] as String,
       brand: json['brand'] as String,
       model: json['model'] as String,
-      vehicleTypeId: (json['vehicle_type_id'] as num?)?.toInt(),
-      vehicleType: json['vehicle_type'] as String?,
       providerId: (json['provider_id'] as num).toInt(),
       providerImage: json['provider_image'] as String,
       policyTypeId: (json['policy_type_id'] as num).toInt(),
       policyType: json['policy_type'] as String,
+      nextPaymentDate: json['next_payment_date'] as String,
+      customerId: (json['customer_id'] as num).toInt(),
+      vehicleTypeId: (json['vehicle_type_id'] as num?)?.toInt(),
+      vehicleType: json['vehicle_type'] as String?,
       transactionType: json['transaction_type'] as String?,
       memberSince: json['member_since'] as String?,
       serviceId: (json['service_id'] as num?)?.toInt(),
       serviceName: json['name'] as String?,
-      nextPaymentDate: json['next_payment_date'] as String,
-      customerId: (json['customer_id'] as num).toInt(),
     );
 
 Map<String, dynamic> _$VehicleToJson(Vehicle instance) => <String, dynamic>{

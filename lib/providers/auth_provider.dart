@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freeway_app/data/models/auth/register_request.dart';
+import 'package:freeway_app/data/models/auth/user_info.dart';
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -13,60 +14,50 @@ class AuthProvider with ChangeNotifier {
   User? _currentUser;
   String? _errorMessage;
   bool _isAuthenticated = false;
+  String? _lastUsername; // Almacena temporalmente el último username usado
   String? _lastPassword; // Almacena temporalmente la última contraseña usada
+  bool _requiresTwoFactor = false;
+  String? _authToken;
 
   // Claves para almacenamiento seguro
   static const String _usernameKey = 'auth_username';
   static const String _passwordKey = 'auth_password';
+  static const String _tokenKey = 'auth_token';
 
   // Getters
   User? get currentUser => _currentUser;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _isAuthenticated;
+  bool get requiresTwoFactor => _requiresTwoFactor;
+  String? get authToken => _authToken;
 
-  // Método para iniciar sesión
-  Future<bool> login(String username, String password) async {
+  // Método para iniciar el proceso de login (paso 1)
+  Future<bool> loginStep1(String username, String password) async {
     try {
       _errorMessage = null;
+      _requiresTwoFactor = false;
       debugPrint('AuthProvider - Iniciando login para usuario: $username');
 
-      // Guardar la contraseña temporalmente para uso futuro
+      // Guardar credenciales temporalmente para uso futuro
+      _lastUsername = username;
       _lastPassword = password;
 
-      final response = await _authService.login(username, password);
-      debugPrint('AuthProvider - Respuesta de login: ${response.message}');
-      debugPrint('AuthProvider - Customer ID: ${response.customerId}');
-      debugPrint('AuthProvider - Customer Name: ${response.customerName}');
-      debugPrint('AuthProvider - Avatar: ${response.avatar}');
-      debugPrint('AuthProvider - Language Code: ${response.languageCode}');
-
-      if (response.message == 'Login Successful') {
-        _currentUser = User(
-          username: username,
-          fullName: response.customerName,
-          policyNumber: 'POLICY-${response.customerId}',
-          nextPayment: DateTime.now().add(const Duration(days: 30)),
-          policyType: 'Auto Policy',
-          customerId: response.customerId,
-          email: '$username@example.com',
-          phone: '+1 (555) 123-4567',
-          avatar: response.avatar,
-          languageCode: response.languageCode,
-        );
-
-        debugPrint('AuthProvider - Usuario creado: ${_currentUser!.fullName}');
-        debugPrint(
-          'AuthProvider - Customer ID del usuario: ${_currentUser!.customerId}',
-        );
-
-        _isAuthenticated = true;
-        notifyListeners();
-        return true;
-      } else {
-        _errorMessage = response.message;
+      final response = await _authService.loginStep1(username, password);
+      
+      if (response.hasErrors) {
+        _errorMessage = response.errorMessage;
         notifyListeners();
         return false;
       }
+
+      if (response.requiresTwoFactor) {
+        _requiresTwoFactor = true;
+        notifyListeners();
+        return true; // Retorna true para indicar que el proceso continúa, pero requiere 2FA
+      }
+
+      // Si no requiere 2FA y no hay errores, entonces el login fue exitoso
+      return await _completeLogin(response);
     } on ApiError catch (e) {
       _errorMessage = e.message;
       notifyListeners();
@@ -78,12 +69,91 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  // Método para completar el login con el código 2FA (paso 2)
+  Future<bool> loginStep2(String twoFactorCode) async {
+    try {
+      _errorMessage = null;
+      
+      final response = await _authService.loginStep2(twoFactorCode);
+      
+      if (response.hasErrors) {
+        _errorMessage = response.errorMessage;
+        notifyListeners();
+        return false;
+      }
+
+      return await _completeLogin(response);
+    } on ApiError catch (e) {
+      _errorMessage = e.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _errorMessage = 'Error inesperado: $e';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Método privado para completar el proceso de login
+  Future<bool> _completeLogin(dynamic response) async {
+    try {
+      // Guardar el token de autenticación
+      _authToken = response.token;
+      await _secureStorage.write(key: _tokenKey, value: _authToken);
+      
+      // Como no tenemos información del usuario en la respuesta,
+      // creamos un usuario con valores por defecto
+      final userInfo = UserInfo.defaultInfo(
+        email: _lastUsername ?? 'user@example.com',
+        customerId: '1001', // ID por defecto
+      );
+      
+      _currentUser = User(
+        username: _lastUsername ?? 'user',
+        fullName: userInfo.fullName,
+        policyNumber: userInfo.policyNumber,
+        nextPayment: DateTime.now().add(const Duration(days: 30)),
+        policyType: userInfo.policyType,
+        customerId: int.parse(userInfo.customerId.replaceAll(RegExp(r'[^0-9]'), '0')),
+        email: userInfo.email,
+        phone: userInfo.phone,
+        avatar: userInfo.avatar,
+        languageCode: userInfo.languageCode,
+      );
+
+      debugPrint('AuthProvider - Usuario creado con valores por defecto');
+      
+      _isAuthenticated = true;
+      _requiresTwoFactor = false;
+      
+      // Si el usuario eligió guardar sus credenciales, las guardamos
+      if (_lastUsername != null && _lastPassword != null) {
+        await saveCredentials(_lastUsername!, _lastPassword!);
+      }
+      
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = 'Error al completar el login: $e';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Método de compatibilidad para el login antiguo
+  Future<bool> login(String username, String password) async {
+    return await loginStep1(username, password);
+  }
+
   /// Método simple para cerrar sesión - solo limpia el estado
   void logout() {
     _currentUser = null;
     _isAuthenticated = false;
     _errorMessage = null;
-    _lastPassword = null; // Limpiar la contraseña temporal
+    _lastUsername = null;
+    _lastPassword = null;
+    _requiresTwoFactor = false;
+    _authToken = null;
     notifyListeners();
     debugPrint('AuthProvider: estado de autenticación limpiado');
   }
