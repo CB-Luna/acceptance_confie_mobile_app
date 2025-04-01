@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:freeway_app/data/models/auth/register_request.dart';
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -119,28 +120,53 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> signUp(
-    String fullName,
+    String firstName,
+    String lastName,
     String email,
     String password,
     String phoneNumber,
     String policyNumber,
-    String zipCode,
+    String birthDate,
   ) async {
     try {
-      // Aquí iría la lógica real de registro con tu backend
-      // Por ahora, simularemos un registro exitoso
-      _currentUser = User(
-        username: email,
-        fullName: fullName,
-        policyNumber: policyNumber,
-        nextPayment: DateTime.now().add(const Duration(days: 30)),
-        policyType: 'Auto Policy',
-        customerId: 1, // Añadido un valor predeterminado para el registro
+      _errorMessage = null;
+      
+      // El número de teléfono ya viene formateado desde la UI
+      
+      final request = RegisterRequest(
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        email: email,
+        password: password,
+        birthDate: birthDate,
+        policyNumber: policyNumber.isNotEmpty ? policyNumber : null,
       );
-      _isAuthenticated = true;
+      
+      final response = await _authService.register(request);
+      
+      if (response.hasErrors) {
+        _errorMessage = response.errorMessage;
+        notifyListeners();
+        return false;
+      }
+      
+      // Si el registro fue exitoso, iniciar sesión automáticamente
+      final loginSuccess = await login(email, password);
+      
+      if (!loginSuccess) {
+        _errorMessage = 'Registro exitoso, pero no se pudo iniciar sesión automáticamente. Por favor, inicie sesión manualmente.';
+        notifyListeners();
+      }
+      
+      return loginSuccess;
+    } on ApiError catch (e) {
+      _errorMessage = e.message;
       notifyListeners();
-      return true;
+      return false;
     } catch (e) {
+      _errorMessage = 'Error inesperado durante el registro: $e';
+      notifyListeners();
       return false;
     }
   }
@@ -188,22 +214,22 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
-  
+
   /// Guarda las credenciales del usuario actualmente autenticado
-  /// 
+  ///
   /// Este método se usa cuando el usuario habilita la autenticación biométrica
   /// desde la configuración del perfil, sin necesidad de cerrar sesión.
   Future<bool> saveCurrentCredentials() async {
     try {
       // Verificar si hay un usuario autenticado
-      if (!_isAuthenticated || _currentUser == null || _currentUser!.username == null) {
+      if (!_isAuthenticated || _currentUser == null) {
         debugPrint('No hay usuario autenticado para guardar credenciales');
         return false;
       }
-      
+
       // Obtener el nombre de usuario del usuario actual
-      final username = _currentUser!.username!;
-      
+      final username = _currentUser!.username;
+
       // Verificar si tenemos la contraseña en memoria
       if (_lastPassword != null) {
         debugPrint('Usando contraseña en memoria para guardar credenciales');
@@ -215,17 +241,18 @@ class AuthProvider with ChangeNotifier {
         }
         return result;
       }
-      
+
       // Si no tenemos la contraseña en memoria, verificar si ya hay una guardada
       final existingPassword = await _secureStorage.read(key: _passwordKey);
       if (existingPassword != null) {
         debugPrint('Usando contraseña existente para guardar credenciales');
         return await saveCredentials(username, existingPassword);
       }
-      
+
       // Si no tenemos la contraseña de ninguna manera, mostramos un mensaje de depuración
-      debugPrint('No se pudo guardar las credenciales: no hay contraseña disponible');
-      
+      debugPrint(
+          'No se pudo guardar las credenciales: no hay contraseña disponible');
+
       // En una implementación real, aquí se podría mostrar un diálogo al usuario
       // para pedirle la contraseña nuevamente
       return false;
@@ -234,7 +261,7 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
-  
+
   /// Verifica si hay credenciales guardadas
   Future<bool> hasCredentials() async {
     try {

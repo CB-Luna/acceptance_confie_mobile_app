@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 import '../errors/api_error.dart';
 
 class ApiClient {
-  static const String baseUrl = 'https://u-n8n.virtalus.cbluna-dev.com';
+  // URL para el entorno de producción
+  static const String baseUrl = 'https://confie-customer-np.azurewebsites.net';
 
   static Dio createDio() {
     final dio = Dio(
