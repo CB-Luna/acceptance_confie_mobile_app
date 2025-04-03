@@ -22,6 +22,7 @@ class LocationState {
   final bool hasSearchedByZipCode;
   final double searchRadiusInMiles; // Radio de búsqueda en millas
   final bool showAllOffices; // Indica si se deben mostrar todas las oficinas
+  final int? selectedOfficeId; // ID de la oficina seleccionada
 
   LocationState({
     this.isLoading = true,
@@ -35,6 +36,7 @@ class LocationState {
     this.hasSearchedByZipCode = false,
     this.searchRadiusInMiles = 1.0, // Por defecto, 1 milla
     this.showAllOffices = false,
+    this.selectedOfficeId,
   });
 
   LocationState copyWith({
@@ -49,6 +51,7 @@ class LocationState {
     bool? hasSearchedByZipCode,
     double? searchRadiusInMiles,
     bool? showAllOffices,
+    int? selectedOfficeId,
   }) {
     return LocationState(
       isLoading: isLoading ?? this.isLoading,
@@ -63,6 +66,7 @@ class LocationState {
       hasSearchedByZipCode: hasSearchedByZipCode ?? this.hasSearchedByZipCode,
       searchRadiusInMiles: searchRadiusInMiles ?? this.searchRadiusInMiles,
       showAllOffices: showAllOffices ?? this.showAllOffices,
+      selectedOfficeId: selectedOfficeId ?? this.selectedOfficeId,
     );
   }
 }
@@ -93,6 +97,14 @@ class LocationController extends ChangeNotifier {
 
   Future<void> initialize() async {
     try {
+      // Inicializar el estado
+      _updateState(
+        isLoading: true,
+        errorMessage: null,
+        selectedOfficeId: null,
+      );
+
+      // Verificar y solicitar permisos de ubicación
       await _checkAndRequestLocationPermission();
 
       // Si no tiene permisos, usar ubicación por defecto sin solicitar permisos
@@ -131,6 +143,7 @@ class LocationController extends ChangeNotifier {
     bool? hasSearchedByZipCode,
     double? searchRadiusInMiles,
     bool? showAllOffices,
+    int? selectedOfficeId,
   }) {
     _state = _state.copyWith(
       isLoading: isLoading,
@@ -144,6 +157,7 @@ class LocationController extends ChangeNotifier {
       hasSearchedByZipCode: hasSearchedByZipCode,
       searchRadiusInMiles: searchRadiusInMiles,
       showAllOffices: showAllOffices,
+      selectedOfficeId: selectedOfficeId,
     );
     notifyListeners();
   }
@@ -350,8 +364,9 @@ class LocationController extends ChangeNotifier {
         ),
         // Convertir millas a metros (1 milla = 1609.34 metros)
         radius: state.searchRadiusInMiles * 1609.34,
-        fillColor: Colors.blue.withOpacity(0.15), // Color azul transparente
-        strokeColor: Colors.blue.withOpacity(0.5),
+        fillColor:
+            Colors.blue.withValues(alpha: 0.15), // Color azul transparente
+        strokeColor: Colors.blue.withValues(alpha: 0.5),
         strokeWidth: 1,
       ),
     );
@@ -401,6 +416,11 @@ class LocationController extends ChangeNotifier {
 
     for (var i = 0; i < state.offices.length; i++) {
       final office = state.offices[i];
+      final isSelected = state.selectedOfficeId == office.locationId;
+
+      // Tamaño del marcador: más grande si está seleccionado
+      final markerSize = isSelected ? 60.0 : 40.0;
+
       final marker = Marker(
         markerId: MarkerId('office_$i'),
         position: LatLng(office.latitude, office.longitude),
@@ -408,8 +428,14 @@ class LocationController extends ChangeNotifier {
           title: office.name,
           snippet: office.streetAddress,
         ),
-        icon: AssetMapBitmap('assets/prefix.png', width: 40, height: 40),
-        zIndex: 1,
+        icon: AssetMapBitmap('assets/prefix.png',
+            width: markerSize.toDouble(), height: markerSize.toDouble()),
+        zIndex:
+            isSelected ? 2 : 1, // Mayor zIndex para el marcador seleccionado
+        onTap: () {
+          // Al hacer tap en un marcador, seleccionarlo y actualizar la vista
+          goToOffice(office);
+        },
       );
       currentMarkers.add(marker);
     }
@@ -437,6 +463,12 @@ class LocationController extends ChangeNotifier {
   }
 
   void goToOffice(Office office) {
+    // Actualizar el ID de la oficina seleccionada
+    _updateState(selectedOfficeId: office.locationId);
+
+    // Actualizar los marcadores para reflejar la selección
+    _updateOfficeMarkers();
+
     if (mapController != null) {
       final cameraPosition = CameraPosition(
         target: LatLng(office.latitude, office.longitude),
@@ -451,7 +483,7 @@ class LocationController extends ChangeNotifier {
   /// Busca oficinas cercanas a un código postal
   Future<void> searchByZipCode(String zipCode) async {
     try {
-      _updateState(isLoading: true, errorMessage: null);
+      _updateState(isLoading: true, errorMessage: null, selectedOfficeId: null);
 
       // Crear una instancia del servicio de oficinas
       final officeService = OfficeService();
@@ -506,28 +538,29 @@ class LocationController extends ChangeNotifier {
   }
 
   // Método para expandir el radio de búsqueda
-  void expandSearchRadius(BuildContext context) {
-    // Verificar si ya alcanzamos el límite máximo de 10 millas
-    if (state.searchRadiusInMiles >= 10.0) {
-      // Mostrar mensaje de que ya se alcanzó el límite máximo
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Miles are already at the maximum limit (10 miles)'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
+  Future<void> expandSearchRadius(BuildContext context) async {
+    // Incrementar el radio de búsqueda en 5 millas cada vez
+    final newRadius = state.searchRadiusInMiles + 5.0;
 
-    // Incrementar el radio de búsqueda en 1 milla
-    final newRadius = state.searchRadiusInMiles + 1.0;
-    _updateState(searchRadiusInMiles: newRadius, showAllOffices: false);
+    // Restablecer la oficina seleccionada
+    _updateState(
+      searchRadiusInMiles: newRadius,
+      selectedOfficeId: null,
+    );
 
     // Recalcular las oficinas cercanas con el nuevo radio
     _calculateDistancesToOffices();
 
-    // Actualizar el zoom de la cámara para mostrar el nuevo radio
+    // Actualizar el zoom del mapa para mostrar el nuevo radio
     _updateCameraZoomForRadius(newRadius);
+
+    // Mostrar un mensaje al usuario
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Search radius expanded to ${newRadius.toInt()} miles'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   // Método para actualizar el zoom de la cámara según el radio
@@ -555,7 +588,48 @@ class LocationController extends ChangeNotifier {
 
   // Método para mostrar todas las oficinas
   void showAllOffices() {
-    _updateState(showAllOffices: true);
+    // Restablecer la oficina seleccionada
+    _updateState(
+      showAllOffices: true,
+      selectedOfficeId: null,
+    );
+
+    // Actualizar los marcadores
+    _updateOfficeMarkers();
+
+    // Ajustar el zoom para mostrar todas las oficinas
+    if (mapController != null && state.offices.isNotEmpty) {
+      final bounds = _getBoundsForOffices(state.offices);
+      mapController!.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 50.0),
+      );
+    }
+  }
+
+  // Método auxiliar para obtener los límites que contienen todas las oficinas
+  LatLngBounds _getBoundsForOffices(List<Office> offices) {
+    double minLat = 90.0;
+    double maxLat = -90.0;
+    double minLng = 180.0;
+    double maxLng = -180.0;
+
+    for (final office in offices) {
+      if (office.latitude < minLat) minLat = office.latitude;
+      if (office.latitude > maxLat) maxLat = office.latitude;
+      if (office.longitude < minLng) minLng = office.longitude;
+      if (office.longitude > maxLng) maxLng = office.longitude;
+    }
+
+    // Añadir un poco de margen
+    minLat -= 0.1;
+    maxLat += 0.1;
+    minLng -= 0.1;
+    maxLng += 0.1;
+
+    return LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
   }
 
   // Método para obtener la lista de oficinas a mostrar
