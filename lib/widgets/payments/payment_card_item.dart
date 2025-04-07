@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class PaymentCardItem extends StatelessWidget {
   final String cardNumber;
@@ -8,7 +9,12 @@ class PaymentCardItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const PaymentCardItem({
-    required this.cardNumber, required this.expiry, required this.imagePath, required this.isSelected, required this.onTap, super.key,
+    required this.cardNumber,
+    required this.expiry,
+    required this.imagePath,
+    required this.isSelected,
+    required this.onTap,
+    super.key,
   });
 
   @override
@@ -20,7 +26,7 @@ class PaymentCardItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color:
-                isSelected ? const Color(0xFF0047BB) : const Color(0xFFE8E8E8),
+                isSelected ? AppTheme.getPrimaryColor(context) : AppTheme.white,
           ),
           borderRadius: BorderRadius.circular(12),
         ),
@@ -40,8 +46,8 @@ class PaymentCardItem extends StatelessWidget {
                   children: [
                     Text(
                       cardNumber,
-                      style: const TextStyle(
-                        color: Color(0xFF414648),
+                      style: TextStyle(
+                        color: AppTheme.getTitleTextColor(context),
                         fontSize: 16,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w600,
@@ -50,7 +56,7 @@ class PaymentCardItem extends StatelessWidget {
                     Text(
                       expiry,
                       style: TextStyle(
-                        color: Colors.grey[600],
+                        color: AppTheme.getSubtitleTextColor(context),
                         fontSize: 14,
                         fontFamily: 'Open Sans',
                       ),
@@ -63,7 +69,9 @@ class PaymentCardItem extends StatelessWidget {
               isSelected
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color: isSelected ? const Color(0xFF0047BB) : Colors.grey,
+              color: isSelected
+                  ? AppTheme.getPrimaryColor(context)
+                  : AppTheme.white,
             ),
           ],
         ),

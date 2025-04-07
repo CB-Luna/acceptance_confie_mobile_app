@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileSettingsSwitch extends StatelessWidget {
   final String title;
@@ -8,7 +8,11 @@ class ProfileSettingsSwitch extends StatelessWidget {
   final ValueChanged<bool> onChanged;
 
   const ProfileSettingsSwitch({
-    required this.title, required this.icon, required this.value, required this.onChanged, super.key,
+    required this.title,
+    required this.icon,
+    required this.value,
+    required this.onChanged,
+    super.key,
   });
 
   @override
@@ -19,23 +23,24 @@ class ProfileSettingsSwitch extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: const Color(0xFF0047BB),
+            color: AppTheme.getPrimaryColor(context),
             size: 24,
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
+                color: AppTheme.getTextGreyColor(context),
               ),
             ),
           ),
           CupertinoSwitch(
             value: value,
-            activeTrackColor: const Color(0xFF0047BB),
-            inactiveTrackColor: Colors.grey.shade300,
+            activeTrackColor: AppTheme.getPrimaryColor(context),
+            inactiveTrackColor: AppTheme.getDetailsGreyColor(context),
             onChanged: onChanged,
           ),
         ],

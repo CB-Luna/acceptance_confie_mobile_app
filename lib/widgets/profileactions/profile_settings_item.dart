@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileSettingsItem extends StatelessWidget {
   final String title;
@@ -28,7 +29,7 @@ class ProfileSettingsItem extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: const Color(0xFF0047BB),
+                color: AppTheme.getPrimaryColor(context),
                 size: 24,
               ),
               const SizedBox(width: 20),
@@ -48,9 +49,9 @@ class ProfileSettingsItem extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 4.0),
                         child: Text(
                           subtitle!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: AppTheme.getTextGreyColor(context),
                           ),
                         ),
                       ),
@@ -58,9 +59,9 @@ class ProfileSettingsItem extends StatelessWidget {
                 ),
               ),
               if (enabled)
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey,
+                  color: AppTheme.getTextGreyColor(context),
                   size: 16,
                 ),
             ],

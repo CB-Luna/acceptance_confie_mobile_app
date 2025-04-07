@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class SafetyCheckCard extends StatelessWidget {
   final VoidCallback onSafetyConfirmed;
 
   const SafetyCheckCard({
-    required this.onSafetyConfirmed, super.key,
+    required this.onSafetyConfirmed,
+    super.key,
   });
 
   @override
@@ -14,12 +16,12 @@ class SafetyCheckCard extends StatelessWidget {
       height: 256,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x0A111111),
-            offset: Offset(0, 4),
+            color: AppTheme.getBoxShadowColor(context),
+            offset: const Offset(0, 4),
             blurRadius: 8,
           ),
         ],
@@ -27,11 +29,11 @@ class SafetyCheckCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
+          Center(
             child: Text(
               'Are you safe?',
               style: TextStyle(
-                color: Color(0xFF0047BB),
+                color: AppTheme.getPrimaryColor(context),
                 fontSize: 24,
                 fontFamily: 'Open Sans',
                 fontWeight: FontWeight.w700,
@@ -39,10 +41,10 @@ class SafetyCheckCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'If you need immediate help, please call 911.',
             style: TextStyle(
-              color: Color(0xFF414648),
+              color: AppTheme.getSubtitleTextColor(context),
               fontSize: 14,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w400,
@@ -57,9 +59,9 @@ class SafetyCheckCard extends StatelessWidget {
                   // TODO: Implement call 911
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: const Color(0xFFC74E10),
-                  side: const BorderSide(color: Color(0xFFC74E10)),
+                  backgroundColor: AppTheme.getBackgroundOrangeColor(context),
+                  foregroundColor: AppTheme.getOrangeColor(context),
+                  side: BorderSide(color: AppTheme.getOrangeColor(context)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -78,8 +80,7 @@ class SafetyCheckCard extends StatelessWidget {
               ElevatedButton(
                 onPressed: onSafetyConfirmed,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0047BB),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppTheme.getPrimaryColor(context),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -91,6 +92,7 @@ class SafetyCheckCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: AppTheme.white,
                   ),
                 ),
               ),

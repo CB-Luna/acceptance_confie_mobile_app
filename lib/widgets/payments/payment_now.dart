@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
-import '../../pages/home_page.dart';
 import '../../utils/menu/circle_nav_bar.dart';
 import 'add_payment_form.dart';
 import 'billing_info_card.dart';
 import 'payment_button.dart';
 import 'payment_card_item.dart';
-import 'payment_header.dart';
 
 // Extension para capitalizar strings
 extension StringExtension on String {
@@ -25,8 +26,8 @@ class PaymentNowPage extends StatefulWidget {
 
 class _PaymentNowPageState extends State<PaymentNowPage> {
   final ScrollController _scrollController = ScrollController();
+  int _selectedIndex = 0;
   int _selectedCard = 0;
-  int _selectedTab = 0;
 
   // Lista de tarjetas
   final List<Map<String, String>> _cards = [
@@ -40,12 +41,6 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
       'expiry': 'Expires 03/26',
       'image': 'assets/payments/mastercard.png',
     },
-  ];
-
-  final List<TabData> _tabItems = [
-    TabData(Icons.home, 'My Products'),
-    TabData(Icons.verified_user, '+ Add Insurance'),
-    TabData(Icons.location_on, 'Location'),
   ];
 
   bool _showAddPaymentForm = false;
@@ -96,41 +91,63 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
     // TODO: Implement payment processing
   }
 
-  void _handleNavigation(int index) {
-    setState(() {
-      _selectedTab = index;
-    });
-
-    switch (index) {
-      case 0: // My Products
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-        break;
-      case 1: // Add Insurance
-        // TODO: Navigate to Add Insurance page
-        break;
-      case 2: // Location
-        // TODO: Navigate to Location page
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0047BB),
+      backgroundColor: AppTheme.getBackgroundHeaderColor(context),
+      appBar: AppBar(
+        backgroundColor: AppTheme.getBackgroundHeaderColor(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppTheme.white,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        leadingWidth: 56,
+        title: const Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Pay Now',
+                  style: TextStyle(
+                    color: AppTheme.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              left: 0,
+              child: Text(
+                'Back',
+                style: TextStyle(
+                  color: AppTheme.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        elevation: 0,
+      ),
       body: Stack(
         children: [
           Column(
             children: [
-              const PaymentHeader(),
               Expanded(
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF5FCFF),
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: AppTheme.getBackgroundColor(context),
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
@@ -139,9 +156,9 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                     controller: _scrollController,
                     slivers: [
                       // Title
-                      const SliverToBoxAdapter(
+                      SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(24, 20, 24, 24),
+                          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
                           child: Text(
                             'Payment Method',
                             textAlign: TextAlign.center,
@@ -151,7 +168,7 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                               fontWeight: FontWeight.w700,
                               height: 24 / 20, // line-height: 24px
                               letterSpacing: 0,
-                              color: Color(0xFF414648),
+                              color: AppTheme.getTitleTextColor(context),
                             ),
                           ),
                         ),
@@ -202,10 +219,10 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Colors.white,
-                                      Colors.white.withAlpha(230),
-                                      Colors.white.withAlpha(230),
-                                      Colors.white,
+                                      AppTheme.white,
+                                      AppTheme.white.withAlpha(230),
+                                      AppTheme.white.withAlpha(230),
+                                      AppTheme.white,
                                     ],
                                     stops: const [0.0, 0.02, 0.98, 1.0],
                                   ).createShader(rect);
@@ -291,18 +308,37 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
               ),
             ],
           ),
-          // Navigation Bar
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: CircleNavBar(
-              tabItems: _tabItems,
-              selectedPos: _selectedTab,
-              onTap: _handleNavigation,
-            ),
-          ),
         ],
+      ),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, 0),
+        child: CircleNavBar(
+          selectedPos: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            switch (index) {
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddInsurancePage(),
+                  ),
+                ).then((_) => setState(() => _selectedIndex = 0));
+                break;
+              case 2:
+                LocatorDeviceModule.navigateToLocationView(context);
+                break;
+            }
+          },
+          tabItems: [
+            TabData(Icons.home_outlined, 'My Products'),
+            TabData(Icons.verified_user_outlined, 'Add Insurance'),
+            TabData(Icons.location_on_outlined, 'Location'),
+          ],
+        ),
       ),
     );
   }

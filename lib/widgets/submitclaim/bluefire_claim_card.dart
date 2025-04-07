@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BluefireClaimCard extends StatelessWidget {
@@ -17,12 +18,12 @@ class BluefireClaimCard extends StatelessWidget {
       width: 350,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x0A111111),
-            offset: Offset(0, 4),
+            color: AppTheme.getBoxShadowColor(context),
+            offset: const Offset(0, 4),
             blurRadius: 8,
           ),
         ],
@@ -34,21 +35,21 @@ class BluefireClaimCard extends StatelessWidget {
             height: 40,
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'Bluefire Insurance Claims',
             style: TextStyle(
-              color: Color(0xFF0047BB),
+              color: AppTheme.getPrimaryColor(context),
               fontSize: 20,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'To start the process, please enter the\nBluefire Insurance Policy Number',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF414648),
+              color: AppTheme.getTitleTextColor(context),
               fontSize: 14,
               height:
                   1.43, // This gives us the 20px line height (14 * 1.43 ≈ 20)
@@ -61,10 +62,10 @@ class BluefireClaimCard extends StatelessWidget {
           Text.rich(
             TextSpan(
               children: [
-                const TextSpan(
+                TextSpan(
                   text: 'If the policy starts with CNM,\nplease call ',
                   style: TextStyle(
-                    color: Color(0xFF414648),
+                    color: AppTheme.getTextGreyColor(context),
                     fontSize: 14,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w400,
@@ -73,10 +74,10 @@ class BluefireClaimCard extends StatelessWidget {
                 WidgetSpan(
                   child: GestureDetector(
                     onTap: () => _launchPhone('8332863057'),
-                    child: const Text(
+                    child: Text(
                       '(833) 286-3057',
                       style: TextStyle(
-                        color: Color(0xFF0047BB),
+                        color: AppTheme.getPrimaryColor(context),
                         fontSize: 14,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
@@ -92,10 +93,10 @@ class BluefireClaimCard extends StatelessWidget {
           Text.rich(
             TextSpan(
               children: [
-                const TextSpan(
+                TextSpan(
                   text: 'If the policy starts with GSP,\nplease call ',
                   style: TextStyle(
-                    color: Color(0xFF414648),
+                    color: AppTheme.getTextGreyColor(context),
                     fontSize: 14,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w400,
@@ -104,10 +105,10 @@ class BluefireClaimCard extends StatelessWidget {
                 WidgetSpan(
                   child: GestureDetector(
                     onTap: () => _launchPhone('8004683466'),
-                    child: const Text(
+                    child: Text(
                       '(800) 468-3466',
                       style: TextStyle(
-                        color: Color(0xFF0047BB),
+                        color: AppTheme.getPrimaryColor(context),
                         fontSize: 14,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
@@ -131,9 +132,9 @@ class BluefireClaimCard extends StatelessWidget {
                   onChanged: (value) {
                     // TODO: Implement checkbox state
                   },
-                  activeColor: const Color(0xFF0047BB),
-                  side: const BorderSide(
-                    color: Color(0xFF0046B9),
+                  activeColor: AppTheme.getPrimaryColor(context),
+                  side: BorderSide(
+                    color: AppTheme.getPrimaryColor(context),
                     width: 2,
                   ),
                   shape: RoundedRectangleBorder(
@@ -142,10 +143,10 @@ class BluefireClaimCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'I am the Bluefire policyholder',
                 style: TextStyle(
-                  color: Color(0xFF414648),
+                  color: AppTheme.getTextGreyColor(context),
                   fontSize: 14,
                   fontFamily: 'Open Sans',
                   fontWeight: FontWeight.w400,
@@ -154,10 +155,10 @@ class BluefireClaimCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Please enter the full policy number including the letters. Do not enter the dash or any numbers after the dash. Example: TXA10000000',
             style: TextStyle(
-              color: Color(0xFF414648),
+              color: AppTheme.getTitleTextColor(context),
               fontSize: 12,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w400,
@@ -172,8 +173,8 @@ class BluefireClaimCard extends StatelessWidget {
                 // TODO: Implement start claim
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0047BB),
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.getPrimaryColor(context),
+                foregroundColor: AppTheme.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

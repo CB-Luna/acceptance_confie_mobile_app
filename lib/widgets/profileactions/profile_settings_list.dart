@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/biometric_provider.dart';
@@ -43,26 +44,16 @@ class ProfileSettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFFF5FCFF),
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppTheme.getBackgroundColor(context),
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 3),
-            blurRadius: 8,
-            spreadRadius: -1,
-            color: Color(0x0D323247),
-          ),
-          BoxShadow(
-            offset: Offset(0, 0),
-            blurRadius: 1,
-            spreadRadius: 0,
-            color: Color(0x3D0C1A4B),
-          ),
-        ],
+        border: Border.all(
+          width: 1,
+          color: AppTheme.getDetailsGreyColor(context),
+        ),
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -130,7 +121,6 @@ class ProfileSettingsList extends StatelessWidget {
                           content: Text(
                             'No se pudo habilitar ${biometricProvider.biometricType}',
                           ),
-                          backgroundColor: Colors.red,
                         ),
                       );
                     }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart' show AppTheme;
+import 'package:freeway_app/widgets/theme/app_theme.dart';
+
 import '../../../models/quote_plan.dart';
 import 'quote_callcenter.dart';
 
@@ -9,7 +12,10 @@ class QuotePlanCard extends StatefulWidget {
   final bool isMonthly;
 
   const QuotePlanCard({
-    required this.plan, required this.onRequestQuote, required this.isMonthly, super.key,
+    required this.plan,
+    required this.onRequestQuote,
+    required this.isMonthly,
+    super.key,
     this.isSelected = false,
   });
 
@@ -34,10 +40,12 @@ class _QuotePlanCardState extends State<QuotePlanCard>
     _scaleAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
-    ),);
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOutBack,
+      ),
+    );
 
     _controller.forward();
   }
@@ -68,17 +76,17 @@ class _QuotePlanCardState extends State<QuotePlanCard>
               child: Container(
                 width: 270,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppTheme.getCardColor(context),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: widget.isSelected
                         ? widget.plan.primaryColor
-                        : Colors.grey[300]!,
+                        : AppTheme.getDetailsGreyColor(context),
                     width: 1,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(13),
+                      color: AppTheme.getBoxShadowColor(context),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -109,11 +117,11 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF76B947),
+                    color: AppTheme.getGreenColor(context),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(13),
+                        color: AppTheme.getBoxShadowColor(context),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -122,7 +130,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                   child: const Text(
                     'Most Popular',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white,
                       fontSize: 14,
                       fontFamily: 'Open Sans',
                       fontWeight: FontWeight.w600,
@@ -218,14 +226,16 @@ class _QuotePlanCardState extends State<QuotePlanCard>
               position: Tween<Offset>(
                 begin: const Offset(1, 0),
                 end: Offset.zero,
-              ).animate(CurvedAnimation(
-                parent: _controller,
-                curve: Interval(
-                  index * 0.1,
-                  1.0,
-                  curve: Curves.easeOut,
+              ).animate(
+                CurvedAnimation(
+                  parent: _controller,
+                  curve: Interval(
+                    index * 0.1,
+                    1.0,
+                    curve: Curves.easeOut,
+                  ),
                 ),
-              ),),
+              ),
               child: child,
             );
           },
@@ -245,10 +255,11 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                     children: [
                       Text(
                         feature.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w500,
+                          color: AppTheme.getTitleTextColor(context),
                         ),
                       ),
                       if (feature.subtitle != null)
@@ -257,7 +268,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                           style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'Open Sans',
-                            color: Colors.grey[600],
+                            color: AppTheme.getSubtitleTextColor(context),
                           ),
                         ),
                     ],
@@ -301,7 +312,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
           child: Text(
             'Request a Quote',
             style: TextStyle(
-              color: Colors.white,
+              color: AppTheme.white,
               fontSize: 16,
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w600,

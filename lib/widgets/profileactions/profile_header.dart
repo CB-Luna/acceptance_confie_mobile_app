@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -6,13 +7,13 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: const Color(0xFF0047BB),
-      foregroundColor: Colors.white,
+      backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       title: const Text(
         'Profile',
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
+          color: AppTheme.white,
         ),
       ),
       leadingWidth: 100,
@@ -24,12 +25,17 @@ class ProfileHeader extends StatelessWidget {
         child: const Row(
           children: [
             SizedBox(width: 8),
-            Icon(Icons.arrow_back_ios, size: 20),
+            Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: AppTheme.white,
+            ),
             Text(
               'Back',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: AppTheme.white,
               ),
             ),
           ],

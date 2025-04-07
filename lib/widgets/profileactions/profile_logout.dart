@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +16,12 @@ class ProfileLogoutButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           debugPrint(
-              'ProfileLogoutButton - Button pressed, showing confirmation modal',);
+            'ProfileLogoutButton - Button pressed, showing confirmation modal',
+          );
           _showLogoutConfirmation(context);
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF4CAF50),
-          foregroundColor: Colors.white,
+          backgroundColor: AppTheme.getGreenColor(context),
           minimumSize: const Size(double.infinity, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -35,7 +36,7 @@ class ProfileLogoutButton extends StatelessWidget {
             Icon(
               Icons.logout,
               size: 20,
-              color: Colors.white,
+              color: AppTheme.white,
             ),
             SizedBox(width: 8),
             // Texto de salida
@@ -44,6 +45,7 @@ class ProfileLogoutButton extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
+                color: AppTheme.white,
               ),
             ),
           ],
@@ -67,9 +69,9 @@ class ProfileLogoutButton extends StatelessWidget {
           color: Colors.transparent,
           child: Container(
             height: 340, // Aumentado de 320 a 340 para evitar el overflow
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: AppTheme.getCardColor(context),
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24),
                 topRight: Radius.circular(24),
               ),
@@ -83,7 +85,7 @@ class ProfileLogoutButton extends StatelessWidget {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: AppTheme.getDetailsGreyColor(context),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -105,7 +107,11 @@ class ProfileLogoutButton extends StatelessWidget {
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(
-                          24.0, 12.0, 24.0, 24.0,), // Ajustado el padding
+                        24.0,
+                        12.0,
+                        24.0,
+                        24.0,
+                      ), // Ajustado el padding
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -114,36 +120,37 @@ class ProfileLogoutButton extends StatelessWidget {
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50).withAlpha(
-                                  26,), // 0.1 opacity converted to alpha
+                              color: AppTheme.getBackgroundGreenColor(
+                                context,
+                              ), // 0.1 opacity converted to alpha
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.logout,
-                              color: Color(0xFF4CAF50),
+                              color: AppTheme.getGreenColor(context),
                               size: 40,
                             ),
                           ),
                           const SizedBox(height: 24),
 
                           // Title
-                          const Text(
+                          Text(
                             'Log Out',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: AppTheme.getTitleTextColor(context),
                             ),
                           ),
                           const SizedBox(height: 6),
 
                           // Message
-                          const Text(
+                          Text(
                             'Are You sure want to Log Out?',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.black87,
+                              color: AppTheme.getSubtitleTextColor(context),
                               height: 1.4,
                             ),
                           ),
@@ -157,7 +164,8 @@ class ProfileLogoutButton extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     debugPrint(
-                                        'ProfileLogoutButton - Cancel button pressed',);
+                                      'ProfileLogoutButton - Cancel button pressed',
+                                    );
                                     Navigator.of(modalContext).pop();
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -165,7 +173,8 @@ class ProfileLogoutButton extends StatelessWidget {
                                     foregroundColor: Colors.grey[700],
                                     side: BorderSide(color: Colors.grey[300]!),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12,), // Reducido de 14 a 12
+                                      vertical: 12,
+                                    ), // Reducido de 14 a 12
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -187,7 +196,8 @@ class ProfileLogoutButton extends StatelessWidget {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     debugPrint(
-                                        'ProfileLogoutButton - Log out button pressed',);
+                                      'ProfileLogoutButton - Log out button pressed',
+                                    );
                                     // Close the modal first
                                     Navigator.of(modalContext).pop();
 
@@ -195,10 +205,11 @@ class ProfileLogoutButton extends StatelessWidget {
                                     _logout(context);
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF4CAF50),
-                                    foregroundColor: Colors.white,
+                                    backgroundColor:
+                                        AppTheme.getGreenColor(context),
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 12,), // Reducido de 14 a 12
+                                      vertical: 12,
+                                    ), // Reducido de 14 a 12
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -209,6 +220,7 @@ class ProfileLogoutButton extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
+                                      color: AppTheme.white,
                                     ),
                                   ),
                                 ),
@@ -248,7 +260,6 @@ class ProfileLogoutButton extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('There was a problem logging out. Please try again.'),
-          backgroundColor: Colors.green,
         ),
       );
 

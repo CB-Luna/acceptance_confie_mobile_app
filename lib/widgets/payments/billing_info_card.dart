@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class BillingInfoCard extends StatelessWidget {
   final String name;
@@ -6,7 +7,10 @@ class BillingInfoCard extends StatelessWidget {
   final String total;
 
   const BillingInfoCard({
-    required this.name, required this.address, required this.total, super.key,
+    required this.name,
+    required this.address,
+    required this.total,
+    super.key,
   });
 
   @override
@@ -15,11 +19,11 @@ class BillingInfoCard extends StatelessWidget {
       width: 323,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(26),
+            color: AppTheme.getBoxShadowColor(context),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -34,13 +38,13 @@ class BillingInfoCard extends StatelessWidget {
               height: 70,
               child: Stack(
                 children: [
-                  const Positioned(
+                  Positioned(
                     top: 20,
                     left: 0,
                     child: Text(
                       'Billing Address',
                       style: TextStyle(
-                        color: Color(0xFF0047BB),
+                        color: AppTheme.getPrimaryColor(context),
                         fontSize: 16,
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w700,
@@ -55,8 +59,8 @@ class BillingInfoCard extends StatelessWidget {
                       children: [
                         Text(
                           name,
-                          style: const TextStyle(
-                            color: Color(0xFF1D1D1D),
+                          style: TextStyle(
+                            color: AppTheme.getTitleTextColor(context),
                             fontSize: 16,
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w400,
@@ -65,8 +69,8 @@ class BillingInfoCard extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           address,
-                          style: const TextStyle(
-                            color: Color(0xFF1D1D1D),
+                          style: TextStyle(
+                            color: AppTheme.getSubtitleTextColor(context),
                             fontSize: 16,
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w400,
@@ -78,8 +82,8 @@ class BillingInfoCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(
-              color: Color(0xFF95AFC0),
+            Divider(
+              color: AppTheme.getDetailsGreyColor(context),
               thickness: 1,
               height: 1,
             ),
@@ -87,10 +91,10 @@ class BillingInfoCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Payment Total:',
                   style: TextStyle(
-                    color: Color(0xFFC74E10),
+                    color: AppTheme.getOrangeColor(context),
                     fontSize: 16,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,
@@ -99,8 +103,8 @@ class BillingInfoCard extends StatelessWidget {
                 ),
                 Text(
                   total,
-                  style: const TextStyle(
-                    color: Color(0xFFC74E10),
+                  style: TextStyle(
+                    color: AppTheme.getOrangeColor(context),
                     fontSize: 20,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w700,

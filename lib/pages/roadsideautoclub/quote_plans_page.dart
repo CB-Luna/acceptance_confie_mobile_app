@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../../models/quote_plan.dart';
@@ -14,14 +17,8 @@ class QuotePlansPage extends StatefulWidget {
 
 class _QuotePlansPageState extends State<QuotePlansPage> {
   bool _isMonthly = true;
-  int _selectedNavIndex = 1;
+  int _selectedIndex = 0;
   int? _selectedPlanIndex;
-
-  final List<TabData> _navItems = [
-    TabData(Icons.home, 'My Products'),
-    TabData(Icons.verified_user, '+Add Insurance'),
-    TabData(Icons.location_on, 'Location'),
-  ];
 
   final List<QuotePlan> _plans = [
     QuotePlan(
@@ -30,8 +27,8 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       monthlyPrice: 12.0,
       annualPrice: 99.0,
       isPopular: true,
-      primaryColor: const Color(0xFFE65100),
-      accentColor: const Color(0xFFC74E10),
+      primaryColor: AppTheme.primaryColor,
+      accentColor: AppTheme.primaryColor,
       features: [
         PlanFeature(
           title: 'One Person',
@@ -58,8 +55,8 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       monthlyPrice: 17.0,
       annualPrice: 149.0,
       isPopular: false,
-      primaryColor: const Color(0xFF0046B9),
-      accentColor: const Color(0xFF0046B9),
+      primaryColor: AppTheme.tertiaryColor,
+      accentColor: AppTheme.tertiaryColor,
       features: [
         PlanFeature(
           title: 'One Person',
@@ -86,84 +83,71 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5FCFF),
+      backgroundColor: AppTheme.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF5FCFF),
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 120,
+        backgroundColor: AppTheme.getBackgroundHeaderColor(context),
         leading: Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppTheme.white,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        leadingWidth: 56,
+        title: const Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xFF0046B9),
-                  size: 20,
-                ),
                 Text(
-                  'Back',
+                  'Freeway Auto Club',
                   style: TextStyle(
-                    color: Color(0xFF0046B9),
-                    fontSize: 16,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w500,
+                    color: AppTheme.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
-          ),
+            Positioned(
+              left: 0,
+              child: Text(
+                'Back',
+                style: TextStyle(
+                  color: AppTheme.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
-        child: CircleNavBar(
-          tabItems: _navItems,
-          selectedPos: _selectedNavIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedNavIndex = index;
-            });
-            if (index == 0) {
-              // Home button
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/home', (route) => false);
-            }
-          },
-        ),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Text(
-              'Freeway Auto Club',
-              style: TextStyle(
-                fontSize: 24,
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF0046B9),
-              ),
-            ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Select plan',
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Open Sans',
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF0046B9),
+                color: AppTheme.getPrimaryColor(context),
               ),
             ),
-            const Text(
+            Text(
               'you will use for this quote',
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: 'Open Sans',
                 fontWeight: FontWeight.w400,
-                color: Colors.black,
+                color: AppTheme.getTextGreyColor(context),
               ),
             ),
             const SizedBox(height: 30),
@@ -177,18 +161,50 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
                 children: _plans
                     .asMap()
                     .entries
-                    .map((entry) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: QuotePlanCard(
-                            plan: entry.value,
-                            onRequestQuote: () => _onRequestQuote(entry.value),
-                            isSelected: _selectedPlanIndex == entry.key,
-                            isMonthly: _isMonthly,
-                          ),
-                        ),)
+                    .map(
+                      (entry) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: QuotePlanCard(
+                          plan: entry.value,
+                          onRequestQuote: () => _onRequestQuote(entry.value),
+                          isSelected: _selectedPlanIndex == entry.key,
+                          isMonthly: _isMonthly,
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
             ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, 0),
+        child: CircleNavBar(
+          selectedPos: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            switch (index) {
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddInsurancePage(),
+                  ),
+                ).then((_) => setState(() => _selectedIndex = 0));
+                break;
+              case 2:
+                LocatorDeviceModule.navigateToLocationView(context);
+                break;
+            }
+          },
+          tabItems: [
+            TabData(Icons.home_outlined, 'My Products'),
+            TabData(Icons.verified_user_outlined, 'Add Insurance'),
+            TabData(Icons.location_on_outlined, 'Location'),
           ],
         ),
       ),
@@ -208,7 +224,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       height: 80,
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
@@ -223,12 +239,12 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
           minWidth: 150.0,
           cornerRadius: 30.0,
           activeBgColors: [
-            [const Color(0xFF0046B9)],
-            [const Color(0xFF0046B9)],
+            [AppTheme.getBlueColor(context)],
+            [AppTheme.getBlueColor(context)],
           ],
-          activeFgColor: Colors.white,
-          inactiveBgColor: Colors.white,
-          inactiveFgColor: Colors.black87,
+          activeFgColor: AppTheme.white,
+          inactiveBgColor: AppTheme.getCardColor(context),
+          inactiveFgColor: AppTheme.getSubtitleTextColor(context),
           initialLabelIndex: _isMonthly ? 0 : 1,
           totalSwitches: 2,
           customWidgets: [
@@ -241,14 +257,16 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
                     fontSize: 18,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.bold,
-                    color: _isMonthly ? Colors.white : Colors.black87,
+                    color: _isMonthly
+                        ? AppTheme.white
+                        : AppTheme.getSubtitleTextColor(context),
                   ),
                 ),
                 const SizedBox(width: 4),
                 Icon(
                   Icons.check_circle,
                   size: 20,
-                  color: _isMonthly ? Colors.white : Colors.transparent,
+                  color: _isMonthly ? AppTheme.white : Colors.transparent,
                 ),
               ],
             ),
@@ -261,14 +279,16 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
                     fontSize: 18,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.bold,
-                    color: !_isMonthly ? Colors.white : Colors.black87,
+                    color: !_isMonthly
+                        ? AppTheme.white
+                        : AppTheme.getSubtitleTextColor(context),
                   ),
                 ),
                 const SizedBox(width: 4),
                 Icon(
                   Icons.check_circle,
                   size: 20,
-                  color: !_isMonthly ? Colors.white : Colors.transparent,
+                  color: !_isMonthly ? AppTheme.white : Colors.transparent,
                 ),
               ],
             ),

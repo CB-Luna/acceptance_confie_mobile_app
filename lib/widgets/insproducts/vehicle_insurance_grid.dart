@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,35 +26,34 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5FCFF),
+      backgroundColor: AppTheme.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF5FCFF),
-        elevation: 0,
+        backgroundColor: AppTheme.getBackgroundHeaderColor(context),
         leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Row(
-              children: [
-                Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xFF0046B9),
-                  size: 20,
-                ),
-                Text(
-                  'Back',
-                  style: TextStyle(
-                    color: Color(0xFF0046B9),
-                    fontSize: 16,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppTheme.white,
             ),
+            onPressed: () => Navigator.pop(context),
           ),
         ),
-        leadingWidth: 100,
+        leadingWidth: 56,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'Back',
+              style: TextStyle(
+                color: AppTheme.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -61,11 +61,11 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                 child: Text(
                   'Select a product to start your quote',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppTheme.getTitleTextColor(context),
                     fontSize: 18,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,
@@ -95,7 +95,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
         ),
       ),
       bottomNavigationBar: Transform.translate(
-        offset: const Offset(0, -10),
+        offset: const Offset(0, 0),
         child: CircleNavBar(
           selectedPos: _selectedIndex,
           onTap: (index) {
@@ -144,7 +144,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.getCardColor(context),
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
             BoxShadow(
@@ -165,11 +165,11 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Open Sans',
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.black,
+                color: AppTheme.getTextGreyColor(context),
               ),
             ),
           ],

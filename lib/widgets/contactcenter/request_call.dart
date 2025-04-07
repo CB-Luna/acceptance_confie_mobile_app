@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../../utils/menu/circle_nav_bar.dart';
 
@@ -12,83 +15,67 @@ class RequestCallPage extends StatefulWidget {
 class _RequestCallPageState extends State<RequestCallPage> {
   int _selectedIndex = 0;
 
-  void _handleNavigation(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0: // Home
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1: // Insurance
-        Navigator.pushReplacementNamed(context, '/id_card');
-        break;
-      case 2: // Rewards
-        Navigator.pushReplacementNamed(context, '/submit_claim');
-        break;
-      case 3: // Location
-        // TODO: Implementar navegación a la página de ubicación
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0047BB),
+      backgroundColor: AppTheme.getBackgroundHeaderColor(context),
+      appBar: AppBar(
+        backgroundColor: AppTheme.getBackgroundHeaderColor(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppTheme.white,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        leadingWidth: 56,
+        title: const Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Help',
+                  style: TextStyle(
+                    color: AppTheme.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              left: 0,
+              child: Text(
+                'Back',
+                style: TextStyle(
+                  color: AppTheme.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+        elevation: 0,
+      ),
       body: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60),
-              // Back button
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 16),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      Text(
-                        'Back',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'Open Sans',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Título
-              const Center(
-                child: Text(
-                  'Help',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              // Contenedor blanco principal
+              // Contenedor principal
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: AppTheme.getBackgroundColor(context),
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
@@ -97,13 +84,13 @@ class _RequestCallPageState extends State<RequestCallPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Align(
+                      Align(
                         alignment: Alignment.center,
                         child: Text(
                           "Have questions or need assistance?\nWe're here to help!",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Color(0xFF414648),
+                            color: AppTheme.getTitleTextColor(context),
                             fontSize: 16,
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w600,
@@ -120,10 +107,10 @@ class _RequestCallPageState extends State<RequestCallPage> {
                         ),
                       ),
                       const SizedBox(height: 32),
-                      const Text(
+                      Text(
                         'Customer Service',
                         style: TextStyle(
-                          color: Color(0xFF414648),
+                          color: AppTheme.getSubtitleTextColor(context),
                           fontSize: 16,
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
@@ -135,7 +122,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                           // Aquí irá la lógica para llamar al servicio al cliente
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0047BB),
+                          backgroundColor: AppTheme.getPrimaryColor(context),
                           minimumSize: const Size(double.infinity, 56),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -146,14 +133,14 @@ class _RequestCallPageState extends State<RequestCallPage> {
                           children: [
                             Icon(
                               Icons.phone_in_talk,
-                              color: Colors.white,
+                              color: AppTheme.white,
                               size: 24,
                             ),
                             SizedBox(width: 8),
                             Text(
                               'Call (888) 443-4662',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white,
                                 fontSize: 16,
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
@@ -163,10 +150,10 @@ class _RequestCallPageState extends State<RequestCallPage> {
                         ),
                       ),
                       const SizedBox(height: 32),
-                      const Text(
+                      Text(
                         'Insurance Quotes & Service',
                         style: TextStyle(
-                          color: Color(0xFF414648),
+                          color: AppTheme.getSubtitleTextColor(context),
                           fontSize: 16,
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
@@ -178,7 +165,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                           // Aquí irá la lógica para llamar a cotizaciones
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF008DB9),
+                          backgroundColor: AppTheme.getSecondaryColor(context),
                           minimumSize: const Size(double.infinity, 56),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -189,14 +176,14 @@ class _RequestCallPageState extends State<RequestCallPage> {
                           children: [
                             Icon(
                               Icons.phone_in_talk,
-                              color: Colors.white,
+                              color: AppTheme.white,
                               size: 24,
                             ),
                             SizedBox(width: 8),
                             Text(
                               'Call (877) 753-7823',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white,
                                 fontSize: 16,
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
@@ -211,23 +198,37 @@ class _RequestCallPageState extends State<RequestCallPage> {
               ),
             ],
           ),
-          // Bottom Navigation
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 20,
-            child: CircleNavBar(
-              selectedPos: _selectedIndex,
-              onTap: _handleNavigation,
-              tabItems: [
-                TabData(Icons.home_outlined, 'Home'),
-                TabData(Icons.verified_user_outlined, 'Insurance'),
-                TabData(Icons.card_giftcard_outlined, 'Rewards'),
-                TabData(Icons.location_on_outlined, 'Location'),
-              ],
-            ),
-          ),
         ],
+      ),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, 0),
+        child: CircleNavBar(
+          selectedPos: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            switch (index) {
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddInsurancePage(),
+                  ),
+                ).then((_) => setState(() => _selectedIndex = 0));
+                break;
+              case 2:
+                LocatorDeviceModule.navigateToLocationView(context);
+                break;
+            }
+          },
+          tabItems: [
+            TabData(Icons.home_outlined, 'My Products'),
+            TabData(Icons.verified_user_outlined, 'Add Insurance'),
+            TabData(Icons.location_on_outlined, 'Location'),
+          ],
+        ),
       ),
     );
   }

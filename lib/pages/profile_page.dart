@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -14,7 +15,7 @@ class ProfilePage extends StatelessWidget {
     final user = Provider.of<AuthProvider>(context).currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0047BB),
+      backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       body: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
@@ -28,9 +29,9 @@ class ProfilePage extends StatelessWidget {
                     Container(
                       height: MediaQuery.of(context).size.height -
                           100, // Altura fija considerando el header y margen superior
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFF5FCFF),
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: AppTheme.getCardColor(context),
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
                         ),
@@ -40,10 +41,10 @@ class ProfilePage extends StatelessWidget {
                           const SizedBox(height: 80),
                           Text(
                             user != null ? user.fullName : 'User',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF0046B9),
+                              color: AppTheme.getPrimaryColor(context),
                             ),
                           ),
                           const SizedBox(height: 16),

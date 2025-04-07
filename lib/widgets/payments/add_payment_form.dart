@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 // Color constants
 const colorGreen = Color(0xFF64A520);
@@ -46,7 +47,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: widget.isExpanded
             ? [
@@ -65,7 +66,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFFE8E8E8)),
+              border: Border.all(color: AppTheme.getDetailsGreyColor(context)),
               borderRadius: BorderRadius.circular(12),
             ),
             child: InkWell(
@@ -73,10 +74,10 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Add New Method',
                     style: TextStyle(
-                      color: Color(0xFF0047BB),
+                      color: AppTheme.getPrimaryColor(context),
                       fontSize: 16,
                       fontFamily: 'Open Sans',
                       fontWeight: FontWeight.w600,
@@ -86,7 +87,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                     widget.isExpanded
                         ? Icons.keyboard_arrow_up
                         : Icons.keyboard_arrow_down,
-                    color: const Color(0xFF0047BB),
+                    color: AppTheme.getPrimaryColor(context),
                   ),
                 ],
               ),
@@ -100,7 +101,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                 ? Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppTheme.getCardColor(context),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -115,7 +116,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                           obscureCardNumber: true,
                           obscureCardCvv: true,
                           isHolderNameVisible: true,
-                          cardBgColor: const Color(0xFF0047BB),
+                          cardBgColor: AppTheme.getPrimaryColor(context),
                           isSwipeGestureEnabled: true,
                           onCreditCardWidgetChange: (CreditCardBrand brand) {},
                           customCardTypeIcons: const <CustomCardTypeIcon>[],
@@ -132,63 +133,63 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                             cardNumberDecoration: InputDecoration(
                               labelText: 'Card Number',
                               hintText: 'XXXX XXXX XXXX XXXX',
-                              labelStyle: const TextStyle(
-                                color: Color(0xFF0047BB),
+                              labelStyle: TextStyle(
+                                color: AppTheme.getPrimaryColor(context),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF0047BB),
+                                borderSide: BorderSide(
+                                  color: AppTheme.getPrimaryColor(context),
                                 ),
                               ),
                             ),
                             expiryDateDecoration: InputDecoration(
                               labelText: 'Expiration',
                               hintText: 'MM/YY',
-                              labelStyle: const TextStyle(
-                                color: Color(0xFF0047BB),
+                              labelStyle: TextStyle(
+                                color: AppTheme.getPrimaryColor(context),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF0047BB),
+                                borderSide: BorderSide(
+                                  color: AppTheme.getPrimaryColor(context),
                                 ),
                               ),
                             ),
                             cvvCodeDecoration: InputDecoration(
                               labelText: 'CVV',
                               hintText: 'XXX',
-                              labelStyle: const TextStyle(
-                                color: Color(0xFF0047BB),
+                              labelStyle: TextStyle(
+                                color: AppTheme.getPrimaryColor(context),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF0047BB),
+                                borderSide: BorderSide(
+                                  color: AppTheme.getPrimaryColor(context),
                                 ),
                               ),
                             ),
                             cardHolderDecoration: InputDecoration(
                               labelText: 'Name on Card',
-                              labelStyle: const TextStyle(
-                                color: Color(0xFF0047BB),
+                              labelStyle: TextStyle(
+                                color: AppTheme.getPrimaryColor(context),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                  color: Color(0xFF0047BB),
+                                borderSide: BorderSide(
+                                  color: AppTheme.getPrimaryColor(context),
                                 ),
                               ),
                             ),
@@ -205,7 +206,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                                   _acceptTerms = value ?? false;
                                 });
                               },
-                              activeColor: const Color(0xFF0047BB),
+                              activeColor: AppTheme.getPrimaryColor(context),
                             ),
                             Expanded(
                               child: RichText(
@@ -221,8 +222,9 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                                     ),
                                     TextSpan(
                                       text: 'Terms and Conditions',
-                                      style: const TextStyle(
-                                        color: Color(0xFF0047BB),
+                                      style: TextStyle(
+                                        color:
+                                            AppTheme.getPrimaryColor(context),
                                         decoration: TextDecoration.underline,
                                       ),
                                       recognizer: TapGestureRecognizer()
@@ -258,8 +260,9 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: colorGreen,
-                              disabledBackgroundColor: Colors.grey,
+                              backgroundColor: AppTheme.getGreenColor(context),
+                              disabledBackgroundColor:
+                                  AppTheme.getDetailsGreyColor(context),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -268,7 +271,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                             child: const Text(
                               'Save Card',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppTheme.white,
                                 fontSize: 16,
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,

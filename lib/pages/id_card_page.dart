@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/pages/add_insurance.dart';
 import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class IdCardPage extends StatefulWidget {
   const IdCardPage({super.key});
@@ -9,36 +12,21 @@ class IdCardPage extends StatefulWidget {
 }
 
 class _IdCardPageState extends State<IdCardPage> {
-  int _selectedIndex = -1;
-
-  void _handleNavigation(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0: // My Products
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1: // Add Insurance
-        // TODO: Navigate to Add Insurance
-        break;
-      case 2: // Location
-        // TODO: Navigate to Location
-        break;
-    }
-  }
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0047BB),
+      backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0047BB),
+        backgroundColor: AppTheme.getBackgroundHeaderColor(context),
         leading: Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppTheme.white,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -52,7 +40,7 @@ class _IdCardPageState extends State<IdCardPage> {
                 Text(
                   'ID Card',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
@@ -64,7 +52,7 @@ class _IdCardPageState extends State<IdCardPage> {
               child: Text(
                 'Back',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppTheme.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -76,24 +64,18 @@ class _IdCardPageState extends State<IdCardPage> {
       ),
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color(0xFFF5FCFF),
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: AppTheme.getBackgroundColor(context),
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
               blurRadius: 8,
               spreadRadius: -1,
-              color: Color(0x0D323247), // 0D is 13% opacity
-            ),
-            BoxShadow(
-              offset: Offset(0, 0),
-              blurRadius: 1,
-              spreadRadius: 0,
-              color: Color(0x3D0C1A4B), // 3D is 24% opacity
+              color: AppTheme.getBoxShadowColor(context), // 0D is 13% opacity
             ),
           ],
         ),
@@ -118,15 +100,19 @@ class _IdCardPageState extends State<IdCardPage> {
                     child: Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.download_outlined,
-                              color: Color(0xFF0047BB),),
+                          icon: Icon(
+                            Icons.download_outlined,
+                            color: AppTheme.getIconColor(context),
+                          ),
                           onPressed: () {
                             // TODO: Implement download functionality
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.print_outlined,
-                              color: Color(0xFF0047BB),),
+                          icon: Icon(
+                            Icons.print_outlined,
+                            color: AppTheme.getIconColor(context),
+                          ),
                           onPressed: () {
                             // TODO: Implement print functionality
                           },
@@ -161,7 +147,7 @@ class _IdCardPageState extends State<IdCardPage> {
                       child: Text(
                         'This is not proof of coverage (Legal to provide final text)',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: AppTheme.getTextGreyColor(context),
                           fontSize: 12,
                         ),
                       ),
@@ -170,16 +156,36 @@ class _IdCardPageState extends State<IdCardPage> {
                 ],
               ),
             ),
-            CircleNavBar(
-              selectedPos: _selectedIndex,
-              onTap: _handleNavigation,
-              tabItems: [
-                TabData(Icons.home_outlined, 'My Products'),
-                TabData(Icons.verified_user_outlined, '+ Add Insurance'),
-                TabData(Icons.location_on_outlined, 'Location'),
-              ],
-            ),
-            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, 0),
+        child: CircleNavBar(
+          selectedPos: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            switch (index) {
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddInsurancePage(),
+                  ),
+                ).then((_) => setState(() => _selectedIndex = 0));
+                break;
+              case 2:
+                LocatorDeviceModule.navigateToLocationView(context);
+                break;
+            }
+          },
+          tabItems: [
+            TabData(Icons.home_outlined, 'My Products'),
+            TabData(Icons.verified_user_outlined, 'Add Insurance'),
+            TabData(Icons.location_on_outlined, 'Location'),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ZipCodeDialog extends StatefulWidget {
   final String? initialZipCode;
@@ -71,9 +72,9 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppTheme.getCardColor(context),
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
@@ -89,30 +90,31 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: AppTheme.getDetailsGreyColor(context),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             // Título
-            const Text(
+            Text(
               'Enter your ZipCode',
               style: TextStyle(
                 fontFamily: 'Open Sans',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
+                color: AppTheme.getTitleTextColor(context),
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             // Subtítulo
-            const Text(
+            Text(
               'Enter your ZIP code to continue with the process',
               style: TextStyle(
                 fontFamily: 'Open Sans',
                 fontSize: 14,
-                color: Colors.grey,
+                color: AppTheme.getSubtitleTextColor(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -121,17 +123,26 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(8),
               ),
               child: TextField(
                 controller: _zipCodeController,
                 keyboardType: TextInputType.number,
                 maxLength: 5,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'ZipCode',
                   border: InputBorder.none,
                   counterText: '',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderSide:
+                        BorderSide(color: AppTheme.getPrimaryColor(context)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    borderSide: BorderSide(
+                        color: AppTheme.getDetailsGreyColor(context)),
+                  ),
                 ),
                 style: const TextStyle(
                   fontFamily: 'Open Sans',
@@ -146,13 +157,13 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                   ? () => widget.onContinue(_zipCodeController.text)
                   : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                backgroundColor: AppTheme.getPrimaryColor(context),
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                disabledBackgroundColor: Colors.blue.withValues(alpha: 0.5),
+                disabledBackgroundColor:
+                    AppTheme.getPrimaryColor(context).withValues(alpha: 0.5),
               ),
               child: const Text(
                 'Continue',
@@ -160,6 +171,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                   fontFamily: 'Open Sans',
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: AppTheme.white,
                 ),
               ),
             ),
