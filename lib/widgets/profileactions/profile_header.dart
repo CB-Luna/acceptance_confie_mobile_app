@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -8,9 +9,9 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       backgroundColor: AppTheme.getBackgroundHeaderColor(context),
-      title: const Text(
-        'Profile',
-        style: TextStyle(
+      title: Text(
+        context.translate('profile.title'),
+        style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: AppTheme.white,
@@ -22,17 +23,17 @@ class ProfileHeader extends StatelessWidget {
         onTap: () {
           Navigator.of(context).pop();
         },
-        child: const Row(
+        child: Row(
           children: [
-            SizedBox(width: 8),
-            Icon(
+            const SizedBox(width: 8),
+            const Icon(
               Icons.arrow_back_ios,
               size: 20,
               color: AppTheme.white,
             ),
             Text(
-              'Back',
-              style: TextStyle(
+              context.translate('profile.back'),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.white,

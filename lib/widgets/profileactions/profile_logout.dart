@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -28,21 +29,21 @@ class ProfileLogoutButton extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Icono de salida
-            Icon(
+            const Icon(
               Icons.logout,
               size: 20,
               color: AppTheme.white,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             // Texto de salida
             Text(
-              'Log Out',
-              style: TextStyle(
+              context.translate('profile.logout'),
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: AppTheme.white,
@@ -135,7 +136,7 @@ class ProfileLogoutButton extends StatelessWidget {
 
                           // Title
                           Text(
-                            'Log Out',
+                            context.translate('profile.logout'),
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -146,7 +147,7 @@ class ProfileLogoutButton extends StatelessWidget {
 
                           // Message
                           Text(
-                            'Are You sure want to Log Out?',
+                            context.translate('profile.confirmLogout'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -169,9 +170,14 @@ class ProfileLogoutButton extends StatelessWidget {
                                     Navigator.of(modalContext).pop();
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: Colors.grey[700],
-                                    side: BorderSide(color: Colors.grey[300]!),
+                                    backgroundColor: AppTheme.white,
+                                    foregroundColor:
+                                        AppTheme.getDetailsGreyColor(context),
+                                    side: BorderSide(
+                                      color: AppTheme.getDetailsGreyColor(
+                                        context,
+                                      ),
+                                    ),
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 12,
                                     ), // Reducido de 14 a 12
@@ -180,9 +186,9 @@ class ProfileLogoutButton extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                   ),
-                                  child: const Text(
-                                    'Cancel',
-                                    style: TextStyle(
+                                  child: Text(
+                                    context.translate('profile.cancel'),
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -215,9 +221,9 @@ class ProfileLogoutButton extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                   ),
-                                  child: const Text(
-                                    'Log Out',
-                                    style: TextStyle(
+                                  child: Text(
+                                    context.translate('profile.logout'),
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: AppTheme.white,
@@ -258,8 +264,8 @@ class ProfileLogoutButton extends StatelessWidget {
 
       // Show a message to the user
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('There was a problem logging out. Please try again.'),
+        SnackBar(
+          content: Text(context.translate('profile.logoutError')),
         ),
       );
 

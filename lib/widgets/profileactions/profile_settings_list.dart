@@ -24,18 +24,19 @@ class ProfileSettingsList extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Habilitar $biometricType'),
-              content: Text(
-                  'Al habilitar $biometricType, podrás acceder a la aplicación de forma más rápida y segura. '
-                  '¿Deseas continuar?'),
+              title: Text(context.translateWithArgs('profile.biometricEnable',
+                  args: [biometricType])),
+              content: Text(context.translateWithArgs(
+                  'profile.biometricMessage',
+                  args: [biometricType])),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Cancelar'),
+                  child: Text(context.translate('profile.cancel')),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Continuar'),
+                  child: Text(context.translate('profile.confirm')),
                 ),
               ],
             );
@@ -68,7 +69,7 @@ class ProfileSettingsList extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             ProfileSettingsItem(
-              title: 'Password',
+              title: context.translate('profile.password'),
               icon: Icons.lock_outline,
               onTap: () {
                 // TODO: Implementar navegación
@@ -79,18 +80,20 @@ class ProfileSettingsList extends StatelessWidget {
               builder: (context, biometricProvider, child) {
                 // Si está cargando o no está disponible, mostrar un widget diferente
                 if (biometricProvider.isLoading) {
-                  return const Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-                    child: Center(child: LoadingView(message: 'Loading...')),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 24.0),
+                    child: Center(
+                        child: LoadingView(
+                            message: context.translate('profile.loading'))),
                   );
                 }
 
                 if (!biometricProvider.isAvailable) {
                   return ProfileSettingsItem(
-                    title: 'Biometric not available',
-                    subtitle:
-                        'Your device does not support biometric authentication.',
+                    title: context.translate('profile.biometricNotAvailable'),
+                    subtitle: context
+                        .translate('profile.biometricNotAvailableMessage'),
                     icon: Icons.fingerprint_outlined,
                     onTap: () {},
                     enabled: false,
@@ -122,7 +125,10 @@ class ProfileSettingsList extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            'No se pudo habilitar ${biometricProvider.biometricType}',
+                            context.translateWithArgs(
+                              'profile.biometricEnableFailed',
+                              args: [biometricProvider.biometricType],
+                            ),
                           ),
                         ),
                       );
@@ -148,7 +154,7 @@ class ProfileSettingsList extends StatelessWidget {
             ),
             const ProfileDivider(),
             ProfileSettingsItem(
-              title: 'App information',
+              title: context.translate('profile.appInfo'),
               icon: Icons.info_outline,
               onTap: () {
                 // TODO: Implementar navegación
@@ -156,7 +162,7 @@ class ProfileSettingsList extends StatelessWidget {
             ),
             const ProfileDivider(),
             ProfileSettingsSwitch(
-              title: 'Enable push notifications',
+              title: context.translate('profile.notifications'),
               icon: Icons.notifications_none,
               value: true,
               onChanged: (value) {

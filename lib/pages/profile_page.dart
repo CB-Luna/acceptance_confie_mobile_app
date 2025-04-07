@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthProvider>(context).currentUser;
+    final defaultUserName = context.translate('profile.defaultUser');
 
     return Scaffold(
       backgroundColor: AppTheme.getBackgroundHeaderColor(context),
@@ -40,7 +42,7 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           const SizedBox(height: 80),
                           Text(
-                            user != null ? user.fullName : 'User',
+                            user != null ? user.fullName : defaultUserName,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -61,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: ProfileAvatarName(
-                    userName: user != null ? user.fullName : 'User',
+                    userName: user != null ? user.fullName : defaultUserName,
                     showName: false,
                     userAvatar: user?.avatar,
                   ),

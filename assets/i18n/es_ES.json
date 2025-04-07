@@ -33,13 +33,18 @@
     "notifications": "Activar notificaciones push",
     "logout": "Cerrar Sesión",
     "confirmLogout": "¿Estás seguro de que deseas cerrar sesión?",
+    "logoutError": "Hubo un problema al cerrar sesión. Por favor, intenta de nuevo.",
     "cancel": "Cancelar",
     "confirm": "Confirmar",
-    "biometricEnable": "Habilitar {type}",
-    "biometricMessage": "Al habilitar {type}, podrás acceder a la aplicación de forma más rápida y segura. ¿Deseas continuar?",
+    "biometricEnable": "Habilitar {0}",
+    "biometricMessage": "Al habilitar {0}, podrás acceder a la aplicación de forma más rápida y segura. ¿Deseas continuar?",
     "biometricNotAvailable": "Biometría no disponible",
     "biometricNotAvailableMessage": "Tu dispositivo no soporta autenticación biométrica.",
-    "biometricEnableFailed": "No se pudo habilitar {type}"
+    "biometricEnableFailed": "No se pudo habilitar {0}",
+    "loading": "Cargando...",
+    "title": "Perfil",
+    "back": "Volver",
+    "defaultUser": "Usuario"
   },
   "office": {
     "findNearby": "Encontrar Oficinas Cercanas",
