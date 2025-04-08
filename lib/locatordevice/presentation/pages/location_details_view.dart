@@ -121,15 +121,15 @@ class _LocationDetailsViewContentState
               tabItems: [
                 TabData(
                   Icons.home_outlined,
-                  context.translate('navigation.myProducts'),
+                  context.translate('home.navigation.myProducts'),
                 ),
                 TabData(
                   Icons.verified_user_outlined,
-                  context.translate('navigation.addInsurance'),
+                  context.translate('home.navigation.addInsurance'),
                 ),
                 TabData(
                   Icons.location_on_outlined,
-                  context.translate('navigation.location'),
+                  context.translate('home.navigation.location'),
                 ),
               ],
             ),

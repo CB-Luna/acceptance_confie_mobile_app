@@ -595,8 +595,8 @@ class LocationController extends ChangeNotifier {
 
   // Método para expandir el radio de búsqueda
   Future<void> expandSearchRadius(BuildContext context) async {
-    // Incrementar el radio de búsqueda en 5 millas cada vez
-    final newRadius = state.searchRadiusInMiles + 5.0;
+    // Incrementar el radio de búsqueda en 1 milla cada vez
+    final newRadius = state.searchRadiusInMiles + 1.0;
 
     // Restablecer la oficina seleccionada
     _updateState(

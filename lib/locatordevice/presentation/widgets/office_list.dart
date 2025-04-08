@@ -95,7 +95,8 @@ class OfficeList extends StatelessWidget {
               child: offices.isEmpty
                   ? Center(
                       child:
-                          Text(context.translate('office.noOfficesAvailable')))
+                          Text(context.translate('office.noOfficesAvailable')),
+                    )
                   : CustomScrollView(
                       controller: scrollController,
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -124,7 +125,8 @@ class OfficeList extends StatelessWidget {
                                           ),
                                           label: Text(
                                             context.translate(
-                                                'office.findOtherOffices'),
+                                              'office.findOtherOffices',
+                                            ),
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -197,9 +199,12 @@ class OfficeListItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${context.translate('office.openNow')} • ${context.translateWithArgs('office.closesAt', args: [
-                  '7pm'
-                ])}',
+            '${context.translate('office.openNow')} • ${context.translateWithArgs(
+              'office.closesAt',
+              args: [
+                '7pm',
+              ],
+            )}',
             style: TextStyle(
               color: AppTheme.getGreenColor(context),
               fontWeight: FontWeight.bold,

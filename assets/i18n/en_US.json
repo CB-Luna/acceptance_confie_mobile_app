@@ -172,7 +172,7 @@
   },
   "office": {
     "findNearby": "Find Nearby Offices",
-    "searchRadius": "Search radius expanded to {radius} miles",
+    "searchRadius": "Search radius expanded to {0} miles",
     "maxRadius": "Maximum search radius of 10 miles reached",
     "viewInMaps": "View in Maps",
     "findOtherOffices": "Find other offices",
@@ -181,7 +181,7 @@
     "nearestOffice": "Nearest Office",
     "noOfficesAvailable": "No offices available",
     "openNow": "Open Now",
-    "closesAt": "Closes at {time}",
+    "closesAt": "Closes at {0}",
     "callOffice": "Call Office",
     "getDirections": "Get Directions",
     "miles": "miles",

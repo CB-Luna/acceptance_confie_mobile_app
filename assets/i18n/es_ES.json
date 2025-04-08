@@ -172,7 +172,7 @@
   },
   "office": {
     "findNearby": "Buscar Oficinas Cercanas",
-    "searchRadius": "Radio de búsqueda ampliado a {radius} millas",
+    "searchRadius": "Radio de búsqueda ampliado a {0} millas",
     "maxRadius": "Se alcanzó el radio máximo de búsqueda de 10 millas",
     "viewInMaps": "Ver en Mapas",
     "findOtherOffices": "Buscar otras oficinas",
@@ -181,7 +181,7 @@
     "nearestOffice": "Oficina Más Cercana",
     "noOfficesAvailable": "No hay oficinas disponibles",
     "openNow": "Abierto Ahora",
-    "closesAt": "Cierra a las {time}",
+    "closesAt": "Cierra a las {0}",
     "callOffice": "Llamar a la Oficina",
     "getDirections": "Obtener Direcciones",
     "miles": "millas",
