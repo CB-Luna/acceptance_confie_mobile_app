@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class PaymentCardItem extends StatelessWidget {
@@ -19,61 +20,88 @@ class PaymentCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        height: 80,
         decoration: BoxDecoration(
+          color: isSelected
+              ? AppTheme.getPrimaryColor(context).withOpacity(0.1)
+              : AppTheme.getCardColor(context),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color:
-                isSelected ? AppTheme.getPrimaryColor(context) : AppTheme.white,
+            color: isSelected
+                ? AppTheme.getPrimaryColor(context)
+                : AppTheme.getDetailsGreyColor(context),
+            width: 1,
           ),
-          borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  imagePath,
-                  width: 64,
-                  height: 40,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              // Radio button
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected
+                        ? AppTheme.getPrimaryColor(context)
+                        : AppTheme.getDetailsGreyColor(context),
+                    width: 2,
+                  ),
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cardNumber,
-                      style: TextStyle(
-                        color: AppTheme.getTitleTextColor(context),
-                        fontSize: 16,
-                        fontFamily: 'Open Sans',
-                        fontWeight: FontWeight.w600,
-                      ),
+                child: isSelected
+                    ? Center(
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppTheme.getPrimaryColor(context),
+                          ),
+                        ),
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 16),
+              // Card logo
+              Image.asset(
+                imagePath,
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(width: 16),
+              // Card info
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    cardNumber,
+                    style: TextStyle(
+                      color: AppTheme.getTitleTextColor(context),
+                      fontSize: 16,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w600,
                     ),
-                    Text(
-                      expiry,
-                      style: TextStyle(
-                        color: AppTheme.getSubtitleTextColor(context),
-                        fontSize: 14,
-                        fontFamily: 'Open Sans',
-                      ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    expiry,
+                    style: TextStyle(
+                      color: AppTheme.getSubtitleTextColor(context),
+                      fontSize: 14,
+                      fontFamily: 'Open Sans',
+                      fontWeight: FontWeight.w400,
                     ),
-                  ],
-                ),
-              ],
-            ),
-            Icon(
-              isSelected
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_unchecked,
-              color: isSelected
-                  ? AppTheme.getPrimaryColor(context)
-                  : AppTheme.white,
-            ),
-          ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

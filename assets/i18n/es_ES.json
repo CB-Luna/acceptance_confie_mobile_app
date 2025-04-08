@@ -77,6 +77,77 @@
     "effectiveDate": "FECHA DE INICIO",
     "expirationDate": "FECHA DE VENCIMIENTO"
   },
+  "submitClaim": {
+    "title": "Enviar un Reclamo",
+    "back": "Atrás",
+    "safetyCheck": {
+      "title": "¿Estás a salvo?",
+      "helpMessage": "Si necesitas ayuda inmediata, por favor llama al 911.",
+      "call911": "Llamar al 911",
+      "imSafe": "Estoy a Salvo"
+    },
+    "bluefireClaim": {
+      "title": "Reclamos de Bluefire Insurance",
+      "instructions": "Para iniciar el proceso, por favor ingresa el\nNúmero de Póliza de Bluefire Insurance",
+      "cnmPolicyPrefix": "Si la póliza comienza con CNM,\npor favor llama al ",
+      "gspPolicyPrefix": "Si la póliza comienza con GSP,\npor favor llama al ",
+      "policyholderConfirmation": "Soy el titular de la póliza de Bluefire",
+      "policyNumberInstructions": "Por favor ingresa el número completo de la póliza incluyendo las letras. No ingreses el guión ni ningún número después del guión. Ejemplo: TXA10000000",
+      "startClaim": "Iniciar Mi Reclamo"
+    }
+  },
+  "requestCall": {
+    "title": "Ayuda",
+    "back": "Atrás",
+    "subtitle": "¿Tienes preguntas o necesitas asistencia?\n¡Estamos aquí para ayudarte!",
+    "customerService": "Servicio al Cliente",
+    "callCustomerService": "Llamar al (888) 443-4662",
+    "insuranceQuotes": "Cotizaciones y Servicio de Seguros",
+    "callInsuranceQuotes": "Llamar al (877) 753-7823"
+  },
+  "payment": {
+    "title": "Pagar Ahora",
+    "back": "Atrás",
+    "paymentMethod": "Método de Pago",
+    "billingAddress": "Dirección de Facturación",
+    "paymentTotal": "Total a Pagar:",
+    "payNowButton": "Pagar Ahora",
+    "addNewMethod": "Agregar Nuevo Método",
+    "cardForm": {
+      "cardNumber": "Número de Tarjeta",
+      "cardNumberHint": "XXXX XXXX XXXX XXXX",
+      "expiration": "Vencimiento",
+      "expirationHint": "MM/AA",
+      "cvv": "CVV",
+      "cvvHint": "XXX",
+      "nameOnCard": "Nombre en la Tarjeta",
+      "acceptTerms": "Acepto los ",
+      "termsAndConditions": "Términos y Condiciones",
+      "saveCard": "Guardar Tarjeta",
+      "expires": "Vence"
+    }
+  },
+  "quotePlans": {
+    "title": "Freeway Auto Club",
+    "back": "Atrás",
+    "selectPlan": "Selecciona un plan",
+    "selectPlanSubtitle": "que usarás para esta cotización",
+    "monthly": "Mensual",
+    "annually": "Anual",
+    "monthlySuffix": "/mes*",
+    "annualSuffix": "/año*",
+    "mostPopular": "Más Popular",
+    "singlePlan": "Plan Individual",
+    "familyPlan": "Plan Familiar",
+    "features": {
+      "onePerson": "Una Persona",
+      "unlimitedUsage": "Uso Ilimitado",
+      "usagePeriod": "(Por Período de 7 Días)",
+      "nationwideCoverage": "Cobertura Nacional",
+      "lightDutyVehicle": "Vehículo Liviano"
+    },
+    "requestQuote": "Solicitar Cotización"
+  },
   "profile": {
     "settings": "Configuración",
     "password": "Contraseña",

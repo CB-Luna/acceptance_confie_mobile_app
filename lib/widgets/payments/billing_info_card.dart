@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class BillingInfoCard extends StatelessWidget {
@@ -42,7 +43,7 @@ class BillingInfoCard extends StatelessWidget {
                     top: 20,
                     left: 0,
                     child: Text(
-                      'Billing Address',
+                      context.translate('payment.billingAddress'),
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
                         fontSize: 16,
@@ -92,7 +93,7 @@ class BillingInfoCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Payment Total:',
+                  context.translate('payment.paymentTotal'),
                   style: TextStyle(
                     color: AppTheme.getOrangeColor(context),
                     fontSize: 16,

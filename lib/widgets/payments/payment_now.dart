@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
 import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../../utils/menu/circle_nav_bar.dart';
@@ -108,15 +109,15 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
           ),
         ),
         leadingWidth: 56,
-        title: const Stack(
+        title: Stack(
           alignment: Alignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Pay Now',
-                  style: TextStyle(
+                  context.translate('payment.title'),
+                  style: const TextStyle(
                     color: AppTheme.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
@@ -127,8 +128,8 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
             Positioned(
               left: 0,
               child: Text(
-                'Back',
-                style: TextStyle(
+                context.translate('payment.back'),
+                style: const TextStyle(
                   color: AppTheme.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -160,7 +161,7 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
                           child: Text(
-                            'Payment Method',
+                            context.translate('payment.paymentMethod'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 20,
@@ -280,7 +281,7 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                                         '${cardType.capitalize()}*$lastFourDigits';
 
                                     // Formatear la fecha de expiración
-                                    final formattedExpiry = 'Expires $expiry';
+                                    final formattedExpiry = '${context.translate('payment.cardForm.expires')} $expiry';
 
                                     // Agregar la nueva tarjeta
                                     _cards.add({
@@ -334,9 +335,18 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
             }
           },
           tabItems: [
-            TabData(Icons.home_outlined, 'My Products'),
-            TabData(Icons.verified_user_outlined, 'Add Insurance'),
-            TabData(Icons.location_on_outlined, 'Location'),
+            TabData(
+              Icons.home_outlined, 
+              context.translate('home.navigation.myProducts'),
+            ),
+            TabData(
+              Icons.verified_user_outlined, 
+              context.translate('home.navigation.addInsurance'),
+            ),
+            TabData(
+              Icons.location_on_outlined, 
+              context.translate('home.navigation.location'),
+            ),
           ],
         ),
       ),

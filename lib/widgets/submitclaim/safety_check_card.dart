@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class SafetyCheckCard extends StatelessWidget {
@@ -31,7 +32,7 @@ class SafetyCheckCard extends StatelessWidget {
         children: [
           Center(
             child: Text(
-              'Are you safe?',
+              context.translate('submitClaim.safetyCheck.title'),
               style: TextStyle(
                 color: AppTheme.getPrimaryColor(context),
                 fontSize: 24,
@@ -42,7 +43,7 @@ class SafetyCheckCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'If you need immediate help, please call 911.',
+            context.translate('submitClaim.safetyCheck.helpMessage'),
             style: TextStyle(
               color: AppTheme.getSubtitleTextColor(context),
               fontSize: 14,
@@ -68,10 +69,10 @@ class SafetyCheckCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
-                child: const Text(
-                  'Call 911',
-                  style: TextStyle(
-                    fontSize: 16,
+                child: Text(
+                  context.translate('submitClaim.safetyCheck.call911'),
+                  style: const TextStyle(
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -87,10 +88,10 @@ class SafetyCheckCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
-                child: const Text(
-                  "I'm Safe",
-                  style: TextStyle(
-                    fontSize: 16,
+                child: Text(
+                  context.translate('submitClaim.safetyCheck.imSafe'),
+                  style: const TextStyle(
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.white,
                   ),

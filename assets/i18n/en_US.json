@@ -14,7 +14,7 @@
     "twoFactorMessage": "Please enter the 6-digit verification code sent to your device",
     "twoFactorSubmit": "Verify",
     "twoFactorResend": "Resend Code",
-    "biometricLogin": "Login with Biometrics"
+    "biometricLogin": "Login with biometrics"
   },
   "home": {
     "welcome": "Welcome",
@@ -28,7 +28,7 @@
     "noCardsAvailable": "No cards available",
     "addProducts": "Add Products",
     "roadsideHelp": {
-      "needHelp": "Need Roadside Help?",
+      "needHelp": "Need Roadside Assistance?",
       "addAutoClub": "Add Freeway Auto Club"
     },
     "contactAgent": {
@@ -54,7 +54,7 @@
       "inactive": "Inactive",
       "nextPayment": "Next Payment",
       "idCard": "ID Card",
-      "submitClaim": "Submit a Claim",
+      "submitClaim": "Submit Claim",
       "payNow": "Pay Now"
     },
     "notifications": {
@@ -69,7 +69,7 @@
     "title": "ID Card",
     "back": "Back",
     "addToWallet": "Add to Apple Wallet",
-    "notProofOfCoverage": "This is not proof of coverage (Legal to provide final text)",
+    "notProofOfCoverage": "This is not proof of coverage (Legal text to be provided)",
     "namedInsured": "NAMED INSURED",
     "carrier": "CARRIER",
     "policyNumber": "POLICY NUMBER",
@@ -77,23 +77,94 @@
     "effectiveDate": "EFFECTIVE DATE",
     "expirationDate": "EXPIRATION DATE"
   },
+  "submitClaim": {
+    "title": "Submit a Claim",
+    "back": "Back",
+    "safetyCheck": {
+      "title": "Are You Safe?",
+      "helpMessage": "If you need immediate help, please call 911.",
+      "call911": "Call 911",
+      "imSafe": "I'm Safe"
+    },
+    "bluefireClaim": {
+      "title": "Bluefire Insurance Claims",
+      "instructions": "To start the process, please enter your\nBluefire Insurance Policy Number",
+      "cnmPolicyPrefix": "If the policy begins with CNM,\nplease call ",
+      "gspPolicyPrefix": "If the policy begins with GSP,\nplease call ",
+      "policyholderConfirmation": "I am the Bluefire policyholder",
+      "policyNumberInstructions": "Please enter the full policy number including the letters. Do not enter the dash or any numbers after the dash. Example: TXA10000000",
+      "startClaim": "Start My Claim"
+    }
+  },
+  "requestCall": {
+    "title": "Help",
+    "back": "Back",
+    "subtitle": "Have questions or need assistance?\nWe're here to help!",
+    "customerService": "Customer Service",
+    "callCustomerService": "Call (888) 443-4662",
+    "insuranceQuotes": "Insurance Quotes & Service",
+    "callInsuranceQuotes": "Call (877) 753-7823"
+  },
+  "payment": {
+    "title": "Pay Now",
+    "back": "Back",
+    "paymentMethod": "Payment Method",
+    "billingAddress": "Billing Address",
+    "paymentTotal": "Payment Total:",
+    "payNowButton": "Pay Now",
+    "addNewMethod": "Add New Method",
+    "cardForm": {
+      "cardNumber": "Card Number",
+      "cardNumberHint": "XXXX XXXX XXXX XXXX",
+      "expiration": "Expiration",
+      "expirationHint": "MM/YY",
+      "cvv": "CVV",
+      "cvvHint": "XXX",
+      "nameOnCard": "Name on Card",
+      "acceptTerms": "I accept the ",
+      "termsAndConditions": "Terms and Conditions",
+      "saveCard": "Save Card",
+      "expires": "Expires"
+    }
+  },
+  "quotePlans": {
+    "title": "Freeway Auto Club",
+    "back": "Back",
+    "selectPlan": "Select plan",
+    "selectPlanSubtitle": "you will use for this quote",
+    "monthly": "Monthly",
+    "annually": "Annually",
+    "monthlySuffix": "/mo*",
+    "annualSuffix": "/yr*",
+    "singlePlan": "Single Plan",
+    "familyPlan": "Family Plan",
+    "mostPopular": "Most Popular",
+    "features": {
+      "onePerson": "One Person",
+      "unlimitedUsage": "Unlimited Usage",
+      "usagePeriod": "(Per 7 Day Period)",
+      "nationwideCoverage": "Nationwide Coverage",
+      "lightDutyVehicle": "Light Duty Vehicle"
+    },
+    "requestQuote": "Request Quote"
+  },
   "profile": {
     "settings": "Settings",
     "password": "Password",
     "biometric": "Biometric Authentication",
     "languages": "Languages",
-    "appInfo": "App Information",
+    "appInfo": "App Info",
     "notifications": "Enable push notifications",
-    "logout": "Log Out",
-    "confirmLogout": "Are you sure you want to log out?",
+    "logout": "Logout",
+    "confirmLogout": "Are you sure you want to logout?",
     "logoutError": "There was a problem logging out. Please try again.",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "biometricEnable": "Enable {0}",
-    "biometricMessage": "By enabling {0}, you can access the application faster and more securely. Do you want to continue?",
-    "biometricNotAvailable": "Biometric not available",
+    "biometricMessage": "By enabling {0}, you will be able to access the app more quickly and securely. Do you want to continue?",
+    "biometricNotAvailable": "Biometrics not available",
     "biometricNotAvailableMessage": "Your device does not support biometric authentication.",
-    "biometricEnableFailed": "Could not enable {0}",
+    "biometricEnableFailed": "Failed to enable {0}",
     "loading": "Loading...",
     "title": "Profile",
     "back": "Back",
@@ -116,7 +187,7 @@
     "error": "Error",
     "success": "Success",
     "loading": "Loading...",
-    "notAuthenticated": "You need to be logged in to view this content",
+    "notAuthenticated": "You need to login to view this content",
     "continue": "Continue",
     "save": "Save",
     "delete": "Delete",

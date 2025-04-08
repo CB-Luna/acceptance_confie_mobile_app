@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
 import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../../utils/menu/circle_nav_bar.dart';
@@ -32,15 +33,15 @@ class _RequestCallPageState extends State<RequestCallPage> {
           ),
         ),
         leadingWidth: 56,
-        title: const Stack(
+        title: Stack(
           alignment: Alignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Help',
-                  style: TextStyle(
+                  context.translate('requestCall.title'),
+                  style: const TextStyle(
                     color: AppTheme.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
@@ -51,8 +52,8 @@ class _RequestCallPageState extends State<RequestCallPage> {
             Positioned(
               left: 0,
               child: Text(
-                'Back',
-                style: TextStyle(
+                context.translate('requestCall.back'),
+                style: const TextStyle(
                   color: AppTheme.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -87,7 +88,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "Have questions or need assistance?\nWe're here to help!",
+                          context.translate('requestCall.subtitle'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppTheme.getTitleTextColor(context),
@@ -108,7 +109,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       ),
                       const SizedBox(height: 32),
                       Text(
-                        'Customer Service',
+                        context.translate('requestCall.customerService'),
                         style: TextStyle(
                           color: AppTheme.getSubtitleTextColor(context),
                           fontSize: 16,
@@ -128,18 +129,18 @@ class _RequestCallPageState extends State<RequestCallPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_in_talk,
                               color: AppTheme.white,
                               size: 24,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Call (888) 443-4662',
-                              style: TextStyle(
+                              context.translate('requestCall.callCustomerService'),
+                              style: const TextStyle(
                                 color: AppTheme.white,
                                 fontSize: 16,
                                 fontFamily: 'Open Sans',
@@ -151,7 +152,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       ),
                       const SizedBox(height: 32),
                       Text(
-                        'Insurance Quotes & Service',
+                        context.translate('requestCall.insuranceQuotes'),
                         style: TextStyle(
                           color: AppTheme.getSubtitleTextColor(context),
                           fontSize: 16,
@@ -171,18 +172,18 @@ class _RequestCallPageState extends State<RequestCallPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.phone_in_talk,
                               color: AppTheme.white,
                               size: 24,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Call (877) 753-7823',
-                              style: TextStyle(
+                              context.translate('requestCall.callInsuranceQuotes'),
+                              style: const TextStyle(
                                 color: AppTheme.white,
                                 fontSize: 16,
                                 fontFamily: 'Open Sans',
@@ -224,9 +225,18 @@ class _RequestCallPageState extends State<RequestCallPage> {
             }
           },
           tabItems: [
-            TabData(Icons.home_outlined, 'My Products'),
-            TabData(Icons.verified_user_outlined, 'Add Insurance'),
-            TabData(Icons.location_on_outlined, 'Location'),
+            TabData(
+              Icons.home_outlined, 
+              context.translate('home.navigation.myProducts'),
+            ),
+            TabData(
+              Icons.verified_user_outlined, 
+              context.translate('home.navigation.addInsurance'),
+            ),
+            TabData(
+              Icons.location_on_outlined, 
+              context.translate('home.navigation.location'),
+            ),
           ],
         ),
       ),

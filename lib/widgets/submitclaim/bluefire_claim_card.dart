@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -36,7 +37,7 @@ class BluefireClaimCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Bluefire Insurance Claims',
+            context.translate('submitClaim.bluefireClaim.title'),
             style: TextStyle(
               color: AppTheme.getPrimaryColor(context),
               fontSize: 20,
@@ -46,7 +47,7 @@ class BluefireClaimCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'To start the process, please enter the\nBluefire Insurance Policy Number',
+            context.translate('submitClaim.bluefireClaim.instructions'),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
@@ -63,7 +64,7 @@ class BluefireClaimCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'If the policy starts with CNM,\nplease call ',
+                  text: context.translate('submitClaim.bluefireClaim.cnmPolicyPrefix'),
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
                     fontSize: 14,
@@ -94,7 +95,7 @@ class BluefireClaimCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'If the policy starts with GSP,\nplease call ',
+                  text: context.translate('submitClaim.bluefireClaim.gspPolicyPrefix'),
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
                     fontSize: 14,
@@ -144,7 +145,7 @@ class BluefireClaimCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'I am the Bluefire policyholder',
+                context.translate('submitClaim.bluefireClaim.policyholderConfirmation'),
                 style: TextStyle(
                   color: AppTheme.getTextGreyColor(context),
                   fontSize: 14,
@@ -156,7 +157,7 @@ class BluefireClaimCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Please enter the full policy number including the letters. Do not enter the dash or any numbers after the dash. Example: TXA10000000',
+            context.translate('submitClaim.bluefireClaim.policyNumberInstructions'),
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
               fontSize: 12,
@@ -180,9 +181,9 @@ class BluefireClaimCard extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: const Text(
-                'Start My Claim',
-                style: TextStyle(
+              child: Text(
+                context.translate('submitClaim.bluefireClaim.startClaim'),
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),

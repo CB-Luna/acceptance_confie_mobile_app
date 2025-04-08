@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
 import 'package:freeway_app/pages/add_insurance.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -22,7 +23,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
 
   final List<QuotePlan> _plans = [
     QuotePlan(
-      title: 'Single Plan',
+      title: 'singlePlan',
       iconPath: 'assets/products/vehicle/auto.svg',
       monthlyPrice: 12.0,
       annualPrice: 99.0,
@@ -31,26 +32,26 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       accentColor: AppTheme.primaryColor,
       features: [
         PlanFeature(
-          title: 'One Person',
+          title: 'onePerson',
           iconPath: 'assets/icons/person.svg',
         ),
         PlanFeature(
-          title: 'Unlimited Usage',
-          subtitle: '(Per 7 Day Period)',
+          title: 'unlimitedUsage',
+          subtitle: 'usagePeriod',
           iconPath: 'assets/icons/unlimited.svg',
         ),
         PlanFeature(
-          title: 'Nationwide Coverage',
+          title: 'nationwideCoverage',
           iconPath: 'assets/icons/coverage.svg',
         ),
         PlanFeature(
-          title: 'Light Duty Vehicle',
+          title: 'lightDutyVehicle',
           iconPath: 'assets/icons/vehicle.svg',
         ),
       ],
     ),
     QuotePlan(
-      title: 'Family Plan',
+      title: 'familyPlan',
       iconPath: 'assets/products/vehicle/auto.svg',
       monthlyPrice: 17.0,
       annualPrice: 149.0,
@@ -59,20 +60,20 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       accentColor: AppTheme.tertiaryColor,
       features: [
         PlanFeature(
-          title: 'One Person',
+          title: 'onePerson',
           iconPath: 'assets/icons/person.svg',
         ),
         PlanFeature(
-          title: 'Unlimited Usage',
-          subtitle: '(Per 7 Day Period)',
+          title: 'unlimitedUsage',
+          subtitle: 'usagePeriod',
           iconPath: 'assets/icons/unlimited.svg',
         ),
         PlanFeature(
-          title: 'Nationwide Coverage',
+          title: 'nationwideCoverage',
           iconPath: 'assets/icons/coverage.svg',
         ),
         PlanFeature(
-          title: 'Light Duty Vehicle',
+          title: 'lightDutyVehicle',
           iconPath: 'assets/icons/vehicle.svg',
         ),
       ],
@@ -97,15 +98,15 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
           ),
         ),
         leadingWidth: 56,
-        title: const Stack(
+        title: Stack(
           alignment: Alignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Freeway Auto Club',
-                  style: TextStyle(
+                  context.translate('quotePlans.title'),
+                  style: const TextStyle(
                     color: AppTheme.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
@@ -116,8 +117,8 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
             Positioned(
               left: 0,
               child: Text(
-                'Back',
-                style: TextStyle(
+                context.translate('quotePlans.back'),
+                style: const TextStyle(
                   color: AppTheme.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -133,7 +134,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
           children: [
             const SizedBox(height: 8),
             Text(
-              'Select plan',
+              context.translate('quotePlans.selectPlan'),
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Open Sans',
@@ -142,7 +143,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               ),
             ),
             Text(
-              'you will use for this quote',
+              context.translate('quotePlans.selectPlanSubtitle'),
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: 'Open Sans',
@@ -202,9 +203,18 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
             }
           },
           tabItems: [
-            TabData(Icons.home_outlined, 'My Products'),
-            TabData(Icons.verified_user_outlined, 'Add Insurance'),
-            TabData(Icons.location_on_outlined, 'Location'),
+            TabData(
+              Icons.home_outlined, 
+              context.translate('home.navigation.myProducts'),
+            ),
+            TabData(
+              Icons.verified_user_outlined, 
+              context.translate('home.navigation.addInsurance'),
+            ),
+            TabData(
+              Icons.location_on_outlined, 
+              context.translate('home.navigation.location'),
+            ),
           ],
         ),
       ),
@@ -252,7 +262,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Monthly',
+                  context.translate('quotePlans.monthly'),
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: 'Open Sans',
@@ -274,7 +284,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Annually',
+                  context.translate('quotePlans.annually'),
                   style: TextStyle(
                     fontSize: 18,
                     fontFamily: 'Open Sans',

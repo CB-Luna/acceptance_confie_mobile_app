@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart' show AppTheme;
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
@@ -127,9 +128,9 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                       ),
                     ],
                   ),
-                  child: const Text(
-                    'Most Popular',
-                    style: TextStyle(
+                  child: Text(
+                    context.translate('quotePlans.mostPopular'),
+                    style: const TextStyle(
                       color: AppTheme.white,
                       fontSize: 14,
                       fontFamily: 'Open Sans',
@@ -158,7 +159,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
             ),
             const SizedBox(width: 8),
             Text(
-              widget.plan.title,
+              context.translate('quotePlans.${widget.plan.title}'),
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Open Sans',
@@ -197,11 +198,13 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                 ),
               ),
               Text(
-                widget.isMonthly ? '/mo*' : '/yr*',
+                widget.isMonthly
+                  ? context.translate('quotePlans.monthlySuffix')
+                  : context.translate('quotePlans.annualSuffix'),
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontFamily: 'Open Sans',
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: widget.plan.accentColor,
                 ),
               ),
@@ -213,80 +216,63 @@ class _QuotePlanCardState extends State<QuotePlanCard>
   }
 
   Widget _buildFeaturesList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: widget.plan.features.length,
-      itemBuilder: (context, index) {
-        final feature = widget.plan.features[index];
-        return AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1, 0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: _controller,
-                  curve: Interval(
-                    index * 0.1,
-                    1.0,
-                    curve: Curves.easeOut,
-                  ),
-                ),
+    return Column(
+      children: widget.plan.features.map((feature) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/icons/check.png',
+                width: 24,
+                height: 24,
+                color: AppTheme.getGreenColor(context),
               ),
-              child: child,
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.check_circle_outline,
-                  size: 20,
-                  color: widget.plan.accentColor,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.translate('quotePlans.features.${feature.title}'),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Open Sans',
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.getTitleTextColor(context),
+                      ),
+                    ),
+                    if (feature.subtitle != null)
                       Text(
-                        feature.title,
+                        context.translate('quotePlans.features.${feature.subtitle}'),
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontFamily: 'Open Sans',
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.getTitleTextColor(context),
+                          fontWeight: FontWeight.w400,
+                          color: AppTheme.getSubtitleTextColor(context),
                         ),
                       ),
-                      if (feature.subtitle != null)
-                        Text(
-                          feature.subtitle!,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'Open Sans',
-                            color: AppTheme.getSubtitleTextColor(context),
-                          ),
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
-      },
+      }).toList(),
     );
   }
 
   Widget _buildRequestQuoteButton() {
     return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapDown: (_) {
+        setState(() {
+          _isPressed = true;
+        });
+      },
       onTapUp: (_) {
-        setState(() => _isPressed = false);
+        setState(() {
+          _isPressed = false;
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -297,21 +283,34 @@ class _QuotePlanCardState extends State<QuotePlanCard>
         );
         widget.onRequestQuote();
       },
-      onTapCancel: () => setState(() => _isPressed = false),
+      onTapCancel: () {
+        setState(() {
+          _isPressed = false;
+        });
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        width: 210,
+        width: double.infinity,
         height: 48,
         decoration: BoxDecoration(
           color: _isPressed
-              ? widget.plan.primaryColor.withAlpha(204)
-              : widget.plan.primaryColor, // 0.8 * 255 ≈ 204
+              ? widget.plan.primaryColor.withOpacity(0.8)
+              : widget.plan.primaryColor,
           borderRadius: BorderRadius.circular(24),
+          boxShadow: _isPressed
+              ? []
+              : [
+                  BoxShadow(
+                    color: widget.plan.primaryColor.withOpacity(0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
-        child: const Center(
+        child: Center(
           child: Text(
-            'Request a Quote',
-            style: TextStyle(
+            context.translate('quotePlans.requestQuote'),
+            style: const TextStyle(
               color: AppTheme.white,
               fontSize: 16,
               fontFamily: 'Open Sans',
