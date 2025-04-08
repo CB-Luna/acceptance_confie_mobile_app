@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
@@ -47,7 +48,7 @@ class SubmitClaimHeader extends StatelessWidget {
             ),
           ),
           Image.asset(
-            'assets/auth/freeway_logo.png',
+            AppTheme.getFreewayLogoType(context),
             height: 40,
           ),
           Row(
@@ -65,12 +66,13 @@ class SubmitClaimHeader extends StatelessWidget {
                 child: Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     final avatar = authProvider.currentUser?.avatar;
-                    
+
                     return CircleAvatar(
                       radius: 16,
                       backgroundImage: avatar != null
                           ? NetworkImage(avatar)
-                          : const AssetImage('assets/profile/human_avatar.png') as ImageProvider,
+                          : const AssetImage('assets/profile/human_avatar.png')
+                              as ImageProvider,
                       onBackgroundImageError: avatar != null
                           ? (exception, stackTrace) {
                               // Si hay un error al cargar la imagen, usar la imagen por defecto

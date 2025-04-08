@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -613,7 +614,12 @@ class LocationController extends ChangeNotifier {
     // Mostrar un mensaje al usuario
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Search radius expanded to ${newRadius.toInt()} miles'),
+        content: Text(
+          context.translateWithArgs(
+            'office.searchRadius',
+            args: ['${newRadius.toInt()}'],
+          ),
+        ),
         duration: const Duration(seconds: 2),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -18,12 +19,14 @@ class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _twoFactorCodeController = TextEditingController(); // Se mantiene para uso futuro
+  final _twoFactorCodeController =
+      TextEditingController(); // Se mantiene para uso futuro
   bool _isLoading = false;
   bool _obscureText = true;
   bool _isBiometricAvailable = false;
   bool _isBiometricEnabled = false;
-  bool _showTwoFactorInput = false; // Se mantiene para uso futuro pero siempre será falso
+  // bool _showTwoFactorInput =
+  //     false; // Se mantiene para uso futuro pero siempre será falso
 
   @override
   void initState() {
@@ -59,9 +62,9 @@ class LoginPageState extends State<LoginPage> {
         // Si la autenticación biométrica falló, mostrar un mensaje
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Authentication failed with biometrics.'),
-              backgroundColor: Colors.red,
+            SnackBar(
+              content: Text(context.translate('auth.biometricAuthFailed')),
+              backgroundColor: AppTheme.getRedColor(context),
             ),
           );
         }
@@ -86,8 +89,11 @@ class LoginPageState extends State<LoginPage> {
           // Si el login falló, mostrar un mensaje
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(authProvider.errorMessage ?? 'Failed to login.'),
-              backgroundColor: Colors.red,
+              content: Text(
+                authProvider.errorMessage ??
+                    context.translate('auth.authError'),
+              ),
+              backgroundColor: AppTheme.getRedColor(context),
             ),
           );
           return false;
@@ -101,8 +107,8 @@ class LoginPageState extends State<LoginPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
+            content: Text('${context.translate('auth.error')}: $e'),
+            backgroundColor: AppTheme.getRedColor(context),
           ),
         );
       }
@@ -112,11 +118,11 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final biometricProvider = Provider.of<BiometricProvider>(context);
+    // final authProvider = Provider.of<AuthProvider>(context);
+    // final biometricProvider = Provider.of<BiometricProvider>(context);
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: AppTheme.getBackgroundColor(context),
       body: SafeArea(
         child: _isLoading
             ? const LoadingView()
@@ -131,25 +137,25 @@ class LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 48),
                         Center(
                           child: Image.asset(
-                            'assets/auth/freeway_logo.png',
+                            AppTheme.getFreewayLogoType(context),
                             height: 80,
                           ),
                         ),
                         const SizedBox(height: 48),
-                        const Text(
-                          'Welcome back!',
+                        Text(
+                          context.translate('auth.welcomeBack'),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF1F2937),
+                            color: AppTheme.getTitleTextColor(context),
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Sign in to your account',
+                        Text(
+                          context.translate('auth.signInToAccount'),
                           style: TextStyle(
                             fontSize: 16,
-                            color: Color(0xFF6B7280),
+                            color: AppTheme.getTextGreyColor(context),
                           ),
                         ),
                         const SizedBox(height: 32),
@@ -159,11 +165,14 @@ class LoginPageState extends State<LoginPage> {
                           width: 346,
                           child: TextFormField(
                             controller: _usernameController,
-                            decoration:
-                                AppTheme.inputDecoration(labelText: 'Username'),
+                            decoration: AppTheme.inputDecoration(
+                              context,
+                              labelText: context.translate('auth.username'),
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your username';
+                                return context
+                                    .translate('auth.pleaseEnterUsername');
                               }
                               return null;
                             },
@@ -174,9 +183,10 @@ class LoginPageState extends State<LoginPage> {
                           width: 346,
                           child: TextFormField(
                             controller: _passwordController,
-                            decoration:
-                                AppTheme.inputDecoration(labelText: 'Password')
-                                    .copyWith(
+                            decoration: AppTheme.inputDecoration(
+                              context,
+                              labelText: context.translate('auth.password'),
+                            ).copyWith(
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscureText
@@ -193,7 +203,8 @@ class LoginPageState extends State<LoginPage> {
                             obscureText: _obscureText,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
+                                return context
+                                    .translate('auth.pleaseEnterPassword');
                               }
                               return null;
                             },
@@ -206,9 +217,11 @@ class LoginPageState extends State<LoginPage> {
                               // TODO: Implement forgot password
                             },
                             style: TextButton.styleFrom(
-                              foregroundColor: AppTheme.primaryColor,
+                              foregroundColor:
+                                  AppTheme.getPrimaryColor(context),
                             ),
-                            child: const Text('Forgot Password?'),
+                            child:
+                                Text(context.translate('auth.forgotPassword')),
                           ),
                         ),
                         const SizedBox(height: 24),
@@ -216,18 +229,19 @@ class LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: _handleLogin,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.primaryColor,
+                              backgroundColor:
+                                  AppTheme.getPrimaryColor(context),
                               minimumSize: const Size(346, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
+                            child: Text(
+                              context.translate('auth.loginButton'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                                color: AppTheme.white,
                               ),
                             ),
                           ),
@@ -238,25 +252,25 @@ class LoginPageState extends State<LoginPage> {
                               builder: (context, biometricProvider, child) {
                                 return IconButton(
                                   icon: Icon(
-                                    biometricProvider.biometricType ==
-                                            'Face ID'
+                                    biometricProvider.biometricType == 'Face ID'
                                         ? Icons.face
                                         : Icons.fingerprint,
-                                    color: AppTheme.primaryColor,
+                                    color: AppTheme.getPrimaryColor(context),
                                     size: 40,
                                   ),
                                   onPressed: () async {
-                                    if (await _authenticateWithBiometrics())
-                                      if (mounted) {
-                                        Navigator.of(context)
+                                    if (await _authenticateWithBiometrics()) {
+                                      if (context.mounted) {
+                                        await Navigator.of(context)
                                             .pushNamedAndRemoveUntil(
                                           '/home',
                                           (route) => false,
                                         );
                                       }
+                                    }
                                   },
                                   tooltip:
-                                      'Acceder con ${biometricProvider.biometricType}',
+                                      context.translate('auth.biometricLogin'),
                                 );
                               },
                             ),
@@ -265,10 +279,10 @@ class LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              "Don't have an account? ",
+                            Text(
+                              context.translate('auth.noAccount'),
                               style: TextStyle(
-                                color: Color(0xFF6B7280),
+                                color: AppTheme.getTextGreyColor(context),
                                 fontSize: 14,
                               ),
                             ),
@@ -282,14 +296,15 @@ class LoginPageState extends State<LoginPage> {
                                 );
                               },
                               style: TextButton.styleFrom(
-                                foregroundColor: AppTheme.primaryColor,
+                                foregroundColor:
+                                    AppTheme.getPrimaryColor(context),
                                 padding: EdgeInsets.zero,
                                 minimumSize: Size.zero,
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: const Text(
-                                'Sign Up',
-                                style: TextStyle(
+                              child: Text(
+                                context.translate('auth.createAccount'),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -351,11 +366,11 @@ class LoginPageState extends State<LoginPage> {
         );
       } else if (mounted) {
         final errorMessage =
-            authProvider.errorMessage ?? 'Authentication error.';
+            authProvider.errorMessage ?? context.translate('auth.authError');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),
-            backgroundColor: Colors.red,
+            backgroundColor: AppTheme.getRedColor(context),
           ),
         );
       }

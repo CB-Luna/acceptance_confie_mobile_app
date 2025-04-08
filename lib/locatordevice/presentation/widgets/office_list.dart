@@ -347,9 +347,9 @@ class OfficeListItem extends StatelessWidget {
                       // Mostrar un mensaje de error si no se puede abrir la URL
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Could not open maps application'),
-                          duration: Duration(seconds: 2),
+                        SnackBar(
+                          content: Text(context.translate('office.couldNotOpenMaps')),
+                          backgroundColor: AppTheme.getRedColor(context),
                         ),
                       );
                     }

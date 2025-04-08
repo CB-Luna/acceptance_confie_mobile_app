@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class LoadingView extends StatelessWidget {
   final String message;
@@ -29,19 +30,20 @@ class LoadingView extends StatelessWidget {
               Container(
                 width: 60,
                 height: 60,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color:
+                      backgroundColor ?? AppTheme.getBackgroundColor(context),
                   shape: BoxShape.circle,
                 ),
               ),
               // Animación de onda azul
-              const SpinKitWaveSpinner(
-                color: Color(0xFF0046B9),
-                trackColor: Color(0xFF78BE00),
-                waveColor: Color(0xFF78BE00),
+              SpinKitWaveSpinner(
+                color: AppTheme.getPrimaryColor(context),
+                trackColor: AppTheme.getGreenColor(context),
+                waveColor: AppTheme.getGreenColor(context),
                 curve: Curves.decelerate,
                 size: 60.0,
-                duration: Duration(milliseconds: 1500),
+                duration: const Duration(milliseconds: 1500),
               ),
               // Imagen del logo
               Image.asset(
@@ -62,7 +64,7 @@ class LoadingView extends StatelessWidget {
                 child: Text(
                   message,
                   style: TextStyle(
-                    color: textColor ?? Colors.black87,
+                    color: textColor ?? AppTheme.getTitleTextColor(context),
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -91,7 +93,7 @@ class LoadingView extends StatelessWidget {
     Color overlayColor = Colors.black54,
     Color? indicatorColor = Colors.blue,
     Color? backgroundColor,
-    Color? textColor = Colors.white,
+    Color? textColor,
   }) {
     final overlayEntry = OverlayEntry(
       builder: (context) => Container(
@@ -100,7 +102,7 @@ class LoadingView extends StatelessWidget {
           message: message,
           backgroundColor: backgroundColor,
           indicatorColor: indicatorColor,
-          textColor: textColor,
+          textColor: AppTheme.getTitleTextColor(context),
         ),
       ),
     );

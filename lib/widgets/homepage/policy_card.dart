@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
 import '../../pages/id_card_page.dart';
@@ -96,9 +96,9 @@ class PolicyCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        isActive 
-                          ? context.translate('home.policyCard.active') 
-                          : context.translate('home.policyCard.inactive'),
+                        isActive
+                            ? context.translate('home.policyCard.active')
+                            : context.translate('home.policyCard.inactive'),
                         style: TextStyle(
                           color: isActive
                               ? AppTheme.getGreenColor(context)
@@ -122,7 +122,7 @@ class PolicyCard extends StatelessWidget {
                         height: 24,
                       )
                     : Image.asset(
-                        'assets/home/icons/logo_freeway.png',
+                        AppTheme.getFreewayLogoType(context),
                         width: 92,
                         height: 24,
                       ),

@@ -13,8 +13,10 @@ class ThemeProvider with ChangeNotifier {
   // Colores para el tema oscuro
   static const Color _darkPrimaryColor = Color(0xFF3B82F6); // Azul más claro
   static const Color _darkSecondaryColor = Color(0xFF1E5D9B); // Azul más oscuro
-  static const Color _darkBackgroundColor = Color(0xFF0D1B3E); // Azul muy oscuro
-  static const Color _darkCardColor = Color(0xFF162544); // Azul oscuro para tarjetas
+  static const Color _darkBackgroundColor =
+      Color(0xFF0D1B3E); // Azul muy oscuro
+  static const Color _darkCardColor =
+      Color(0xFF162544); // Azul oscuro para tarjetas
   static const Color _darkTextColor = Colors.white;
   static const Color _darkTextGreyColor = Color(0xFFABB2BF); // Gris más claro
   static const Color _darkIconColor = Colors.white;
@@ -23,18 +25,20 @@ class ThemeProvider with ChangeNotifier {
   // Colores para el tema claro
   static const Color _lightPrimaryColor = Color(0xFF0047CC); // Azul original
   static const Color _lightSecondaryColor = Color(0xFF0A557A); // Color original
-  static const Color _lightBackgroundColor = Color(0xFFF5FCFF); // Color original
+  static const Color _lightBackgroundColor =
+      Color(0xFFF5FCFF); // Color original
   static const Color _lightCardColor = Colors.white;
   static const Color _lightTextColor = Colors.black;
   static const Color _lightTextGreyColor = Color(0xFF6B7280); // Color original
-  static const Color _lightIconColor = Color(0xFF0A4DA2); // Color azul para iconos
+  static const Color _lightIconColor =
+      Color(0xFF0A4DA2); // Color azul para iconos
   static const Color _lightBorderColor = Colors.grey;
 
   ThemeData get currentTheme => _isDarkMode
       ? ThemeData.dark().copyWith(
           primaryColor: _darkPrimaryColor,
-          primaryColorDark: _darkPrimaryColor.withOpacity(0.8),
-          primaryColorLight: _darkPrimaryColor.withOpacity(0.6),
+          primaryColorDark: _darkPrimaryColor.withValues(alpha: 0.8),
+          primaryColorLight: _darkPrimaryColor.withValues(alpha: 0.6),
           appBarTheme: const AppBarTheme(
             backgroundColor: _darkPrimaryColor,
             foregroundColor: _darkTextColor,
@@ -61,11 +65,9 @@ class ThemeProvider with ChangeNotifier {
             primary: _darkPrimaryColor,
             secondary: _darkSecondaryColor,
             surface: _darkCardColor,
-            background: _darkBackgroundColor,
             onPrimary: _darkTextColor,
             onSecondary: _darkTextColor,
             onSurface: _darkTextColor,
-            onBackground: _darkTextColor,
           ),
           dialogTheme: const DialogThemeData(
             backgroundColor: _darkCardColor,
@@ -75,11 +77,13 @@ class ThemeProvider with ChangeNotifier {
             fillColor: _darkCardColor,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: _darkBorderColor.withOpacity(0.5)),
+              borderSide:
+                  BorderSide(color: _darkBorderColor.withValues(alpha: 0.5)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: _darkBorderColor.withOpacity(0.5)),
+              borderSide:
+                  BorderSide(color: _darkBorderColor.withValues(alpha: 0.5)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -113,8 +117,8 @@ class ThemeProvider with ChangeNotifier {
         )
       : ThemeData.light().copyWith(
           primaryColor: _lightPrimaryColor,
-          primaryColorDark: _lightPrimaryColor.withOpacity(0.8),
-          primaryColorLight: _lightPrimaryColor.withOpacity(0.6),
+          primaryColorDark: _lightPrimaryColor.withValues(alpha: 0.8),
+          primaryColorLight: _lightPrimaryColor.withValues(alpha: 0.6),
           appBarTheme: const AppBarTheme(
             backgroundColor: _lightPrimaryColor,
             foregroundColor: _lightTextColor,
@@ -141,11 +145,9 @@ class ThemeProvider with ChangeNotifier {
             primary: _lightPrimaryColor,
             secondary: _lightSecondaryColor,
             surface: _lightCardColor,
-            background: _lightBackgroundColor,
             onPrimary: Colors.white,
             onSecondary: Colors.white,
             onSurface: _lightTextColor,
-            onBackground: _lightTextColor,
           ),
           dialogTheme: const DialogThemeData(
             backgroundColor: _lightCardColor,

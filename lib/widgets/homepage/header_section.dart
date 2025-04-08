@@ -58,7 +58,7 @@ class HeaderSection extends StatelessWidget {
                   .pushNamedAndRemoveUntil('/login', (route) => false);
             },
             child: Image.asset(
-              'assets/auth/freeway_logo.png',
+              AppTheme.getFreewayLogoType(context),
               height: 32,
             ),
           ),

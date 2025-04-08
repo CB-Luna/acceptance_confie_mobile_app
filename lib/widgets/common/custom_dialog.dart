@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 /// Un diálogo personalizado reutilizable que se puede usar en toda la aplicación.
-/// 
+///
 /// Este widget permite mostrar un diálogo con título, contenido y botones personalizables.
 class CustomDialog {
   /// Muestra un diálogo personalizado con opciones configurables.
-  /// 
+  ///
   /// Parámetros:
   /// - [context]: El contexto de construcción actual.
   /// - [title]: El título del diálogo.
@@ -42,10 +42,10 @@ class CustomDialog {
           ),
           content: Text(
             message,
-            style: const TextStyle(
+            style: TextStyle(
               fontFamily: 'Open Sans',
               fontSize: 14,
-              color: Color(0xFF666666),
+              color: AppTheme.getTextGreyColor(context),
             ),
             textAlign: TextAlign.center,
           ),
@@ -61,8 +61,8 @@ class CustomDialog {
                 ),
                 child: Text(
                   negativeButtonText,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: AppTheme.getDetailsGreyColor(context),
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -78,8 +78,8 @@ class CustomDialog {
               ),
               child: Text(
                 positiveButtonText,
-                style: const TextStyle(
-                  color: Color(0xFF0046B9),
+                style: TextStyle(
+                  color: AppTheme.getPrimaryColor(context),
                   fontFamily: 'Open Sans',
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

@@ -102,7 +102,7 @@ class AppTheme {
   static Color getGreenColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color(0xFF68A424)
-        : const Color(0xFF64A520);
+        : const Color(0xFF78BE00);
   }
 
   static Color getRedColor(BuildContext context) {
@@ -163,6 +163,12 @@ class AppTheme {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color(0xFF414648)
         : const Color(0xFF6B7280);
+  }
+
+  static String getFreewayLogoType(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? 'assets/auth/freeway_logo_white.png'
+        : 'assets/auth/freeway_logo.png';
   }
 
   // Colores constantes para compatibilidad con código existente
@@ -270,23 +276,26 @@ class AppTheme {
   }
 
   // Input Decoration constante para compatibilidad con código existente
-  static InputDecoration inputDecoration({required String labelText}) {
+  static InputDecoration inputDecoration(BuildContext context,
+      // ignore: require_trailing_commas
+      {required String labelText}) {
     return InputDecoration(
       labelText: labelText,
+      labelStyle: TextStyle(color: getTitleTextColor(context)),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
-      enabledBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: grey),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderSide: BorderSide(color: getDetailsGreyColor(context)),
       ),
-      focusedBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: primaryColor),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderSide: BorderSide(color: getPrimaryColor(context)),
       ),
       filled: true,
-      fillColor: white,
+      fillColor: AppTheme.getCardColor(context),
     );
   }
 
@@ -294,7 +303,7 @@ class AppTheme {
   static ButtonStyle getPrimaryButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
       backgroundColor: getPrimaryColor(context),
-      foregroundColor: white,
+      foregroundColor: AppTheme.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -305,14 +314,16 @@ class AppTheme {
   }
 
   // Button Style constante para compatibilidad con código existente
-  static final ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: primaryColor,
-    foregroundColor: white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-    elevation: 0,
-    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
-    minimumSize: const Size(double.infinity, 50),
-  );
+  static ButtonStyle primaryButtonStyle(BuildContext context) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: AppTheme.getPrimaryColor(context),
+      foregroundColor: AppTheme.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      elevation: 0,
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
+      minimumSize: const Size(double.infinity, 50),
+    );
+  }
 }
