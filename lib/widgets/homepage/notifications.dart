@@ -162,7 +162,7 @@ class NotificationsWidget extends StatelessWidget {
               height: isExpanded
                   ? 330 // Altura expandida
                   : notifications.length > 1
-                      ? 205 // Altura para 2 o más notificaciones
+                      ? 210 // Altura para 2 o más notificaciones
                       : notifications.length == 1
                           ? 102 // Altura para 1 notificación
                           : 102, // Altura para estado vacío
