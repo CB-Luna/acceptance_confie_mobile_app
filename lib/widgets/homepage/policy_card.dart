@@ -168,7 +168,7 @@ class PolicyCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 90,
+                  width: MediaQuery.of(context).size.width * 0.2,
                   height: 38,
                   child: OutlinedButton(
                     onPressed: () {
@@ -207,7 +207,7 @@ class PolicyCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 SizedBox(
-                  width: 136,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: 38,
                   child: ElevatedButton(
                     onPressed: () {
@@ -236,7 +236,7 @@ class PolicyCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 SizedBox(
-                  width: 79,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   height: 38,
                   child: ElevatedButton(
                     onPressed: () {
