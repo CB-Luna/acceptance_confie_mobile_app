@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -34,40 +36,74 @@ class NotificationItemContent extends StatefulWidget {
 class NotificationItemContentState extends State<NotificationItemContent> {
   bool isDeleting = false;
   double progressValue = 0.0;
+  late final animationDuration = const Duration(seconds: 3);
+  DateTime? startTime;
+  Timer? _animationTimer;
+
+  @override
+  void dispose() {
+    // Cancelar cualquier timer pendiente al destruir el widget
+    _animationTimer?.cancel();
+    super.dispose();
+  }
 
   // Función para iniciar la animación de eliminación
   void startDeleteAnimation() {
+    // No iniciar si ya está en proceso de eliminación
+    if (isDeleting) return;
+    
+    debugPrint('Iniciando animación de eliminación para notificación: ${widget.notificationId}');
+    
     setState(() {
       isDeleting = true;
+      progressValue = 0.0;
+      startTime = DateTime.now();
     });
 
-    // Animar el progreso de 0 a 1 durante 3 segundos
-    const animationDuration = Duration(seconds: 3);
-    final startTime = DateTime.now();
-
-    // Función para actualizar el progreso
-    void updateProgress() {
-      if (!mounted) return; // Verificar si el widget aún está montado
-
-      final elapsedTime = DateTime.now().difference(startTime);
-      final newProgressValue =
-          elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
-
-      if (newProgressValue >= 1.0) {
-        // Animación completa, eliminar la notificación
-        Provider.of<NotificationProvider>(context, listen: false)
-            .markAsRead(widget.notificationId);
-      } else {
-        // Actualizar el progreso y programar la siguiente actualización
+    // Usar un timer periódico para actualizar la animación
+    _animationTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      
+      _updateProgress();
+    });
+  }
+  
+  // Actualiza el progreso de la animación
+  void _updateProgress() {
+    if (!mounted || startTime == null) return;
+    
+    final elapsedTime = DateTime.now().difference(startTime!);
+    final newProgressValue = elapsedTime.inMilliseconds / animationDuration.inMilliseconds;
+    
+    if (newProgressValue >= 1.0) {
+      // Animación completa
+      _animationTimer?.cancel();
+      
+      if (mounted) {
+        setState(() {
+          progressValue = 1.0;
+        });
+        
+        // Usar un timer para asegurar que la UI se actualice antes de eliminar
+        Timer(const Duration(milliseconds: 50), () {
+          if (mounted) {
+            debugPrint('Eliminando notificación: ${widget.notificationId}');
+            Provider.of<NotificationProvider>(context, listen: false)
+                .markAsRead(widget.notificationId);
+          }
+        });
+      }
+    } else {
+      // Actualizar el progreso
+      if (mounted) {
         setState(() {
           progressValue = newProgressValue;
         });
-        Future.delayed(const Duration(milliseconds: 16), updateProgress);
       }
     }
-
-    // Iniciar la actualización del progreso
-    updateProgress();
   }
 
   @override

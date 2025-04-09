@@ -89,8 +89,8 @@ class NotificationsWidget extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         context.translateWithArgs(
-                          'home.notifications.usingDemoData', 
-                          args: [notificationProvider.errorMessage ?? '']
+                          'home.notifications.usingDemoData',
+                          args: [notificationProvider.errorMessage ?? ''],
                         ),
                         style: TextStyle(
                           fontSize: 12,
@@ -203,7 +203,8 @@ class NotificationsWidget extends StatelessWidget {
                                 (index) {
                                   final notification = notifications[index];
                                   // Alternar colores: par azul, impar naranja
-                                  final bool isBlue = index.isEven;
+                                  final bool isBlue =
+                                      !notification.title.contains('Welcome');
                                   final Color iconColor = isBlue
                                       ? AppTheme.getBlueColor(context)
                                       : AppTheme.getOrangeColor(context);
@@ -331,6 +332,7 @@ class NotificationsWidget extends StatelessWidget {
   ) {
     // Usar el widget NotificationItemContent desde el archivo separado
     return NotificationItemContent(
+      key: ValueKey('notification_$notificationId'),
       policyNumber: policyNumber,
       title: title,
       location: location,

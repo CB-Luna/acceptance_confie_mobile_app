@@ -80,14 +80,35 @@ class NotificationProvider with ChangeNotifier {
     debugPrint(
       'NotificationProvider - Marcando como leída la notificación: $notificationId',
     );
+    
+    // Verificar si la notificación existe antes de eliminarla
+    final notificationIndex = _notifications.indexWhere(
+      (notification) => notification.id == notificationId
+    );
+    
+    if (notificationIndex == -1) {
+      debugPrint(
+        'NotificationProvider - No se encontró la notificación con ID: $notificationId',
+      );
+      return;
+    }
+    
     // Aquí se implementaría la lógica para marcar como leída en la API
     // Por ahora, solo eliminamos la notificación de la lista local
     final previousCount = _notifications.length;
-    _notifications
-        .removeWhere((notification) => notification.id == notificationId);
+    
+    // Crear una nueva lista sin la notificación que queremos eliminar
+    final updatedNotifications = List<NotificationModel>.from(_notifications);
+    updatedNotifications.removeAt(notificationIndex);
+    
+    // Actualizar la lista de notificaciones
+    _notifications = updatedNotifications;
+    
     debugPrint(
       'NotificationProvider - Notificaciones restantes: ${_notifications.length} (eliminadas: ${previousCount - _notifications.length})',
     );
+    
+    // Notificar a los listeners después de actualizar la lista
     notifyListeners();
   }
 }
