@@ -53,48 +53,77 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 160,
-      height: 70,
-      decoration: BoxDecoration(
-        color: product.backgroundColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.getBoxShadowColor(context),
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-          ),
-        ],
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: Image.asset(
-                product.imagePath,
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                product.title,
-                style: const TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  height: 18 / 14, // line-height: 18px
-                  letterSpacing: 0,
-                  color: AppTheme.black,
-                ),
-              ),
+      shadowColor: AppTheme.getBoxShadowColor(context).withValues(alpha: 0.3),
+      child: Container(
+        width: 160,
+        height: 70,
+        decoration: BoxDecoration(
+          color: product.backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              product.backgroundColor,
+              product.backgroundColor.withValues(alpha: 0.85),
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.getBoxShadowColor(context).withValues(alpha: 0.1),
+              blurRadius: 1,
+              offset: const Offset(0, 1),
+              spreadRadius: 0.5,
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 15, 12, 15),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.getBoxShadowColor(context)
+                          .withValues(alpha: 0.1),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(6),
+                child: Image.asset(
+                  product.imagePath,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  product.title,
+                  style: const TextStyle(
+                    fontFamily: 'Open Sans',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    height: 18 / 14, // line-height: 18px
+                    letterSpacing: 0,
+                    color: AppTheme.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

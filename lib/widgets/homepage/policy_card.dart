@@ -7,7 +7,7 @@ import '../../pages/id_card_page.dart';
 import '../../widgets/theme/app_theme.dart';
 import '../payments/payment_now.dart';
 
-class PolicyCard extends StatelessWidget {
+class PolicyCard extends StatefulWidget {
   final dynamic user;
   final Vehicle? vehicle;
 
@@ -18,14 +18,50 @@ class PolicyCard extends StatelessWidget {
   });
 
   @override
+  State<PolicyCard> createState() => _PolicyCardState();
+}
+
+class _PolicyCardState extends State<PolicyCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _shimmerController;
+  late Animation<double> _shimmerAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Configurar la animación del shimmer
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+
+    _shimmerAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _shimmerController,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _shimmerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final String plateNumber = vehicle?.plate ?? 'POLICY-1';
-    final bool isActive = vehicle?.status ?? true;
-    final String rawNextPaymentDate = vehicle?.nextPaymentDate ?? '11-15-2024';
+    final String plateNumber = widget.vehicle?.plate ?? 'POLICY-1';
+    final bool isActive = widget.vehicle?.status ?? true;
+    final String rawNextPaymentDate =
+        widget.vehicle?.nextPaymentDate ?? '11-15-2024';
     final String nextPaymentDate = _formatDate(rawNextPaymentDate);
-    final String policyType = vehicle?.policyType ?? 'My Auto Policy';
-    vehicle?.providerImage ?? 'assets/home/icons/Bluefire.png';
-    final bool isBluefire = vehicle?.providerId == 1;
+    final String policyType = widget.vehicle?.policyType ?? 'My Auto Policy';
+    widget.vehicle?.providerImage ?? 'assets/home/icons/Bluefire.png';
+    final bool isBluefire = widget.vehicle?.providerId == 1;
+
+    // Obtener el ancho de la pantalla para cálculos responsive
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -34,35 +70,40 @@ class PolicyCard extends StatelessWidget {
       ),
       color: AppTheme.getCardColor(context),
       child: Container(
-        width: MediaQuery.of(context).size.width - 48,
-        height: 180,
+        width: screenWidth - 48, // Ancho adaptable
+        // Altura adaptable en lugar de fija
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Primera fila: Información de la póliza y estado
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Icono del auto
                 Image.asset(
                   'assets/home/icons/icon-car-1.png',
                   width: 48,
                   height: 48,
                 ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      policyType,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.getPrimaryColor(context),
+                const SizedBox(width: 12),
+                // Información de la póliza
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        policyType,
+                        style: TextStyle(
+                          fontSize: 18, // Reducido ligeramente
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.getPrimaryColor(context),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 200),
-                      child: Text(
+                      Text(
                         plateNumber,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -73,13 +114,14 @@ class PolicyCard extends StatelessWidget {
                           color: AppTheme.getPrimaryColor(context),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
+                // Indicador de estado (Active/Inactive)
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: AppTheme.getBackgroundGreenColor(context),
                     borderRadius: BorderRadius.circular(16),
@@ -92,7 +134,7 @@ class PolicyCard extends StatelessWidget {
                         color: isActive
                             ? AppTheme.getGreenColor(context)
                             : AppTheme.getRedColor(context),
-                        size: 16,
+                        size: 14, // Reducido ligeramente
                       ),
                       const SizedBox(width: 4),
                       Text(
@@ -100,6 +142,7 @@ class PolicyCard extends StatelessWidget {
                             ? context.translate('home.policyCard.active')
                             : context.translate('home.policyCard.inactive'),
                         style: TextStyle(
+                          fontSize: 12, // Reducido para asegurar que quepa
                           color: isActive
                               ? AppTheme.getGreenColor(context)
                               : AppTheme.getRedColor(context),
@@ -111,47 +154,54 @@ class PolicyCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
+            // Segunda fila: Logo y próximo pago
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Logo
                 isBluefire
                     ? Image.asset(
                         'assets/home/icons/Bluefire.png',
-                        width: 92,
-                        height: 24,
+                        width: 80,
+                        height: 22,
                       )
                     : Image.asset(
                         AppTheme.getFreewayLogoType(context),
-                        width: 92,
-                        height: 24,
+                        width: 80,
+                        height: 22,
                       ),
-                const SizedBox(width: 4),
-                Flexible(
+                const SizedBox(width: 8),
+                // Información de próximo pago
+                Expanded(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.credit_card,
                         color: AppTheme.getGreenColor(context),
-                        size: 16,
+                        size: 14, // Reducido ligeramente
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        context.translate('home.policyCard.nextPayment'),
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppTheme.getTextGreyColor(context),
+                      const SizedBox(width: 4),
+                      // Texto "Next Payment" que se puede ocultar en pantallas muy pequeñas
+                      Flexible(
+                        child: Text(
+                          context.translate('home.policyCard.nextPayment'),
+                          style: TextStyle(
+                            fontSize: 12, // Reducido para asegurar que quepa
+                            color: AppTheme.getTextGreyColor(context),
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(width: 4),
+                      // Fecha del próximo pago
                       Flexible(
                         child: Text(
                           nextPaymentDate,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: 'Open Sans',
-                            fontSize: 14,
+                            fontSize: 12, // Reducido para asegurar que quepa
                             fontWeight: FontWeight.w600,
                             color: AppTheme.getTextGreyColor(context),
                           ),
@@ -162,114 +212,194 @@ class PolicyCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            const Spacer(flex: 1),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  height: 38,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const IdCardPage(),
+            const SizedBox(height: 16),
+            // Tercera fila: Botones de acción
+            LayoutBuilder(
+              builder: (context, constraints) {
+                // Calcular el ancho disponible para los botones
+                final availableWidth = constraints.maxWidth;
+                // Determinar si estamos en una pantalla muy pequeña
+                final isVerySmallScreen = availableWidth < 300;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Botón ID
+                    Expanded(
+                      flex: 2,
+                      child: SizedBox(
+                        height: 38,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const IdCardPage(),
+                              ),
+                            );
+                          },
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: AppTheme.getOrangeColor(context),
+                              width: 1,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isVerySmallScreen ? 4 : 8,
+                              vertical: 0,
+                            ),
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              context.translate('home.policyCard.idCard'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Open Sans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.getOrangeColor(context),
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(
-                        color: AppTheme.getOrangeColor(context),
-                        width: 1,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      minimumSize: const Size(90, 38),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Text(
-                      context.translate('home.policyCard.idCard'),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        height: 18 / 14, // line-height: 18px
-                        letterSpacing: 0,
-                        color: AppTheme.getOrangeColor(context),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  height: 38,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/submit-claim');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.getPrimaryColor(context),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                    ),
-                    child: Text(
-                      context.translate('home.policyCard.submitClaim'),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        height: 18 / 14, // line-height: 18px
-                        letterSpacing: 0,
-                        color: AppTheme.white,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  height: 38,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PaymentNowPage(),
+                    const SizedBox(width: 4),
+                    // Botón Submit
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(
+                        height: 38,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/submit-claim');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.getPrimaryColor(context),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isVerySmallScreen ? 4 : 8,
+                              vertical: 0,
+                            ),
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              context.translate('home.policyCard.submitClaim'),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontFamily: 'Open Sans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.getGreenColor(context),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                    ),
-                    child: Text(
-                      context.translate('home.policyCard.payNow'),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        height: 18 / 14, // line-height: 18px
-                        letterSpacing: 0,
-                        color: AppTheme.white,
                       ),
                     ),
-                  ),
-                ),
-              ],
+                    const SizedBox(width: 4),
+                    // Botón Pay Now - Destacado
+                    Expanded(
+                      flex: 3, // Aumentar el flex para darle más espacio
+                      child: SizedBox(
+                        height:
+                            38, // Altura ligeramente mayor que los otros botones
+                        child: AnimatedBuilder(
+                          animation: _shimmerAnimation,
+                          builder: (context, child) {
+                            return DecoratedBox(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppTheme.getGreenColor(context),
+                                    AppTheme.getGreenColor(context)
+                                        .withValues(alpha: 0.5),
+                                    AppTheme.getGreenColor(context),
+                                  ],
+                                  stops: [
+                                    0.0,
+                                    _shimmerAnimation.value,
+                                    1.0,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.getGreenColor(context)
+                                        .withValues(alpha: 0.5),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PaymentNowPage(),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: isVerySmallScreen ? 6 : 10,
+                                    vertical: 0,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Añadir un icono para hacerlo más llamativo
+                                    const Icon(
+                                      Icons.payment_rounded,
+                                      color: AppTheme.white,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        context.translate(
+                                          'home.policyCard.payNow',
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontFamily: 'Open Sans',
+                                          fontSize:
+                                              14, // Ligeramente más grande
+                                          fontWeight: FontWeight.w700,
+                                          color: AppTheme.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
+            const SizedBox(height: 4),
           ],
         ),
       ),

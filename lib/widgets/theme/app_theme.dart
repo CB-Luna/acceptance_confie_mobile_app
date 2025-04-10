@@ -17,7 +17,7 @@ class AppTheme {
   static Color getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color(0xFF131826) // Azul muy oscuro para modo oscuro
-        : const Color(0xFFF5FCFF); // Color original para modo claro
+        : const Color(0xFFe4f4ff); // Color original para modo claro
   }
 
   static Color getBackgroundHeaderColor(BuildContext context) {
@@ -175,7 +175,7 @@ class AppTheme {
   static const Color primaryColor = Color(0xFF0047CC);
   static const Color secondaryColor = Color(0xFF0A557A);
   static const Color tertiaryColor = Color(0xFFC84C14);
-  static const Color backgroundColor = Color(0xFFF5FCFF);
+  static const Color backgroundColor = Color(0xFFe4f4ff);
   static const Color backgroundGreenColor = Color(0xFFF7FFF2);
   static const Color backgroundBlueColor = Color(0xFFEFF6FF);
   static const Color backgroundOrangeColor = Color(0xFFFFF0DF);
