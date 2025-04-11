@@ -7,6 +7,11 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el ancho de la pantalla para cálculos responsive
+    final screenWidth = MediaQuery.of(context).size.width;
+    // Calcular el ancho ideal para las tarjetas basado en el ancho de la pantalla
+    final cardWidth = screenWidth < 360 ? screenWidth * 0.4 : 160.0;
+
     final List<ProductItem> products = [
       ProductItem(
         title: context.translate('home.products.roadsideAssistance'),
@@ -32,9 +37,12 @@ class ProductList extends StatelessWidget {
         children: products
             .map(
               (product) => Container(
-                width: 160,
+                width: cardWidth,
                 margin: const EdgeInsets.only(right: 12.0),
-                child: ProductCard(product: product),
+                child: ProductCard(
+                  product: product,
+                  cardWidth: cardWidth,
+                ),
               ),
             )
             .toList(),
@@ -45,14 +53,23 @@ class ProductList extends StatelessWidget {
 
 class ProductCard extends StatelessWidget {
   final ProductItem product;
+  final double cardWidth;
 
   const ProductCard({
     required this.product,
+    required this.cardWidth,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Calcular altura proporcional al ancho
+    final cardHeight = cardWidth * 0.45;
+    // Calcular tamaño del icono proporcional al ancho de la tarjeta
+    final iconSize = cardWidth * 0.3;
+    // Calcular tamaño de fuente basado en el ancho de la tarjeta
+    final fontSize = cardWidth < 140 ? 14.0 : 12.0;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -60,8 +77,8 @@ class ProductCard extends StatelessWidget {
       ),
       shadowColor: AppTheme.getBoxShadowColor(context).withValues(alpha: 0.3),
       child: Container(
-        width: 160,
-        height: 70,
+        width: cardWidth,
+        height: cardHeight,
         decoration: BoxDecoration(
           color: product.backgroundColor,
           borderRadius: BorderRadius.circular(12),
@@ -83,43 +100,33 @@ class ProductCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 15, 12, 15),
+          padding: EdgeInsets.all(cardWidth * 0.075), // Padding proporcional
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.9),
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.getBoxShadowColor(context)
-                          .withValues(alpha: 0.1),
-                      blurRadius: 2,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(6),
+                width: iconSize,
+                height: iconSize,
+                padding:
+                    EdgeInsets.all(iconSize * 0.15), // Padding proporcional
                 child: Image.asset(
                   product.imagePath,
                   fit: BoxFit.contain,
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: cardWidth * 0.06), // Espacio proporcional
               Expanded(
                 child: Text(
                   product.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Open Sans',
-                    fontSize: 14,
+                    fontSize: fontSize,
                     fontWeight: FontWeight.w600,
-                    height: 18 / 14, // line-height: 18px
-                    letterSpacing: 0,
+                    height: 1.3,
                     color: AppTheme.black,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
