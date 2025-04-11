@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/widgets/homepage/contact_agent.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,6 @@ import '../providers/home_policy_provider.dart';
 import '../providers/notification_provider.dart';
 import '../utils/menu/circle_nav_bar.dart';
 import '../widgets/homepage/card_swiper.dart';
-import '../widgets/homepage/contact_agent.dart';
 import '../widgets/homepage/header_section.dart';
 import '../widgets/homepage/notifications.dart';
 import '../widgets/homepage/product_list.dart';
@@ -182,13 +182,23 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24.0,
-                        vertical: 12.0,
+                        vertical: 8.0,
                       ),
                       child: CardSwiperSection(
                         user: user,
                         policyNumber: 'CAAAPO000380840',
                       ),
                     ),
+
+                    const SizedBox(height: 8),
+
+                    // Contact Agent Card
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: ContactAgent(),
+                    ),
+
+                    const SizedBox(height: 12),
 
                     // Roadside Help Card
                     const Padding(
@@ -221,19 +231,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 8),
 
-                    // Contact Agent Card
-                    const ContactAgent(),
-                    const SizedBox(height: 8),
-
                     // Notifications Section
-                    NotificationsWidget(
-                      key: notificationsKey,
-                      isExpanded: _isNotificationsExpanded,
-                      onClose: () {
-                        setState(() {
-                          _isNotificationsExpanded = false;
-                        });
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: NotificationsWidget(
+                        key: notificationsKey,
+                        isExpanded: _isNotificationsExpanded,
+                        onClose: () {
+                          setState(() {
+                            _isNotificationsExpanded = false;
+                          });
+                        },
+                      ),
                     ),
                     // Espacio adicional al final para asegurar que el último contenido sea visible
                     const SizedBox(height: 20),

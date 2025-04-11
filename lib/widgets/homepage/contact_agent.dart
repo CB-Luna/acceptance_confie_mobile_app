@@ -9,95 +9,193 @@ class ContactAgent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.getCardColor(context),
+    // Obtener el ancho de la pantalla para cálculos responsive
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmallScreen = screenWidth < 360;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      color: AppTheme.getCardColor(context),
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.getBoxShadowColor(context),
-            offset: const Offset(0, 2),
-            blurRadius: 13,
-            spreadRadius: 0,
-          ),
-        ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Image.asset(
-                'assets/home/icons/contactagent.png',
-                width: 47,
-                height: 36,
-              ),
-              const SizedBox(width: 16),
-              Column(
+      child: Container(
+        width: screenWidth - 48, // Ancho adaptable
+        padding: EdgeInsets.symmetric(
+          horizontal: isSmallScreen ? 12 : 16,
+          vertical: 16,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final availableWidth = constraints.maxWidth;
+
+            // Determinar si debemos usar layout vertical
+            final useVerticalLayout = availableWidth < 340;
+
+            if (useVerticalLayout) {
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    context.translate('home.contactAgent.needChanges'),
-                    style: TextStyle(
-                      color: AppTheme.getOrangeColor(context),
-                      fontFamily: 'Open Sans',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      height: 18 / 14,
-                      letterSpacing: 0,
-                    ),
+                  // Sección de información
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        'assets/home/icons/contactagent.png',
+                        width: 40,
+                        height: 32,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context
+                                  .translate('home.contactAgent.needChanges'),
+                              style: TextStyle(
+                                color: AppTheme.getOrangeColor(context),
+                                fontFamily: 'Open Sans',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                height: 1.3,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              context.translate(
+                                  'home.contactAgent.contactMyAgent'),
+                              style: TextStyle(
+                                color: AppTheme.getPrimaryColor(context),
+                                fontFamily: 'Open Sans',
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    context.translate('home.contactAgent.contactMyAgent'),
-                    style: TextStyle(
-                      color: AppTheme.getPrimaryColor(context),
-                      fontFamily: 'Open Sans',
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      height: 18 / 14,
-                      letterSpacing: 0,
+                  const SizedBox(height: 16),
+                  // Botón de llamada
+                  Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: _buildCallButton(context, isSmallScreen),
                     ),
                   ),
                 ],
-              ),
-            ],
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RequestCallPage(),
-                ),
               );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.getPrimaryColor(context),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 12,
-              ),
-            ),
-            child: Text(
-              context.translate('home.contactAgent.callNow'),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppTheme.white,
-                fontFamily: 'Open Sans',
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                height: 18 / 14,
-                letterSpacing: 0,
-              ),
-            ),
+            }
+
+            // Layout horizontal para pantallas más grandes
+            // Calcular el espacio disponible para el texto
+            final buttonWidth = isSmallScreen ? 100.0 : 120.0;
+            final imageWidth = isSmallScreen ? 40.0 : 47.0;
+            final spacingWidth =
+                isSmallScreen ? 20.0 : 28.0; // Suma de espacios
+            final textWidth =
+                availableWidth - buttonWidth - imageWidth - spacingWidth;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Sección de información
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'assets/home/icons/contactagent.png',
+                      width: imageWidth,
+                      height: isSmallScreen ? 32 : 36,
+                    ),
+                    SizedBox(width: isSmallScreen ? 8 : 12),
+                    // Limitar el ancho del texto para evitar desbordamiento
+                    SizedBox(
+                      width: textWidth,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            context.translate('home.contactAgent.needChanges'),
+                            style: TextStyle(
+                              color: AppTheme.getOrangeColor(context),
+                              fontFamily: 'Open Sans',
+                              fontSize: isSmallScreen ? 13 : 14,
+                              fontWeight: FontWeight.w600,
+                              height: 1.3,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            context
+                                .translate('home.contactAgent.contactMyAgent'),
+                            style: TextStyle(
+                              color: AppTheme.getPrimaryColor(context),
+                              fontFamily: 'Open Sans',
+                              fontSize: isSmallScreen ? 13 : 14,
+                              fontWeight: FontWeight.bold,
+                              height: 1.3,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Botón de llamada
+                SizedBox(
+                  width: buttonWidth,
+                  child: _buildCallButton(context, isSmallScreen),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  // Método para construir el botón de llamada
+  Widget _buildCallButton(BuildContext context, bool isSmallScreen) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const RequestCallPage(),
           ),
-        ],
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.getPrimaryColor(context),
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: isSmallScreen ? 12 : 16,
+          vertical: isSmallScreen ? 8 : 10,
+        ),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          context.translate('home.contactAgent.callNow'),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: AppTheme.white,
+            fontFamily: 'Open Sans',
+            fontSize: isSmallScreen ? 13 : 14,
+            fontWeight: FontWeight.w700,
+            height: 1.3,
+          ),
+        ),
       ),
     );
   }
