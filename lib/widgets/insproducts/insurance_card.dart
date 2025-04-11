@@ -37,46 +37,37 @@ class InsuranceCard extends StatelessWidget {
             Navigator.pushNamed(context, route);
           }
         },
-        child: Container(
+        child: SizedBox(
           width: 390, // Ancho ajustado
           height: 86, // Alto ajustado
-          decoration: BoxDecoration(
-            color: AppTheme.getCardColor(context),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.getBoxShadowColor(context), // 0.05 opacity
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3, // Aumentado para dar más espacio al texto
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.getTitleTextColor(context),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3, // Aumentado para dar más espacio al texto
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.getTitleTextColor(context),
+                      ),
+                      softWrap: true, // Permite envolver el texto
+                      overflow: TextOverflow.visible, // Muestra todo el texto
                     ),
-                    softWrap: true, // Permite envolver el texto
-                    overflow: TextOverflow.visible, // Muestra todo el texto
                   ),
-                ),
-                Expanded(
-                  flex: 2, // Reducido para balancear con el texto
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.contain,
+                  Expanded(
+                    flex: 2, // Reducido para balancear con el texto
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.contain,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
