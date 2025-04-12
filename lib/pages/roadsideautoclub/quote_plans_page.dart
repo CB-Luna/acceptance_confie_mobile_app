@@ -98,31 +98,15 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
           ),
         ),
         leadingWidth: 56,
-        title: Stack(
-          alignment: Alignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.translate('quotePlans.title'),
-                  style: const TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: 0,
-              child: Text(
-                context.translate('quotePlans.back'),
-                style: const TextStyle(
-                  color: AppTheme.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+            Text(
+              context.translate('quotePlans.back'),
+              style: const TextStyle(
+                color: AppTheme.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -132,6 +116,15 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 8),
+            Text(
+              context.translate('quotePlans.title'),
+              style: TextStyle(
+                color: AppTheme.getTitleTextColor(context),
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
             Text(
               context.translate('quotePlans.selectPlan'),
@@ -204,15 +197,15 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
           },
           tabItems: [
             TabData(
-              Icons.home_outlined, 
+              Icons.home_outlined,
               context.translate('home.navigation.myProducts'),
             ),
             TabData(
-              Icons.verified_user_outlined, 
+              Icons.verified_user_outlined,
               context.translate('home.navigation.addInsurance'),
             ),
             TabData(
-              Icons.location_on_outlined, 
+              Icons.location_on_outlined,
               context.translate('home.navigation.location'),
             ),
           ],

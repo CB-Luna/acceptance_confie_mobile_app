@@ -36,22 +36,9 @@ class _SubmitClaimPageState extends State<SubmitClaimPage> {
           ),
         ),
         leadingWidth: 56,
-        title: Stack(
-          alignment: Alignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.translate('submitClaim.title'),
-                  style: const TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
             Positioned(
               left: 0,
               child: Text(
@@ -71,6 +58,24 @@ class _SubmitClaimPageState extends State<SubmitClaimPage> {
         child: Stack(
           fit: StackFit.expand,
           children: [
+            Positioned(
+              top: 50,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    context.translate('submitClaim.title'),
+                    style: TextStyle(
+                      color: AppTheme.getTitleTextColor(context),
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Positioned(
               top: 103,
               left: 0,
@@ -115,15 +120,15 @@ class _SubmitClaimPageState extends State<SubmitClaimPage> {
           },
           tabItems: [
             TabData(
-              Icons.home_outlined, 
+              Icons.home_outlined,
               context.translate('home.navigation.myProducts'),
             ),
             TabData(
-              Icons.verified_user_outlined, 
+              Icons.verified_user_outlined,
               context.translate('home.navigation.addInsurance'),
             ),
             TabData(
-              Icons.location_on_outlined, 
+              Icons.location_on_outlined,
               context.translate('home.navigation.location'),
             ),
           ],

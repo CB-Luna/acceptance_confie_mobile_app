@@ -185,18 +185,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           // TODO: Implementar navegación para otros tipos de seguro
         }
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.getCardColor(context),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: AppTheme.getBoxShadowColor(context),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
+      child: Card(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

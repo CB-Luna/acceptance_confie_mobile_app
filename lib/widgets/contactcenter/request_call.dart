@@ -33,44 +33,43 @@ class _RequestCallPageState extends State<RequestCallPage> {
           ),
         ),
         leadingWidth: 56,
-        title: Stack(
-          alignment: Alignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.translate('requestCall.title'),
-                  style: const TextStyle(
-                    color: AppTheme.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: 0,
-              child: Text(
-                context.translate('requestCall.back'),
-                style: const TextStyle(
-                  color: AppTheme.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+            Text(
+              context.translate('requestCall.back'),
+              style: const TextStyle(
+                color: AppTheme.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
         ),
-        elevation: 0,
       ),
       body: Stack(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 60),
+              const SizedBox(height: 10),
               // Contenedor principal
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      context.translate('requestCall.title'),
+                      style: const TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -139,7 +138,8 @@ class _RequestCallPageState extends State<RequestCallPage> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              context.translate('requestCall.callCustomerService'),
+                              context
+                                  .translate('requestCall.callCustomerService'),
                               style: const TextStyle(
                                 color: AppTheme.white,
                                 fontSize: 16,
@@ -182,7 +182,8 @@ class _RequestCallPageState extends State<RequestCallPage> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              context.translate('requestCall.callInsuranceQuotes'),
+                              context
+                                  .translate('requestCall.callInsuranceQuotes'),
                               style: const TextStyle(
                                 color: AppTheme.white,
                                 fontSize: 16,
@@ -226,15 +227,15 @@ class _RequestCallPageState extends State<RequestCallPage> {
           },
           tabItems: [
             TabData(
-              Icons.home_outlined, 
+              Icons.home_outlined,
               context.translate('home.navigation.myProducts'),
             ),
             TabData(
-              Icons.verified_user_outlined, 
+              Icons.verified_user_outlined,
               context.translate('home.navigation.addInsurance'),
             ),
             TabData(
-              Icons.location_on_outlined, 
+              Icons.location_on_outlined,
               context.translate('home.navigation.location'),
             ),
           ],

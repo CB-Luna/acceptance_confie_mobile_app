@@ -110,6 +110,17 @@
     "effectiveDate": "EFFECTIVE DATE",
     "expirationDate": "EXPIRATION DATE"
   },
+  "quoteCallcenter": {
+    "back": "Back",
+    "autoInsurance": "Auto Insurance",
+    "whatsNext": "Here's what happens next:",
+    "representative": "A representative will be contacting you shortly at this number:",
+    "isCorrect": "Is this correct?",
+    "provideCorrect": "If not please provide the correct phone number.",
+    "editPhoneNumber": "Edit phone number",
+    "save": "Save",
+    "enterPhoneNumber": "Enter phone number"
+  },
   "submitClaim": {
     "title": "Submit a Claim",
     "back": "Back",

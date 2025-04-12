@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/pages/home_page.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class QuoteCallcenter extends StatefulWidget {
   final String phoneNumber;
@@ -7,7 +11,8 @@ class QuoteCallcenter extends StatefulWidget {
   final VoidCallback? onBackPressed;
 
   const QuoteCallcenter({
-    required this.insuranceType, super.key,
+    required this.insuranceType,
+    super.key,
     this.phoneNumber = '123-456-7890',
     this.onBackPressed,
   });
@@ -19,6 +24,7 @@ class QuoteCallcenter extends StatefulWidget {
 class _QuoteCallcenterState extends State<QuoteCallcenter> {
   final TextEditingController _phoneController = TextEditingController();
   bool _isEditing = false;
+  int _selectedIndex = 1; // Inicializado en 1 para 'Add Insurance'
 
   @override
   void initState() {
@@ -35,25 +41,25 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5FCFF),
+      backgroundColor: AppTheme.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF5FCFF),
+        backgroundColor: AppTheme.getBackgroundColor(context),
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: GestureDetector(
             onTap: widget.onBackPressed ?? () => Navigator.of(context).pop(),
-            child: const Row(
+            child: Row(
               children: [
                 Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xFF0046B9),
+                  Icons.arrow_back,
+                  color: AppTheme.getIconColor(context),
                   size: 20,
                 ),
                 Text(
-                  'Back',
+                  context.translate('quoteCallcenter.back'),
                   style: TextStyle(
-                    color: Color(0xFF0046B9),
+                    color: AppTheme.getIconColor(context),
                     fontSize: 16,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,
@@ -80,10 +86,10 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                     height: 40,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
-                    'Auto Insurance',
+                  Text(
+                    context.translate('quoteCallcenter.autoInsurance'),
                     style: TextStyle(
-                      color: Color(0xFF0046B9),
+                      color: AppTheme.getPrimaryColor(context),
                       fontSize: 20,
                       fontFamily: 'Open Sans',
                       fontWeight: FontWeight.w600,
@@ -114,25 +120,25 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                       const SizedBox(height: 24),
 
                       // Texto informativo
-                      const Text(
-                        "Here's what happens next:",
+                      Text(
+                        context.translate('quoteCallcenter.whatsNext'),
                         style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                          color: AppTheme.getTitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
 
                       // Información de contacto
-                      const Text(
-                        'A representative will be contacting you shortly at this number:',
+                      Text(
+                        context.translate('quoteCallcenter.representative'),
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Open Sans',
-                          color: Colors.black87,
+                          color: AppTheme.getTitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -143,36 +149,36 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                           ? _buildPhoneEditField()
                           : Text(
                               _phoneController.text,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                color: AppTheme.getSubtitleTextColor(context),
                               ),
                               textAlign: TextAlign.center,
                             ),
                       const SizedBox(height: 24),
 
                       // Pregunta de confirmación
-                      const Text(
-                        'Is this correct?',
+                      Text(
+                        context.translate('quoteCallcenter.isCorrect'),
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w500,
-                          color: Colors.black87,
+                          color: AppTheme.getTitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
 
                       // Instrucción para editar
-                      const Text(
-                        'If not please provide the correct phone number.',
+                      Text(
+                        context.translate('quoteCallcenter.provideCorrect'),
                         style: TextStyle(
                           fontSize: 14,
                           fontFamily: 'Open Sans',
-                          color: Colors.black54,
+                          color: AppTheme.getSubtitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -188,22 +194,41 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
+      bottomNavigationBar: Transform.translate(
+        offset: const Offset(0, 0),
         child: CircleNavBar(
-          tabItems: [
-            TabData(Icons.home_outlined, 'My Products'),
-            TabData(Icons.verified_user_outlined, '+Add Insurance'),
-            TabData(Icons.location_on_outlined, 'Location'),
-          ],
-          selectedPos: 1,
+          selectedPos: _selectedIndex,
           onTap: (index) {
-            if (index == 0) {
-              // Home button
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/home', (route) => false);
+            setState(() {
+              _selectedIndex = index;
+            });
+
+            switch (index) {
+              case 0: // My Products
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+                break;
+              case 2: // Location
+                LocatorDeviceModule.navigateToLocationView(context);
+                break;
             }
           },
+          tabItems: [
+            TabData(
+              Icons.home_outlined,
+              context.translate('home.navigation.myProducts'),
+            ),
+            TabData(
+              Icons.verified_user_outlined,
+              context.translate('home.navigation.addInsurance'),
+            ),
+            TabData(
+              Icons.location_on_outlined,
+              context.translate('home.navigation.location'),
+            ),
+          ],
         ),
       ),
     );
@@ -214,10 +239,11 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
       controller: _phoneController,
       keyboardType: TextInputType.phone,
       textAlign: TextAlign.center,
-      decoration: const InputDecoration(
-        hintText: 'Enter phone number',
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: InputDecoration(
+        hintText: context.translate('quoteCallcenter.enterPhoneNumber'),
+        border: const OutlineInputBorder(),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       style: const TextStyle(
         fontSize: 16,
@@ -241,21 +267,22 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
       },
       icon: Icon(
         _isEditing ? Icons.check : Icons.edit,
-        color: Colors.white,
+        color: AppTheme.white,
         size: 18,
       ),
       label: Text(
-        _isEditing ? 'Save' : 'Edit phone number',
+        _isEditing
+            ? context.translate('quoteCallcenter.save')
+            : context.translate('quoteCallcenter.editPhoneNumber'),
         style: const TextStyle(
-          color: Colors.white,
+          color: AppTheme.white,
           fontSize: 14,
           fontFamily: 'Open Sans',
           fontWeight: FontWeight.bold,
         ),
       ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.getGreenColor(context),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),

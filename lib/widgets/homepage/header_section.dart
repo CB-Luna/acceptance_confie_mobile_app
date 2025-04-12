@@ -112,13 +112,13 @@ class _HeaderSectionState extends State<HeaderSection> {
                                   width: 24,
                                   height: 24,
                                   strokeWidth: 4,
-                                  color: AppTheme.getPrimaryColor(context),
+                                  color: AppTheme.getIconColor(context),
                                 )
                               // Usar un icono estático cuando no hay notificaciones
                               : Icon(
                                   Icons.notifications_outlined,
                                   size: 24,
-                                  color: AppTheme.getPrimaryColor(context),
+                                  color: AppTheme.getIconColor(context),
                                 ),
                         ),
                       ),

@@ -67,7 +67,7 @@ class SafetyCheckCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
                 child: Text(
                   context.translate('submitClaim.safetyCheck.call911'),
@@ -86,7 +86,7 @@ class SafetyCheckCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
                 child: Text(
                   context.translate('submitClaim.safetyCheck.imSafe'),

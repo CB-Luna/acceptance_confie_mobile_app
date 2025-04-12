@@ -110,6 +110,17 @@
     "effectiveDate": "FECHA DE INICIO",
     "expirationDate": "FECHA DE VENCIMIENTO"
   },
+  "quoteCallcenter": {
+    "back": "Atrás",
+    "autoInsurance": "Seguro de Auto",
+    "whatsNext": "Esto es lo que sigue:",
+    "representative": "Un representante se pondrá en contacto contigo pronto a este número:",
+    "isCorrect": "¿Es correcto?",
+    "provideCorrect": "Si no, por favor proporciona el número de teléfono correcto.",
+    "editPhoneNumber": "Editar número de teléfono",
+    "save": "Guardar",
+    "enterPhoneNumber": "Ingresa número de teléfono"
+  },
   "submitClaim": {
     "title": "Enviar un Reclamo",
     "back": "Atrás",
