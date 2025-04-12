@@ -56,20 +56,28 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                   color: AppTheme.getIconColor(context),
                   size: 20,
                 ),
-                Text(
-                  context.translate('quoteCallcenter.back'),
-                  style: TextStyle(
-                    color: AppTheme.getIconColor(context),
-                    fontSize: 16,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
               ],
             ),
           ),
         ),
-        leadingWidth: 100,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Positioned(
+              left: 0,
+              child: Text(
+                context.translate('quoteCallcenter.back'),
+                style: TextStyle(
+                  color: AppTheme.getIconColor(context),
+                  fontSize: 16,
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        leadingWidth: 56,
       ),
       body: SingleChildScrollView(
         child: Padding(

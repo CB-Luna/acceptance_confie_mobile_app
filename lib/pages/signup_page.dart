@@ -93,10 +93,12 @@ class SignUpPageState extends State<SignUpPage> {
       setState(() => _isLoading = true);
       try {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        // Aseguramos que el email siempre se envíe en minúsculas
+        final email = _emailController.text.toLowerCase();
         await authProvider.signUp(
           _firstNameController.text,
           _lastNameController.text,
-          _emailController.text,
+          email,
           _passwordController.text,
           _getFormattedPhoneNumber(),
           _policyNumberController.text,
@@ -206,10 +208,20 @@ class SignUpPageState extends State<SignUpPage> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
                     decoration: AppTheme.inputDecoration(
                       context,
                       labelText: context.translate('auth.email'),
                     ),
+                    // Convertir automáticamente a minúsculas mientras el usuario escribe
+                    onChanged: (value) {
+                      if (value != value.toLowerCase()) {
+                        _emailController.value = TextEditingValue(
+                          text: value.toLowerCase(),
+                          selection: _emailController.selection,
+                        );
+                      }
+                    },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return context.translate('auth.pleaseEnterEmail');

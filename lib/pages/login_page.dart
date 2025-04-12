@@ -169,6 +169,17 @@ class LoginPageState extends State<LoginPage> {
                               context,
                               labelText: context.translate('auth.username'),
                             ),
+                            keyboardType: TextInputType.emailAddress,
+                            autocorrect: false,
+                            // Convertir automáticamente a minúsculas mientras el usuario escribe
+                            onChanged: (value) {
+                              if (value != value.toLowerCase()) {
+                                _usernameController.value = TextEditingValue(
+                                  text: value.toLowerCase(),
+                                  selection: _usernameController.selection,
+                                );
+                              }
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return context
@@ -331,8 +342,10 @@ class LoginPageState extends State<LoginPage> {
 
       // Actualmente solo usamos loginStep1 ya que el 2FA está desactivado
       // pero mantenemos la estructura para uso futuro
+      // Aseguramos que el email siempre se envíe en minúsculas
+      final email = _usernameController.text.toLowerCase();
       success = await authProvider.loginStep1(
-        _usernameController.text,
+        email,
         _passwordController.text,
       );
 
@@ -351,8 +364,9 @@ class LoginPageState extends State<LoginPage> {
 
       // Si el login fue exitoso y la biometría está disponible y habilitada, guardar las credenciales
       if (success && _isBiometricAvailable && _isBiometricEnabled) {
+        // Aseguramos que el email siempre se guarde en minúsculas
         await authProvider.saveCredentials(
-          _usernameController.text,
+          email, // Usamos el email ya convertido a minúsculas
           _passwordController.text,
         );
       }
