@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/services/location_service.dart';
 import '../../locatordevice/locator_device_module.dart';
 import '../../locatordevice/presentation/widgets/loading_view.dart';
 import '../../pages/home_page.dart';
+import '../../pages/roadsideautoclub/webview_page.dart';
 import '../../utils/menu/circle_nav_bar.dart';
 import '../../widgets/common/custom_dialog.dart';
 import 'zip_code_dialog.dart';
@@ -367,21 +367,18 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     );
 
     if (result == true && context.mounted) {
-      final url = Uri.parse(
-        'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya',
+      final urlString = 'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya';
+      
+      // Abrir la URL en un WebView embebido en lugar de un navegador externo
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WebViewPage(
+            url: urlString,
+            title: '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation',
+          ),
+        ),
       );
-      // if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-      // } else if (context.mounted) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(
-      //       content: Text(
-      //         context.translate('vehicleInsurance.location.invalidUrl'),
-      //       ),
-      //       backgroundColor: Colors.red,
-      //     ),
-      //   );
-      // }
     }
   }
 }
