@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
-import '../../pages/roadsideautoclub/quote_plans_page.dart';
+import '../../pages/roadsideautoclub/webview_page.dart';
 
 class RoadsideHelp extends StatefulWidget {
   const RoadsideHelp({super.key});
@@ -29,7 +29,10 @@ class _RoadsideHelpState extends State<RoadsideHelp>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const QuotePlansPage(),
+              builder: (context) => const WebViewPage(
+                url: 'https://buy.freeway.com/product/auto-club/step-1',
+                title: 'Freeway Auto Club',
+              ),
             ),
           );
         },
