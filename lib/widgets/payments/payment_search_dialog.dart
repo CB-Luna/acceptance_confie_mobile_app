@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 enum SearchType {
   policyNumber,
@@ -21,6 +24,10 @@ class PaymentSearchDialog extends StatefulWidget {
     required BuildContext context,
     String? initialZipCode,
   }) async {
+    // Si no se proporciona un código postal inicial, intentar obtenerlo por geolocalización
+    if (initialZipCode == null || initialZipCode.isEmpty) {
+      initialZipCode = await _getZipCodeFromLocation(context);
+    }
     return await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
@@ -54,6 +61,65 @@ class PaymentSearchDialog extends StatefulWidget {
 
   @override
   State<PaymentSearchDialog> createState() => _PaymentSearchDialogState();
+  
+  // Método para obtener el código postal basado en la ubicación del usuario
+  static Future<String> _getZipCodeFromLocation(BuildContext context) async {
+    // Mostrar un indicador de progreso
+    final overlay = LoadingView.showOverlay(
+      context,
+      message: context.translate('vehicleInsurance.location.gettingLocation'),
+      indicatorColor: AppTheme.getPrimaryColor(context),
+      textColor: AppTheme.getTitleTextColor(context),
+    );
+
+    try {
+      // Verificar si los servicios de ubicación están habilitados
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        // Si los servicios de ubicación no están habilitados, devolver cadena vacía
+        return '';
+      }
+
+      // Verificar permisos de ubicación
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          // Si los permisos son denegados, devolver cadena vacía
+          return '';
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        // Si los permisos son denegados permanentemente, devolver cadena vacía
+        return '';
+      }
+
+      // Obtener la posición actual
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Obtener la dirección a partir de las coordenadas
+      final List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        final Placemark placemark = placemarks.first;
+        final String postalCode = placemark.postalCode ?? '';
+        return postalCode;
+      }
+      return '';
+    } catch (e) {
+      debugPrint('Error al obtener la ubicación: $e');
+      return '';
+    } finally {
+      // Ocultar el indicador de progreso
+      overlay.remove();
+    }
+  }
 }
 
 class _PaymentSearchDialogState extends State<PaymentSearchDialog> {

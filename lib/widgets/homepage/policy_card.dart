@@ -345,7 +345,7 @@ class _PolicyCardState extends State<PolicyCard>
                                 onPressed: () async {
                                   final result = await PaymentSearchDialog.show(
                                     context: context,
-                                    initialZipCode: '',
+                                    initialZipCode: null, // Usar null para que se active la geolocalización
                                   );
 
                                   if (result != null && context.mounted) {
