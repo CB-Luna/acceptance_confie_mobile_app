@@ -378,7 +378,8 @@ class _PolicyCardState extends State<PolicyCard>
                                             'payment.search.visitWebsite',
                                           ),
                                           negativeButtonText: context.translate(
-                                              'payment.search.cancel'),
+                                            'payment.search.cancel',
+                                          ),
                                         );
 
                                         // Marcar el diálogo como mostrado

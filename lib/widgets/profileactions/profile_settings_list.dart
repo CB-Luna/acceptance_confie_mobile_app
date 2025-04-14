@@ -24,11 +24,18 @@ class ProfileSettingsList extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(context.translateWithArgs('profile.biometricEnable',
-                  args: [biometricType])),
-              content: Text(context.translateWithArgs(
+              title: Text(
+                context.translateWithArgs(
+                  'profile.biometricEnable',
+                  args: [biometricType],
+                ),
+              ),
+              content: Text(
+                context.translateWithArgs(
                   'profile.biometricMessage',
-                  args: [biometricType])),
+                  args: [biometricType],
+                ),
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
@@ -82,10 +89,14 @@ class ProfileSettingsList extends StatelessWidget {
                 if (biometricProvider.isLoading) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 24.0),
+                      vertical: 16.0,
+                      horizontal: 24.0,
+                    ),
                     child: Center(
-                        child: LoadingView(
-                            message: context.translate('profile.loading'))),
+                      child: LoadingView(
+                        message: context.translate('profile.loading'),
+                      ),
+                    ),
                   );
                 }
 
