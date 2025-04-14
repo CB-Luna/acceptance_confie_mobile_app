@@ -99,6 +99,14 @@ class LoginPageState extends State<LoginPage> {
           return false;
         }
 
+        // Si el login fue exitoso, navegar a la pantalla de inicio
+        if (loginSuccess && mounted) {
+          await Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home',
+            (route) => false,
+          );
+        }
+
         return loginSuccess;
       }
 
