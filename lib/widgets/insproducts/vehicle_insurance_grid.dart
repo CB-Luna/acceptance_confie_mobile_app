@@ -367,15 +367,17 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     );
 
     if (result == true && context.mounted) {
-      final urlString = 'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya';
-      
+      final urlString =
+          'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya';
+
       // Abrir la URL en un WebView embebido en lugar de un navegador externo
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => WebViewPage(
             url: urlString,
-            title: '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation',
+            title:
+                '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation',
           ),
         ),
       );

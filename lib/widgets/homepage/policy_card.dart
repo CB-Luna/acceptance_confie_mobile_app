@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
 import '../../pages/id_card_page.dart';
+import '../../pages/roadsideautoclub/webview_page.dart';
+import '../../widgets/payments/payment_search_dialog.dart';
 import '../../widgets/theme/app_theme.dart';
-import '../payments/payment_now.dart';
 
 class PolicyCard extends StatefulWidget {
   final dynamic user;
@@ -341,14 +342,46 @@ class _PolicyCardState extends State<PolicyCard>
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaymentNowPage(),
-                                    ),
+                                onPressed: () async {
+                                  final result = await PaymentSearchDialog.show(
+                                    context: context,
+                                    initialZipCode: '',
                                   );
+
+                                  if (result != null && context.mounted) {
+                                    final zipCode = result['zipCode'];
+                                    final searchType =
+                                        result['searchType'] as SearchType;
+
+                                    String urlString;
+                                    String title;
+
+                                    if (searchType == SearchType.policyNumber) {
+                                      urlString =
+                                          'https://quickpay.freeway.com/PolicySearch?zipCode=$zipCode';
+                                      title = context.translate(
+                                        'payment.search.byPolicyNumber',
+                                      );
+                                    } else {
+                                      urlString =
+                                          'https://quickpay.freeway.com/?zipCode=$zipCode';
+                                      title = context.translate(
+                                        'payment.search.byPhoneNumber',
+                                      );
+                                    }
+
+                                    if (context.mounted) {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => WebViewPage(
+                                            url: urlString,
+                                            title: title,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,

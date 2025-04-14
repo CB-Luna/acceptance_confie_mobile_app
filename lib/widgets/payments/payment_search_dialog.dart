@@ -2,48 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
-class ZipCodeDialog extends StatefulWidget {
-  final String? initialZipCode;
-  final Function(String) onContinue;
+enum SearchType {
+  policyNumber,
+  phoneNumber,
+}
 
-  const ZipCodeDialog({
+class PaymentSearchDialog extends StatefulWidget {
+  final String? initialZipCode;
+  final Function(String, SearchType) onContinue;
+
+  const PaymentSearchDialog({
     required this.onContinue,
     super.key,
     this.initialZipCode,
   });
 
-  static Future<String?> show({
+  static Future<Map<String, dynamic>?> show({
     required BuildContext context,
     String? initialZipCode,
   }) async {
-    return await showModalBottomSheet<String>(
+    return await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      // Asegurar que el contenido se desplace cuando aparece el teclado
       enableDrag: true,
-      // Evitar que el teclado oculte el contenido
       useSafeArea: true,
       builder: (BuildContext context) {
-        // Obtener el tamaño del teclado para ajustar el tamaño del diálogo
         final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-
-        // Calcular el tamaño inicial basado en si el teclado está visible
-        final initialSize = keyboardHeight > 0
-            ? 0.6 // Tamaño mayor cuando el teclado está visible
-            : 0.45; // Tamaño normal cuando el teclado no está visible
+        final initialSize = keyboardHeight > 0 ? 0.6 : 0.5;
 
         return DraggableScrollableSheet(
           initialChildSize: initialSize,
           minChildSize: 0.3,
-          maxChildSize: 0.9, // Aumentar el tamaño máximo
+          maxChildSize: 0.9,
           builder: (_, controller) {
-            return ZipCodeDialog(
+            return PaymentSearchDialog(
               initialZipCode: initialZipCode,
-              onContinue: (zipCode) {
-                // Cerrar el teclado antes de cerrar el diálogo
+              onContinue: (zipCode, searchType) {
                 FocusScope.of(context).unfocus();
-                Navigator.pop(context, zipCode);
+                Navigator.pop(context, {
+                  'zipCode': zipCode,
+                  'searchType': searchType,
+                });
               },
             );
           },
@@ -53,12 +53,13 @@ class ZipCodeDialog extends StatefulWidget {
   }
 
   @override
-  State<ZipCodeDialog> createState() => _ZipCodeDialogState();
+  State<PaymentSearchDialog> createState() => _PaymentSearchDialogState();
 }
 
-class _ZipCodeDialogState extends State<ZipCodeDialog> {
+class _PaymentSearchDialogState extends State<PaymentSearchDialog> {
   late TextEditingController _zipCodeController;
   bool _isZipCodeValid = false;
+  SearchType _selectedSearchType = SearchType.policyNumber;
 
   @override
   void initState() {
@@ -78,7 +79,6 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
   }
 
   void _validateZipCode(String value) {
-    // Validar que el código postal tenga 5 dígitos
     setState(() {
       _isZipCodeValid = value.length == 5 && RegExp(r'^\d{5}$').hasMatch(value);
     });
@@ -86,12 +86,10 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Obtener el tamaño del teclado para ajustar el padding
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardVisible = keyboardHeight > 0;
 
     return GestureDetector(
-      // Cerrar el teclado al tocar fuera del campo de texto
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
         decoration: BoxDecoration(
@@ -102,7 +100,6 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
           ),
         ),
         child: Padding(
-          // Ajustar el padding inferior cuando el teclado está visible
           padding: EdgeInsets.fromLTRB(
             20.0,
             20.0,
@@ -129,9 +126,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                 const SizedBox(height: 20),
                 // Título
                 Text(
-                  context.translate(
-                    'vehicleInsurance.location.zipCodeDialogTitle',
-                  ),
+                  context.translate('payment.search.title'),
                   style: TextStyle(
                     fontFamily: 'Open Sans',
                     fontSize: 20,
@@ -143,9 +138,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                 const SizedBox(height: 10),
                 // Subtítulo
                 Text(
-                  context.translate(
-                    'vehicleInsurance.location.zipCodeDialogMessage',
-                  ),
+                  context.translate('payment.search.subtitle'),
                   style: TextStyle(
                     fontFamily: 'Open Sans',
                     fontSize: 14,
@@ -153,7 +146,73 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
+                
+                // Opciones de búsqueda
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppTheme.getDetailsGreyColor(context).withValues(alpha: 128),
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      // Opción de búsqueda por número de póliza
+                      RadioListTile<SearchType>(
+                        title: Text(
+                          context.translate('payment.search.byPolicyNumber'),
+                          style: TextStyle(
+                            fontFamily: 'Open Sans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.getTitleTextColor(context),
+                          ),
+                        ),
+                        value: SearchType.policyNumber,
+                        groupValue: _selectedSearchType,
+                        activeColor: AppTheme.getPrimaryColor(context),
+                        onChanged: (SearchType? value) {
+                          if (value != null) {
+                            setState(() {
+                              _selectedSearchType = value;
+                            });
+                          }
+                        },
+                      ),
+                      Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: AppTheme.getDetailsGreyColor(context).withValues(alpha: 51),
+                      ),
+                      // Opción de búsqueda por número de teléfono
+                      RadioListTile<SearchType>(
+                        title: Text(
+                          context.translate('payment.search.byPhoneNumber'),
+                          style: TextStyle(
+                            fontFamily: 'Open Sans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.getTitleTextColor(context),
+                          ),
+                        ),
+                        value: SearchType.phoneNumber,
+                        groupValue: _selectedSearchType,
+                        activeColor: AppTheme.getPrimaryColor(context),
+                        onChanged: (SearchType? value) {
+                          if (value != null) {
+                            setState(() {
+                              _selectedSearchType = value;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
                 // Campo de entrada de ZipCode
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -165,20 +224,17 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     keyboardType: TextInputType.number,
                     maxLength: 5,
                     decoration: InputDecoration(
-                      labelText: context
-                          .translate('vehicleInsurance.location.zipCodeHint'),
+                      labelText: context.translate('payment.search.zipCodeHint'),
                       border: InputBorder.none,
                       counterText: '',
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         borderSide: BorderSide(
                           color: AppTheme.getPrimaryColor(context),
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         borderSide: BorderSide(
                           color: AppTheme.getDetailsGreyColor(context),
                         ),
@@ -190,12 +246,13 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     ),
                   ),
                 ),
-                // Añadir espacio adicional cuando el teclado está visible
+                
                 SizedBox(height: isKeyboardVisible ? 40 : 30),
+                
                 // Botón de continuar
                 ElevatedButton(
                   onPressed: _isZipCodeValid
-                      ? () => widget.onContinue(_zipCodeController.text)
+                      ? () => widget.onContinue(_zipCodeController.text, _selectedSearchType)
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.getPrimaryColor(context),
@@ -207,8 +264,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                         .withValues(alpha: 0.5),
                   ),
                   child: Text(
-                    context
-                        .translate('vehicleInsurance.location.continueButton'),
+                    context.translate('payment.search.continueButton'),
                     style: const TextStyle(
                       fontFamily: 'Open Sans',
                       fontSize: 16,
@@ -217,7 +273,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     ),
                   ),
                 ),
-                // Espacio adicional al final para dispositivos con notch
+                
                 SizedBox(height: isKeyboardVisible ? 20 : 10),
               ],
             ),

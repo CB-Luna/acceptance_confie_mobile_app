@@ -156,6 +156,14 @@
     "billingAddress": "Dirección de Facturación",
     "paymentTotal": "Total a Pagar:",
     "payNowButton": "Pagar Ahora",
+    "search": {
+      "title": "Buscar tu Póliza",
+      "subtitle": "Ingresa tu código postal y selecciona un método de búsqueda para encontrar tu póliza",
+      "zipCodeHint": "Código Postal",
+      "continueButton": "Continuar",
+      "byPolicyNumber": "Buscar por Número de Póliza",
+      "byPhoneNumber": "Buscar por Número de Teléfono"
+    },
     "addNewMethod": "Agregar Nuevo Método",
     "cardForm": {
       "cardNumber": "Número de Tarjeta",
