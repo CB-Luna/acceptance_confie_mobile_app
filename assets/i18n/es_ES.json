@@ -166,7 +166,11 @@
       "zipCodeHint": "Código Postal",
       "continueButton": "Continuar",
       "byPolicyNumber": "Buscar por Número de Póliza",
-      "byPhoneNumber": "Buscar por Número de Teléfono"
+      "byPhoneNumber": "Buscar por Número de Teléfono",
+      "webDialogTitle": "¿Deseas realizar un pago?",
+      "webDialogMessage": "Serás redirigido a nuestro sistema de pagos para completar tu transacción.",
+      "visitWebsite": "Continuar",
+      "cancel": "Cancelar"
     },
     "addNewMethod": "Agregar Nuevo Método",
     "cardForm": {

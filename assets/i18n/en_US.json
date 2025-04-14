@@ -167,7 +167,11 @@
       "zipCodeHint": "ZIP Code",
       "continueButton": "Continue",
       "byPolicyNumber": "Search by Policy Number",
-      "byPhoneNumber": "Search by Phone Number"
+      "byPhoneNumber": "Search by Phone Number",
+      "webDialogTitle": "Would you like to make a payment?",
+      "webDialogMessage": "You'll be redirected to our payment system to complete your transaction.",
+      "visitWebsite": "Continue",
+      "cancel": "Cancel"
     },
     "cardForm": {
       "cardNumber": "Card Number",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/pages/webview_page.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/widgets/common/custom_dialog.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
@@ -343,44 +344,66 @@ class _PolicyCardState extends State<PolicyCard>
                               ),
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  final result = await PaymentSearchDialog.show(
-                                    context: context,
-                                    initialZipCode:
-                                        null, // Usar null para que se active la geolocalización
-                                  );
+                                  if (context.mounted) {
+                                    final result =
+                                        await PaymentSearchDialog.show(
+                                      context: context,
+                                      initialZipCode:
+                                          null, // Usar null para que se active la geolocalización
+                                    );
 
-                                  if (result != null && context.mounted) {
-                                    final zipCode = result['zipCode'];
-                                    final searchType =
-                                        result['searchType'] as SearchType;
-
-                                    String urlString;
-                                    String title;
-
-                                    if (searchType == SearchType.policyNumber) {
-                                      urlString =
-                                          'https://quickpay.freeway.com/PolicySearch?zipCode=$zipCode';
-                                      title = context.translate(
-                                        'payment.search.byPolicyNumber',
-                                      );
-                                    } else {
-                                      urlString =
-                                          'https://quickpay.freeway.com/?zipCode=$zipCode';
-                                      title = context.translate(
-                                        'payment.search.byPhoneNumber',
-                                      );
-                                    }
-
-                                    if (context.mounted) {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => WebViewPage(
-                                            url: urlString,
-                                            title: title,
-                                          ),
+                                    if (result != null && context.mounted) {
+                                      final dialogResult =
+                                          await CustomDialog.show(
+                                        context: context,
+                                        title: context.translate(
+                                          'payment.search.webDialogTitle',
                                         ),
+                                        message: context.translate(
+                                          'payment.search.webDialogMessage',
+                                        ),
+                                        positiveButtonText: context.translate(
+                                          'payment.search.visitWebsite',
+                                        ),
+                                        negativeButtonText: context
+                                            .translate('payment.search.cancel'),
                                       );
+                                      if (dialogResult == true &&
+                                          context.mounted) {
+                                        final zipCode = result['zipCode'];
+                                        final searchType =
+                                            result['searchType'] as SearchType;
+
+                                        String urlString;
+                                        String title;
+
+                                        if (searchType ==
+                                            SearchType.policyNumber) {
+                                          urlString =
+                                              'https://quickpay.freeway.com/PolicySearch?zipCode=$zipCode';
+                                          title = context.translate(
+                                            'payment.search.byPolicyNumber',
+                                          );
+                                        } else {
+                                          urlString =
+                                              'https://quickpay.freeway.com/?zipCode=$zipCode';
+                                          title = context.translate(
+                                            'payment.search.byPhoneNumber',
+                                          );
+                                        }
+
+                                        if (context.mounted) {
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => WebViewPage(
+                                                url: urlString,
+                                                title: title,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      }
                                     }
                                   }
                                 },
