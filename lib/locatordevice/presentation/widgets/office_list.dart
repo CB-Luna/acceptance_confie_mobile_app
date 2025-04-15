@@ -58,8 +58,8 @@ class OfficeList extends StatelessWidget {
             ),
           ),
 
-          // Si showNoNearbyOfficesView es true, mostrar el mensaje de no hay oficinas cercanas
-          if (showNoNearbyOfficesView) ...[
+          // Contenido principal
+          if (showNoNearbyOfficesView) 
             // Contenido cuando no hay oficinas cercanas
             Expanded(
               child: SingleChildScrollView(
@@ -73,105 +73,103 @@ class OfficeList extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ] else ...[
-            // Título
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                context.translate('office.nearestOffice'),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.getTextGreyColor(context),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // Lista de oficinas
+            )
+          else if (offices.isEmpty)
+            // Cuando la lista de oficinas está vacía
             Expanded(
-              child: offices.isEmpty
-                  ? Center(
-                      child:
-                          Text(context.translate('office.noOfficesAvailable')),
-                    )
-                  : CustomScrollView(
-                      controller: scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      slivers: [
-                        SliverPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                // Si es el último elemento y solo hay una oficina,
-                                // mostrar el botón "Find other offices"
-                                if (index == offices.length) {
-                                  if (offices.length == 1) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 16.0,
-                                        bottom: 24.0,
-                                      ),
-                                      child: Center(
-                                        child: TextButton.icon(
-                                          onPressed: onViewAllOffices,
-                                          icon: Icon(
-                                            Icons.search,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          label: Text(
-                                            context.translate(
-                                              'office.findOtherOffices',
-                                            ),
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: TextButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0,
-                                              vertical: 8.0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  // Si hay más de una oficina, solo añadir espacio adicional
-                                  return const SizedBox(height: 24);
-                                }
-
-                                // Si no es el último elemento, mostrar el elemento de la oficina
-                                final office = offices[index];
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (index > 0) const Divider(),
-                                    OfficeListItem(
-                                      office: office,
-                                      index: index,
-                                      onTap: () => onOfficeTap(office),
-                                      onDirectionsTap: () =>
-                                          onOfficeTap(office),
-                                    ),
-                                  ],
-                                );
-                              },
-                              childCount: offices.length +
-                                  1, // +1 para el espacio adicional o el botón
+              child: Center(
+                child: Text(context.translate('office.noOfficesAvailable')),
+              ),
+            )
+          else
+            // Cuando hay oficinas para mostrar
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                // Incrementamos el itemCount en 2: uno para el título y otro para el espacio/botón al final
+                itemCount: offices.length + 2,
+                itemBuilder: (context, index) {
+                  // Primer elemento es el título
+                  if (index == 0) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            context.translate('office.nearestOffice'),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.getTextGreyColor(context),
                             ),
                           ),
                         ),
+                        const SizedBox(height: 8),
                       ],
-                    ),
+                    );
+                  }
+                  
+                  // Ajustamos el índice para los elementos de la oficina (restamos 1 por el título)
+                  final adjustedIndex = index - 1;
+                  
+                  // Si es el último elemento (después de todas las oficinas)
+                  if (adjustedIndex == offices.length) {
+                    if (offices.length == 1) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 16.0,
+                          bottom: 24.0,
+                        ),
+                        child: Center(
+                          child: TextButton.icon(
+                            onPressed: onViewAllOffices,
+                            icon: Icon(
+                              Icons.search,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            label: Text(
+                              context.translate(
+                                'office.findOtherOffices',
+                              ),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    // Si hay más de una oficina, solo añadir espacio adicional
+                    return const SizedBox(height: 24);
+                  }
+
+                  // Si no es el último elemento, mostrar el elemento de la oficina
+                  final office = offices[adjustedIndex];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (adjustedIndex > 0) const Divider(),
+                      OfficeListItem(
+                        office: office,
+                        index: adjustedIndex,
+                        onTap: () => onOfficeTap(office),
+                        onDirectionsTap: () => onOfficeTap(office),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ],
         ],
       ),
     );
@@ -348,7 +346,9 @@ class OfficeListItem extends StatelessWidget {
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(context.translate('office.couldNotOpenMaps')),
+                          content: Text(
+                            context.translate('office.couldNotOpenMaps'),
+                          ),
                           backgroundColor: AppTheme.getRedColor(context),
                         ),
                       );
