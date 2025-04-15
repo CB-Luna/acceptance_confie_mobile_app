@@ -11,7 +11,9 @@ class LocationService {
   /// Utiliza el paquete geocoding que funciona con los servicios nativos de cada plataforma
   /// sin necesidad de una API key
   Future<String?> getZipCodeFromCoordinates(
-      double latitude, double longitude) async {
+    double latitude,
+    double longitude,
+  ) async {
     try {
       debugPrint('Obteniendo código postal para: $latitude, $longitude');
       final List<Placemark> placemarks =

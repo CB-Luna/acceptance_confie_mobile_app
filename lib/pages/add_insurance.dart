@@ -120,12 +120,18 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
             }
           },
           tabItems: [
-            TabData(Icons.home_outlined,
-                context.translate('home.navigation.myProducts')),
-            TabData(Icons.verified_user_outlined,
-                context.translate('home.navigation.addInsurance')),
-            TabData(Icons.location_on_outlined,
-                context.translate('home.navigation.location')),
+            TabData(
+              Icons.home_outlined,
+              context.translate('home.navigation.myProducts'),
+            ),
+            TabData(
+              Icons.verified_user_outlined,
+              context.translate('home.navigation.addInsurance'),
+            ),
+            TabData(
+              Icons.location_on_outlined,
+              context.translate('home.navigation.location'),
+            ),
           ],
         ),
       ),

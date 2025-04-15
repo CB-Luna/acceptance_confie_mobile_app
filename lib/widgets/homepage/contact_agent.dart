@@ -64,7 +64,8 @@ class ContactAgent extends StatelessWidget {
                             const SizedBox(height: 2),
                             Text(
                               context.translate(
-                                  'home.contactAgent.contactMyAgent'),
+                                'home.contactAgent.contactMyAgent',
+                              ),
                               style: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
                                 fontFamily: 'Open Sans',

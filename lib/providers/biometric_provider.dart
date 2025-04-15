@@ -25,6 +25,7 @@ class BiometricProvider extends ChangeNotifier {
   }
 
   BiometricProvider() {
+    // Inicializar inmediatamente
     _initBiometrics();
   }
 
@@ -33,19 +34,27 @@ class BiometricProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    // Verifica si el dispositivo soporta biometría
-    _isAvailable = await _biometricService.isBiometricAvailable();
-
-    if (_isAvailable) {
-      // Obtiene el tipo de biometría disponible
-      _biometricType = await _biometricService.getBiometricTypeName();
-
-      // Verifica si la biometría está habilitada en la app
+    try {
+      // Primero verificamos si la biometría está habilitada en la app
+      // Esta operación es más rápida porque solo lee de SharedPreferences
       _isEnabled = await _biometricService.isBiometricEnabled();
-    }
 
-    _isLoading = false;
-    notifyListeners();
+      // Luego verificamos si el dispositivo soporta biometría
+      _isAvailable = await _biometricService.isBiometricAvailable();
+
+      if (_isAvailable) {
+        // Obtiene el tipo de biometría disponible
+        _biometricType = await _biometricService.getBiometricTypeName();
+      }
+    } catch (e) {
+      debugPrint('Error al inicializar biometría: $e');
+      // En caso de error, asumimos valores seguros
+      _isAvailable = false;
+      _isEnabled = false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   /// Habilita o deshabilita la autenticación biométrica
@@ -81,7 +90,8 @@ class BiometricProvider extends ChangeNotifier {
           if (!credentialsSaved) {
             // Si no se pudieron guardar las credenciales, mostrar un mensaje de error
             debugPrint(
-                'No se pudieron guardar las credenciales para biometría');
+              'No se pudieron guardar las credenciales para biometría',
+            );
             // Pero continuamos con la habilitación de la biometría
           }
         }
@@ -120,8 +130,33 @@ class BiometricProvider extends ChangeNotifier {
   }
 
   /// Verifica si la biometría está disponible y habilitada
+  ///
+  /// Este método realiza una verificación completa del estado biométrico,
+  /// incluyendo la disponibilidad del hardware y si está habilitada en la app.
   Future<void> refreshBiometricState() async {
-    await _initBiometrics();
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Verificar si la biometría está habilitada en la app (desde SharedPreferences)
+      _isEnabled = await _biometricService.isBiometricEnabled();
+      debugPrint('BiometricProvider - Biometría habilitada: $_isEnabled');
+
+      // Verificar si el dispositivo soporta biometría (consulta al hardware)
+      _isAvailable = await _biometricService.isBiometricAvailable();
+      debugPrint('BiometricProvider - Biometría disponible: $_isAvailable');
+
+      if (_isAvailable) {
+        // Actualizar el tipo de biometría
+        _biometricType = await _biometricService.getBiometricTypeName();
+        debugPrint('BiometricProvider - Tipo de biometría: $_biometricType');
+      }
+    } catch (e) {
+      debugPrint('Error al refrescar estado biométrico: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   /// Obtiene los tipos de biometría disponibles

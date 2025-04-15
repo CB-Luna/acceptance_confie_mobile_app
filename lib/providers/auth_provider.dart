@@ -28,14 +28,16 @@ class AuthProvider with ChangeNotifier {
   User? get currentUser => _currentUser;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _isAuthenticated;
-  bool get requiresTwoFactor => _requiresTwoFactor; // Se mantiene para uso futuro
+  bool get requiresTwoFactor =>
+      _requiresTwoFactor; // Se mantiene para uso futuro
   String? get authToken => _authToken;
 
   // Método principal de login (ahora sin 2FA activo)
   Future<bool> loginStep1(String username, String password) async {
     try {
       _errorMessage = null;
-      _requiresTwoFactor = false; // Siempre será falso mientras el 2FA esté desactivado
+      _requiresTwoFactor =
+          false; // Siempre será falso mientras el 2FA esté desactivado
       debugPrint('AuthProvider - Iniciando login para usuario: $username');
 
       // Guardar credenciales temporalmente para uso futuro
@@ -43,7 +45,7 @@ class AuthProvider with ChangeNotifier {
       _lastPassword = password;
 
       final response = await _authService.loginStep1(username, password);
-      
+
       if (response.hasErrors) {
         _errorMessage = response.errorMessage;
         notifyListeners();
@@ -68,11 +70,11 @@ class AuthProvider with ChangeNotifier {
   Future<bool> loginStep2(String twoFactorCode) async {
     try {
       _errorMessage = null;
-      
+
       // NOTA: Este método no se usa actualmente ya que el 2FA está desactivado
       // Se mantiene para implementación futura
       final response = await _authService.loginStep2(twoFactorCode);
-      
+
       if (response.hasErrors) {
         _errorMessage = response.errorMessage;
         notifyListeners();
@@ -97,21 +99,22 @@ class AuthProvider with ChangeNotifier {
       // Guardar el token de autenticación
       _authToken = response.token;
       await _secureStorage.write(key: _tokenKey, value: _authToken);
-      
+
       // Como no tenemos información del usuario en la respuesta,
       // creamos un usuario con valores por defecto
       final userInfo = UserInfo.defaultInfo(
         email: _lastUsername ?? 'user@example.com',
         customerId: '1001', // ID por defecto
       );
-      
+
       _currentUser = User(
         username: _lastUsername ?? 'user',
         fullName: userInfo.fullName,
         policyNumber: userInfo.policyNumber,
         nextPayment: DateTime.now().add(const Duration(days: 30)),
         policyType: userInfo.policyType,
-        customerId: int.parse(userInfo.customerId.replaceAll(RegExp(r'[^0-9]'), '0')),
+        customerId:
+            int.parse(userInfo.customerId.replaceAll(RegExp(r'[^0-9]'), '0')),
         email: userInfo.email,
         phone: userInfo.phone,
         avatar: userInfo.avatar,
@@ -119,15 +122,15 @@ class AuthProvider with ChangeNotifier {
       );
 
       debugPrint('AuthProvider - Usuario creado con valores por defecto');
-      
+
       _isAuthenticated = true;
       _requiresTwoFactor = false;
-      
+
       // Si el usuario eligió guardar sus credenciales, las guardamos
       if (_lastUsername != null && _lastPassword != null) {
         await saveCredentials(_lastUsername!, _lastPassword!);
       }
-      
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -197,9 +200,9 @@ class AuthProvider with ChangeNotifier {
   ) async {
     try {
       _errorMessage = null;
-      
+
       // El número de teléfono ya viene formateado desde la UI
-      
+
       final request = RegisterRequest(
         firstName: firstName,
         lastName: lastName,
@@ -209,23 +212,24 @@ class AuthProvider with ChangeNotifier {
         birthDate: birthDate,
         policyNumber: policyNumber.isNotEmpty ? policyNumber : null,
       );
-      
+
       final response = await _authService.register(request);
-      
+
       if (response.hasErrors) {
         _errorMessage = response.errorMessage;
         notifyListeners();
         return false;
       }
-      
+
       // Si el registro fue exitoso, iniciar sesión automáticamente
       final loginSuccess = await login(email, password);
-      
+
       if (!loginSuccess) {
-        _errorMessage = 'Registro exitoso, pero no se pudo iniciar sesión automáticamente. Por favor, inicie sesión manualmente.';
+        _errorMessage =
+            'Registro exitoso, pero no se pudo iniciar sesión automáticamente. Por favor, inicie sesión manualmente.';
         notifyListeners();
       }
-      
+
       return loginSuccess;
     } on ApiError catch (e) {
       _errorMessage = e.message;
@@ -318,7 +322,8 @@ class AuthProvider with ChangeNotifier {
 
       // Si no tenemos la contraseña de ninguna manera, mostramos un mensaje de depuración
       debugPrint(
-          'No se pudo guardar las credenciales: no hay contraseña disponible');
+        'No se pudo guardar las credenciales: no hay contraseña disponible',
+      );
 
       // En una implementación real, aquí se podría mostrar un diálogo al usuario
       // para pedirle la contraseña nuevamente

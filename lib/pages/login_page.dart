@@ -40,10 +40,18 @@ class LoginPageState extends State<LoginPage> {
   Future<void> _checkBiometricStatus() async {
     final biometricProvider =
         Provider.of<BiometricProvider>(context, listen: false);
-    setState(() {
-      _isBiometricAvailable = biometricProvider.isAvailable;
-      _isBiometricEnabled = biometricProvider.isEnabled;
-    });
+    
+    // Forzar una actualización del estado biométrico
+    await biometricProvider.refreshBiometricState();
+    
+    // Actualizar el estado local con los valores del provider
+    if (mounted) {
+      setState(() {
+        _isBiometricAvailable = biometricProvider.isAvailable;
+        _isBiometricEnabled = biometricProvider.isEnabled;
+        debugPrint('Estado biométrico actualizado - Disponible: $_isBiometricAvailable, Habilitado: $_isBiometricEnabled');
+      });
+    }
 
     // Nota: Eliminamos la autenticación automática por razones de seguridad
     // Es mejor que el usuario inicie manualmente el proceso de autenticación biométrica

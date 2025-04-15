@@ -28,6 +28,8 @@ class PaymentSearchDialog extends StatefulWidget {
     if (initialZipCode == null || initialZipCode.isEmpty) {
       initialZipCode = await _getZipCodeFromLocation(context);
     }
+    if (!context.mounted) return null;
+
     return await showModalBottomSheet<Map<String, dynamic>>(
       context: context,
       isScrollControlled: true,
@@ -61,7 +63,7 @@ class PaymentSearchDialog extends StatefulWidget {
 
   @override
   State<PaymentSearchDialog> createState() => _PaymentSearchDialogState();
-  
+
   // Método para obtener el código postal basado en la ubicación del usuario
   static Future<String> _getZipCodeFromLocation(BuildContext context) async {
     // Mostrar un indicador de progreso
