@@ -508,6 +508,9 @@ class LocationController extends ChangeNotifier {
     updateMapPosition();
   }
 
+  // Callback para expandir el DraggableScrollableSheet
+  VoidCallback? onMarkerTap;
+
   void goToOffice(Office office) {
     // Actualizar el ID de la oficina seleccionada
     _updateState(
@@ -518,6 +521,11 @@ class LocationController extends ChangeNotifier {
 
     // Actualizar los marcadores para reflejar la selección
     _updateOfficeMarkers();
+  
+    // Notificar a la vista que debe expandir el DraggableScrollableSheet
+    if (onMarkerTap != null) {
+      onMarkerTap!();
+    }
   }
 
   // Nuevo método para navegar a la oficina y ajustar la cámara

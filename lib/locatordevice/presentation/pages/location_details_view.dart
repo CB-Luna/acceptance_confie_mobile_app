@@ -234,6 +234,16 @@ class _LocationDetailsViewContentState
           circles: state.circles, // Agregamos los círculos de cobertura
           onMapCreated: (GoogleMapController mapController) {
             controller.onMapCreated(mapController);
+
+            // Configurar el callback para expandir el DraggableScrollableSheet cuando se hace tap en un marcador
+            controller.onMarkerTap = () {
+              // Expandir el DraggableScrollableSheet a un tamaño que permita ver el contenido del marcador
+              _scrollController.animateTo(
+                isShortScreen ? 0.35 : 0.45,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            };
           },
           zoomControlsEnabled: true,
           compassEnabled: true,
@@ -276,9 +286,11 @@ class _LocationDetailsViewContentState
               onOfficeTap: (office) {
                 // Usar navigateToOffice para centrar la vista en la oficina seleccionada
                 controller.navigateToOffice(office);
-                // Colapsar la lista al mínimo cuando se selecciona una oficina
+                // Expandir la lista para mostrar la oficina seleccionada
                 _scrollController.animateTo(
-                  initialSizeWithOffices,
+                  isShortScreen
+                      ? 0.35
+                      : 0.45, // Usar un tamaño que permita ver el contenido
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
