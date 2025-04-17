@@ -38,7 +38,7 @@ class PaymentSearchDialog extends StatefulWidget {
       useSafeArea: true,
       builder: (BuildContext context) {
         final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-        final initialSize = keyboardHeight > 0 ? 0.6 : 0.5;
+        final initialSize = keyboardHeight > 0 ? 0.7 : 0.6;
 
         return DraggableScrollableSheet(
           initialChildSize: initialSize,
