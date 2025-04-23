@@ -34,7 +34,6 @@
     "pleaseEnterLastName": "Por favor, ingresa tu apellido",
     "pleaseEnterEmail": "Por favor, ingresa tu correo electrónico",
     "pleaseEnterValidEmail": "Por favor, ingresa un correo electrónico válido",
-    "pleaseEnterPassword": "Por favor, ingresa tu contraseña",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
     "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
     "passwordNumber": "La contraseña debe contener al menos un número",

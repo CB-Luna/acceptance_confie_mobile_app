@@ -31,6 +31,9 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.getBackgroundColor(context),
+      ),
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -75,10 +78,10 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
           // Título
           Text(
             context.translate('office.zipCode.enterZipCode'),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppTheme.black,
+              color: AppTheme.getTitleTextColor(context),
             ),
           ),
           const SizedBox(height: 16),
@@ -149,7 +152,7 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
             },
             icon: Icon(
               Icons.my_location,
-              color: AppTheme.getIconColor(context),
+              color: AppTheme.getPrimaryColor(context),
             ),
             label: Text(
               context.translate('office.zipCode.useMyLocation'),

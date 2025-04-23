@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -82,6 +83,7 @@ class _LocationDetailsViewContentState
     return Consumer<LocationController>(
       builder: (context, controller, _) {
         return Scaffold(
+          backgroundColor: AppTheme.getBackgroundColor(context),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(appBarHeight),
             child: Padding(
@@ -222,47 +224,51 @@ class _LocationDetailsViewContentState
           children: [
             // El mapa base
             GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: state.currentPosition != null
-                  ? LatLng(
-                      state.currentPosition!.latitude,
-                      state.currentPosition!.longitude,
-                    )
-                  : const LatLng(32.715738, -117.161084), // San Diego por defecto
-              zoom: 14.0,
-            ),
-            myLocationEnabled:
-                false, // Desactivamos porque usamos un marcador personalizado
-            myLocationButtonEnabled: false,
-            markers: state.markers,
-            circles: state.circles, // Agregamos los círculos de cobertura
-            onMapCreated: (GoogleMapController mapController) {
-              controller.onMapCreated(mapController);
+              initialCameraPosition: CameraPosition(
+                target: state.currentPosition != null
+                    ? LatLng(
+                        state.currentPosition!.latitude,
+                        state.currentPosition!.longitude,
+                      )
+                    : const LatLng(
+                        32.715738,
+                        -117.161084,
+                      ), // San Diego por defecto
+                zoom: 14.0,
+              ),
+              myLocationEnabled:
+                  false, // Desactivamos porque usamos un marcador personalizado
+              myLocationButtonEnabled: false,
+              markers: state.markers,
+              circles: state.circles, // Agregamos los círculos de cobertura
+              onMapCreated: (GoogleMapController mapController) {
+                controller.onMapCreated(mapController);
 
-              // Configurar el callback para expandir el DraggableScrollableSheet cuando se hace tap en un marcador
-              controller.onMarkerTap = () {
-                // Expandir el DraggableScrollableSheet a un tamaño que permita ver el contenido del marcador
+                // Configurar el callback para expandir el DraggableScrollableSheet cuando se hace tap en un marcador
+                controller.onMarkerTap = () {
+                  // Expandir el DraggableScrollableSheet a un tamaño que permita ver el contenido del marcador
+                  _scrollController.animateTo(
+                    isShortScreen ? 0.35 : 0.45,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                };
+              },
+              zoomControlsEnabled: true,
+              compassEnabled: true,
+              mapToolbarEnabled: true,
+              trafficEnabled:
+                  false, // Desactivar tráfico para mejor rendimiento
+              onTap: (LatLng position) {
+                // Contraer el DraggableScrollableSheet al tamaño mínimo cuando se toca el mapa
+                final minSize = isShortScreen ? 0.08 : _minChildSize;
                 _scrollController.animateTo(
-                  isShortScreen ? 0.35 : 0.45,
+                  minSize,
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
-              };
-            },
-            zoomControlsEnabled: true,
-            compassEnabled: true,
-            mapToolbarEnabled: true,
-            trafficEnabled: false, // Desactivar tráfico para mejor rendimiento
-            onTap: (LatLng position) {
-              // Contraer el DraggableScrollableSheet al tamaño mínimo cuando se toca el mapa
-              final minSize = isShortScreen ? 0.08 : _minChildSize;
-              _scrollController.animateTo(
-                minSize,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            },
-          ),
+              },
+            ),
           ],
         ),
 
