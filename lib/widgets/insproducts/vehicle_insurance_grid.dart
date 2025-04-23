@@ -100,7 +100,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                   _buildInsuranceItem(
                     context,
                     context.translate('vehicleInsurance.rvMotorhome'),
-                    'motorhome',
+                    'rv_motorhome',
                   ),
                   _buildInsuranceItem(
                     context,
@@ -115,12 +115,12 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                   _buildInsuranceItem(
                     context,
                     context.translate('vehicleInsurance.sr22Insurance'),
-                    'SR-22',
+                    'sr_22',
                   ),
                   _buildInsuranceItem(
                     context,
                     context.translate('vehicleInsurance.classicCar'),
-                    'Classi-Car',
+                    'classic_car',
                   ),
                 ],
               ),
@@ -176,7 +176,6 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     return GestureDetector(
       onTap: () {
         switch (title) {
-          case 'Auto':
           case 'auto':
             // Evitar múltiples llamadas mientras se procesa una solicitud
             if (!_isProcessingAutoInsurance) {
