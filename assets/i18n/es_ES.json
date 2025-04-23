@@ -288,12 +288,13 @@
       "zipCodeHint": "Código Postal",
       "continueButton": "Continuar",
       "invalidZipCode": "Por favor, ingresa un código postal válido",
-      "webDialogTitle": "¿Deseas visitar nuestro sitio web?",
+      "webDialogTitle": "¿Te gustaría visitar nuestro sitio web?",
       "webDialogMessage": "Serás redirigido a nuestro sitio web para completar tu cotización de seguro de auto para {0}, {1}.",
       "visitWebsite": "Visitar Sitio Web",
-      "invalidUrl": "No hay cobertura de seguro para este zipcode.",
+      "invalidUrl": "No hay cobertura para este código postal.",
       "cancel": "Cancelar"
-    }
+    },
+    "notAvailableMessage": "no está disponible en este momento."
   },
   "common": {
     "ok": "OK",

@@ -313,6 +313,7 @@
       "visitWebsite": "Visit Website",
       "invalidUrl": "No coverage for this zipcode.",
       "cancel": "Cancel"
-    }
+    },
+    "notAvailableMessage": "insurance is not available at this time."
   }
 }
