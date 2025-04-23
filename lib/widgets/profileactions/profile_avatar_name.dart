@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileAvatarName extends StatelessWidget {
   final String userName;
@@ -6,11 +7,79 @@ class ProfileAvatarName extends StatelessWidget {
   final String? userAvatar; // URL del avatar del usuario
 
   const ProfileAvatarName({
-    required this.userName, 
+    required this.userName,
     super.key,
     this.showName = true,
     this.userAvatar,
   });
+
+  // Método para construir un avatar con las iniciales del usuario
+  Widget _buildInitialsAvatar(String fullName, {required double size}) {
+    // Obtener las iniciales del nombre completo
+    final initials = _getInitials(fullName);
+
+    // Generar un color basado en el nombre (para que sea consistente para el mismo usuario)
+    final color = _getAvatarColor(fullName);
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: TextStyle(
+            color: AppTheme.white,
+            fontSize: size * 0.4, // Tamaño proporcional al contenedor
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Método para obtener las iniciales del nombre
+  String _getInitials(String fullName) {
+    if (fullName.isEmpty) return 'FW';
+
+    final nameParts = fullName.trim().split(' ');
+    if (nameParts.length >= 2) {
+      // Si hay al menos dos partes en el nombre, tomar la primera letra de cada una
+      return '${nameParts[0][0]}${nameParts[1][0]}'.toUpperCase();
+    } else if (nameParts.length == 1 && nameParts[0].isNotEmpty) {
+      // Si solo hay una parte, tomar la primera letra
+      return nameParts[0][0].toUpperCase();
+    }
+
+    return 'FW';
+  }
+
+  // Método para generar un color basado en el nombre
+  Color _getAvatarColor(String fullName) {
+    if (fullName.isEmpty) return Colors.blue;
+
+    // Usar la suma de los códigos ASCII de los caracteres para generar un número
+    final int hashCode =
+        fullName.codeUnits.fold(0, (prev, element) => prev + element);
+
+    // Lista de colores para los avatares
+    final colors = [
+      Colors.blue[700]!,
+      Colors.red[700]!,
+      Colors.green[700]!,
+      Colors.orange[700]!,
+      Colors.purple[700]!,
+      Colors.teal[700]!,
+      Colors.pink[700]!,
+      Colors.indigo[700]!,
+    ];
+
+    // Seleccionar un color basado en el hash del nombre
+    return colors[hashCode % colors.length];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +91,7 @@ class ProfileAvatarName extends StatelessWidget {
           height: 100,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
+            color: AppTheme.white,
             boxShadow: [
               BoxShadow(
                 color: Color(0x14000000), // 0.08 opacity en hexadecimal
@@ -39,22 +108,16 @@ class ProfileAvatarName extends StatelessWidget {
             ],
           ),
           child: ClipOval(
-            child: userAvatar != null
+            child: userAvatar != null && userAvatar!.isNotEmpty
                 ? Image.network(
                     userAvatar!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      // Si hay un error al cargar la imagen, mostrar la imagen por defecto
-                      return Image.asset(
-                        'assets/home/icons/human_avatar.png',
-                        fit: BoxFit.cover,
-                      );
+                      // Si hay un error al cargar la imagen, mostrar las iniciales
+                      return _buildInitialsAvatar(userName, size: 100);
                     },
                   )
-                : Image.asset(
-                    'assets/home/icons/human_avatar.png',
-                    fit: BoxFit.cover,
-                  ),
+                : _buildInitialsAvatar(userName, size: 100),
           ),
         ),
         // Nombre (opcional)
@@ -62,10 +125,10 @@ class ProfileAvatarName extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             userName,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF0046B9),
+              color: AppTheme.getPrimaryColor(context),
             ),
           ),
         ],
