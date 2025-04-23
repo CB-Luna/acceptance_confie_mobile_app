@@ -74,13 +74,11 @@ flutter:
     - assets/home/idcardicons/
     - assets/home/idcardicons/add_apple_wallet.png
     - assets/home/idcardicons/card_id.png
-    - assets/shared/
+    - assets/home/animations/
     - assets/splash/
-    - assets/menu/
     - assets/profile/
     - assets/payments/
     - assets/products/
-    - assets/products/vehicle/
     - assets/products/4.0x/
     - assets/products/vehiclepng/4.0x/
     - assets/location/

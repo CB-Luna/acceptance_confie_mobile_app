@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../locatordevice/presentation/widgets/loading_view.dart';
@@ -23,12 +24,14 @@ class NotificationsWidget extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenWidth < 360;
-    
+
     // Calcular alturas responsivas basadas en el tamaño de la pantalla
-    final double expandedHeight = screenHeight * 0.5; // 50% de la altura de la pantalla
+    final double expandedHeight =
+        screenHeight * 0.5; // 50% de la altura de la pantalla
     final double multiNotificationHeight = isSmallScreen ? 180 : 210;
     final double singleNotificationHeight = isSmallScreen ? 90 : 102;
-    
+    final double emptyStateHeight = isSmallScreen ? 150 : 200;
+
     return Consumer<NotificationProvider>(
       builder: (context, notificationProvider, child) {
         debugPrint(
@@ -157,7 +160,7 @@ class NotificationsWidget extends StatelessWidget {
                         ? multiNotificationHeight // Altura para 2 o más notificaciones
                         : notifications.length == 1
                             ? singleNotificationHeight // Altura para 1 notificación
-                            : singleNotificationHeight, // Altura para estado vacío
+                            : emptyStateHeight, // Altura para estado vacío
                 child: Card(
                   margin: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
@@ -206,13 +209,17 @@ class NotificationsWidget extends StatelessWidget {
                                       ...List.generate(
                                         notifications.length,
                                         (index) {
-                                          final notification = notifications[index];
+                                          final notification =
+                                              notifications[index];
                                           // Alternar colores: par azul, impar naranja
-                                          final bool isBlue = !notification.title
+                                          final bool isBlue = !notification
+                                              .title
                                               .contains('Welcome');
                                           final Color iconColor = isBlue
                                               ? AppTheme.getBlueColor(context)
-                                              : AppTheme.getOrangeColor(context);
+                                              : AppTheme.getOrangeColor(
+                                                  context,
+                                                );
 
                                           return Column(
                                             children: [
@@ -230,14 +237,18 @@ class NotificationsWidget extends StatelessWidget {
                                                   isSmallScreen,
                                                 ),
                                               ),
-                                              if (index < notifications.length - 1)
+                                              if (index <
+                                                  notifications.length - 1)
                                                 Center(
                                                   child: Padding(
-                                                    padding: const EdgeInsets.only(
+                                                    padding:
+                                                        const EdgeInsets.only(
                                                       bottom: 5,
                                                     ),
                                                     child: Container(
-                                                      width: isSmallScreen ? 280 : 320,
+                                                      width: isSmallScreen
+                                                          ? 280
+                                                          : 320,
                                                       decoration: BoxDecoration(
                                                         border: Border(
                                                           bottom: BorderSide(
@@ -275,12 +286,13 @@ class NotificationsWidget extends StatelessWidget {
 
   Widget _buildLoadingState(BuildContext context, double screenWidth) {
     final isSmallScreen = screenWidth < 360;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: isSmallScreen ? 10.0 : 14.0),
+          padding:
+              EdgeInsets.symmetric(horizontal: isSmallScreen ? 10.0 : 14.0),
           child: Text(
             context.translate('home.notifications.title'),
             style: TextStyle(
@@ -318,15 +330,43 @@ class NotificationsWidget extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context, bool isSmallScreen) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
-        child: Text(
-          context.translate('home.notifications.empty'),
-          style: TextStyle(
-            color: AppTheme.grey,
-            fontSize: isSmallScreen ? 13 : 14,
-          ),
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: isSmallScreen ? 150 : 200,
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Animación Lottie para estado vacío (tamaño reducido)
+            SizedBox(
+              width: isSmallScreen ? 120 : 140,
+              height: isSmallScreen ? 120 : 140,
+              child: Lottie.asset(
+                'assets/home/animations/Waiting Notification.json',
+                fit: BoxFit.contain,
+                repeat: true,
+                animate: true,
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Texto informativo
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isSmallScreen ? 12.0 : 16.0,
+                vertical: isSmallScreen ? 4.0 : 8.0,
+              ),
+              child: Text(
+                context.translate('home.notifications.empty'),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppTheme.getTextGreyColor(context),
+                  fontSize: isSmallScreen ? 12 : 13,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
