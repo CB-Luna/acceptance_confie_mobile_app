@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freeway_app/data/models/auth/register_request.dart';
 import 'package:freeway_app/data/models/auth/user_info.dart';
+import 'package:http/http.dart' as http;
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -100,18 +103,62 @@ class AuthProvider with ChangeNotifier {
       _authToken = response.token;
       await _secureStorage.write(key: _tokenKey, value: _authToken);
 
-      // Como no tenemos información del usuario en la respuesta,
-      // creamos un usuario con valores por defecto
-      final userInfo = UserInfo.defaultInfo(
-        email: _lastUsername ?? 'user@example.com',
-        customerId: '1001', // ID por defecto
-      );
+      UserInfo userInfo;
+      DateTime? expirationDate;
 
+      try {
+        // Intentar obtener la información del usuario desde la API
+        final apiResponse = await _fetchUserDataFromAPI();
+
+        if (apiResponse != null) {
+          // Si la API devuelve datos válidos, crear un objeto UserInfo con esos datos
+          userInfo = UserInfo(
+            fullName: "${apiResponse['FirstName']} ${apiResponse['LastName']}",
+            policyNumber: apiResponse['PolicyNumber'] ?? '',
+            policyType:
+                'Auto', // Valor por defecto o se podría extraer de la respuesta
+            customerId: apiResponse['PolicyNumber'] ?? '1001',
+            email: apiResponse['Email'] ?? _lastUsername ?? 'user@example.com',
+            phone: apiResponse['Phone'].toString(),
+            avatar: null, // No disponible en la API
+            languageCode: 'en_US', // Por defecto o basado en preferencias
+          );
+
+          // Parsear la fecha de expiración para usarla como próximo pago
+          if (apiResponse['ExpirationDate'] != null) {
+            expirationDate =
+                _parseDate(apiResponse['ExpirationDate'].toString());
+          }
+
+          debugPrint('AuthProvider - Usuario obtenido desde la API');
+        } else {
+          // Si la API no devuelve datos, usar valores por defecto
+          userInfo = UserInfo.defaultInfo(
+            email: _lastUsername ?? 'user@example.com',
+            customerId: '1001', // ID por defecto
+          );
+          debugPrint(
+            'AuthProvider - API no devolvió datos, usando valores por defecto',
+          );
+        }
+      } catch (e) {
+        // En caso de error al llamar a la API, usar valores por defecto
+        debugPrint(
+          'AuthProvider - Error al obtener datos de usuario desde API: $e',
+        );
+        userInfo = UserInfo.defaultInfo(
+          email: _lastUsername ?? 'user@example.com',
+          customerId: '1001', // ID por defecto
+        );
+      }
+
+      // Crear el objeto de usuario con la información obtenida
       _currentUser = User(
         username: _lastUsername ?? 'user',
         fullName: userInfo.fullName,
         policyNumber: userInfo.policyNumber,
-        nextPayment: DateTime.now().add(const Duration(days: 30)),
+        nextPayment:
+            expirationDate ?? DateTime.now().add(const Duration(days: 30)),
         policyType: userInfo.policyType,
         customerId:
             int.parse(userInfo.customerId.replaceAll(RegExp(r'[^0-9]'), '0')),
@@ -120,8 +167,6 @@ class AuthProvider with ChangeNotifier {
         avatar: userInfo.avatar,
         languageCode: userInfo.languageCode,
       );
-
-      debugPrint('AuthProvider - Usuario creado con valores por defecto');
 
       _isAuthenticated = true;
       _requiresTwoFactor = false;
@@ -137,6 +182,84 @@ class AuthProvider with ChangeNotifier {
       _errorMessage = 'Error al completar el login: $e';
       notifyListeners();
       return false;
+    }
+  }
+
+  /// Método para obtener los datos del usuario desde la API
+  Future<Map<String, dynamic>?> _fetchUserDataFromAPI() async {
+    try {
+      final url = Uri.parse(
+        'https://u-n8n.virtalus.cbluna-dev.com/webhook/confie_user_data',
+      );
+
+      // Crear el cuerpo de la solicitud con el email del usuario
+      final requestBody = json.encode({
+        'email': _lastUsername,
+      });
+
+      debugPrint('AuthProvider - Llamando a API con email: $_lastUsername');
+
+      // Realizar la solicitud POST
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: requestBody,
+      );
+
+      // Verificar si la solicitud fue exitosa (código 200)
+      if (response.statusCode == 200) {
+        // Decodificar la respuesta JSON
+        final dynamic decodedData = json.decode(response.body);
+        debugPrint('AuthProvider - Respuesta exitosa de API: ${response.body}');
+
+        // Manejar el caso en que la respuesta sea una lista
+        if (decodedData is List && decodedData.isNotEmpty) {
+          // Tomar el primer elemento de la lista
+          return decodedData.first as Map<String, dynamic>;
+        } else if (decodedData is Map<String, dynamic>) {
+          // Si ya es un mapa, devolverlo directamente
+          return decodedData;
+        } else {
+          debugPrint(
+            'AuthProvider - Formato de respuesta inesperado: ${decodedData.runtimeType}',
+          );
+          return null;
+        }
+      } else {
+        // Si la solicitud no fue exitosa, registrar el error y devolver null
+        debugPrint(
+          'AuthProvider - API Error: ${response.statusCode} - ${response.body}',
+        );
+        return null;
+      }
+    } catch (e) {
+      // En caso de error en la solicitud, registrar el error y devolver null
+      debugPrint('AuthProvider - Error al llamar a la API: $e');
+      return null;
+    }
+  }
+
+  /// Método para parsear fechas desde la API
+  DateTime? _parseDate(String dateStr) {
+    try {
+      // Intentar convertir el valor numérico a fecha
+      // El formato parece ser un número entero (posiblemente días desde una fecha de referencia)
+      final int? days = int.tryParse(dateStr);
+      if (days != null) {
+        // Asumiendo que es un número de días desde el 30 de diciembre de 1899 (formato Excel/Lotus)
+        final DateTime baseDate = DateTime(1899, 12, 30);
+        final DateTime resultDate = baseDate.add(Duration(days: days));
+        debugPrint(
+          'AuthProvider - Fecha parseada: $resultDate desde valor: $dateStr',
+        );
+        return resultDate;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('AuthProvider - Error al parsear fecha: $e');
+      return null;
     }
   }
 
