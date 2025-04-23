@@ -257,8 +257,9 @@
       "search": "Search",
       "useMyLocation": "Use my current location",
       "invalidZipCode": "Please enter a valid 5-digit zip code",
-      "searchingNear": "Searching for offices near zip code: {zipCode}",
-      "mapError": "Error loading maps"
+      "searchingNear": "Searching for offices near zip code: {0}",
+      "mapError": "Error loading maps",
+      "searchOfficeByZipcode": "Search Office by Zipcode"
     },
     "error": "Error: Missing dependencies"
   },

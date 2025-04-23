@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart'
     show launchUrl, canLaunchUrl, LaunchMode;
 
 import '../../../data/models/office/office.dart';
+import '../controllers/location_controller.dart';
 import 'no_nearby_offices_view.dart';
 
-class OfficeList extends StatelessWidget {
+class OfficeList extends StatefulWidget {
   final List<Office> offices;
   final ScrollController scrollController;
   final Function(Office) onOfficeTap;
@@ -26,6 +28,65 @@ class OfficeList extends StatelessWidget {
   });
 
   @override
+  State<OfficeList> createState() => _OfficeListState();
+}
+
+class _OfficeListState extends State<OfficeList> {
+  final TextEditingController _zipController = TextEditingController();
+  final FocusNode _zipFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _zipController.dispose();
+    _zipFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _searchByZipCode() {
+    final zipCode = _zipController.text.trim();
+
+    // Validar que el código postal tenga 5 dígitos
+    if (zipCode.isEmpty ||
+        zipCode.length != 5 ||
+        !RegExp(r'^[0-9]{5}$').hasMatch(zipCode)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.translate('office.zipCode.invalidZipCode')),
+          duration: const Duration(seconds: 2),
+          backgroundColor: AppTheme.getRedColor(context),
+        ),
+      );
+      return;
+    }
+
+    // Ocultar el teclado
+    FocusScope.of(context).unfocus();
+
+    // Obtener el controlador de ubicación
+    final locationController = Provider.of<LocationController>(
+      context,
+      listen: false,
+    );
+
+    // Mostrar un mensaje al usuario
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          context.translateWithArgs(
+            'office.zipCode.searchingNear',
+            args: [zipCode],
+          ),
+        ),
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppTheme.getBlueColor(context),
+      ),
+    );
+
+    // Llamar al método de búsqueda por código postal
+    locationController.searchByZipCode(zipCode);
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
@@ -33,6 +94,7 @@ class OfficeList extends StatelessWidget {
 
     // Ajustar el padding según el tamaño de la pantalla
     final horizontalPadding = isSmallScreen ? 12.0 : 16.0;
+    final textFontSize = isSmallScreen ? 16.0 : 18.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -66,22 +128,22 @@ class OfficeList extends StatelessWidget {
           ),
 
           // Contenido principal
-          if (showNoNearbyOfficesView)
+          if (widget.showNoNearbyOfficesView)
             // Contenido cuando no hay oficinas cercanas
             Expanded(
               child: SingleChildScrollView(
-                controller: scrollController,
+                controller: widget.scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: NoNearbyOfficesView(
-                    onExpandSearchRadius: onExpandSearchRadius ?? () {},
-                    onViewAllOffices: onViewAllOffices ?? () {},
+                    onExpandSearchRadius: widget.onExpandSearchRadius ?? () {},
+                    onViewAllOffices: widget.onViewAllOffices ?? () {},
                   ),
                 ),
               ),
             )
-          else if (offices.isEmpty)
+          else if (widget.offices.isEmpty)
             // Cuando la lista de oficinas está vacía
             Expanded(
               child: Center(
@@ -92,11 +154,12 @@ class OfficeList extends StatelessWidget {
             // Cuando hay oficinas para mostrar
             Expanded(
               child: ListView.builder(
-                controller: scrollController,
+                controller: widget.scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                 // Incrementamos el itemCount en 2: uno para el título y otro para el espacio/botón al final
-                itemCount: offices.length + 2,
+                itemCount: widget.offices.length +
+                    3, // +3: título, espacio/botón al final, y sección de búsqueda por zipcode
                 itemBuilder: (context, index) {
                   // Primer elemento es el título
                   if (index == 0) {
@@ -123,8 +186,8 @@ class OfficeList extends StatelessWidget {
                   final adjustedIndex = index - 1;
 
                   // Si es el último elemento (después de todas las oficinas)
-                  if (adjustedIndex == offices.length) {
-                    if (offices.length == 1) {
+                  if (adjustedIndex == widget.offices.length) {
+                    if (widget.offices.length == 1) {
                       return Padding(
                         padding: EdgeInsets.only(
                           top: isSmallScreen ? 12.0 : 16.0,
@@ -132,7 +195,7 @@ class OfficeList extends StatelessWidget {
                         ),
                         child: Center(
                           child: TextButton.icon(
-                            onPressed: onViewAllOffices,
+                            onPressed: widget.onViewAllOffices,
                             icon: Icon(
                               Icons.search,
                               color: Theme.of(context).primaryColor,
@@ -160,8 +223,126 @@ class OfficeList extends StatelessWidget {
                     return const SizedBox(height: 24);
                   }
 
-                  // Si no es el último elemento, mostrar el elemento de la oficina
-                  final office = offices[adjustedIndex];
+                  // Si es el penúltimo elemento (después de todas las oficinas y el espacio/botón), mostrar la sección de búsqueda por zipcode
+                  if (adjustedIndex == widget.offices.length + 1) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Divider(height: 32),
+                        // Título de la sección
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 16.0, top: 8.0),
+                          child: Text(
+                            context.translate(
+                              'office.zipCode.searchOfficeByZipcode',
+                            ),
+                            style: TextStyle(
+                              fontSize: textFontSize,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.getTextGreyColor(context),
+                            ),
+                          ),
+                        ),
+
+                        // Diseño más compacto con campo de entrada y botón en la misma fila
+                        Row(
+                          children: [
+                            // Campo de entrada de código postal (más pequeño)
+                            Expanded(
+                              flex: 7,
+                              child: SizedBox(
+                                height: isSmallScreen ? 40 : 44,
+                                child: TextField(
+                                  controller: _zipController,
+                                  focusNode: _zipFocusNode,
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 5,
+                                  style: TextStyle(
+                                    fontSize: isSmallScreen ? 14 : 15,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: context.translate(
+                                      'office.zipCode.zipCodeHint',
+                                    ),
+                                    hintStyle: TextStyle(
+                                      fontSize: isSmallScreen ? 14 : 15,
+                                    ),
+                                    counterText: '',
+                                    filled: true,
+                                    fillColor: AppTheme.white,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: isSmallScreen ? 8 : 10,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color: AppTheme.getDetailsGreyColor(
+                                          context,
+                                        ),
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderSide: BorderSide(
+                                        color:
+                                            AppTheme.getPrimaryColor(context),
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+
+                            // Botón de búsqueda (más pequeño y con icono)
+                            Expanded(
+                              flex: 3,
+                              child: SizedBox(
+                                height: isSmallScreen ? 40 : 44,
+                                child: ElevatedButton.icon(
+                                  onPressed: _searchByZipCode,
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: isSmallScreen ? 16 : 18,
+                                  ),
+                                  label: Text(
+                                    context.translate('office.zipCode.search'),
+                                    style: TextStyle(
+                                      fontSize: isSmallScreen ? 13 : 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        AppTheme.getPrimaryColor(context),
+                                    foregroundColor: AppTheme.white,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: isSmallScreen ? 8 : 10,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    );
+                  }
+
+                  // Si no es el último ni el penúltimo elemento, mostrar el elemento de la oficina
+                  final office = widget.offices[adjustedIndex];
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -169,7 +350,7 @@ class OfficeList extends StatelessWidget {
                       OfficeListItem(
                         office: office,
                         index: adjustedIndex,
-                        onTap: () => onOfficeTap(office),
+                        onTap: () => widget.onOfficeTap(office),
                       ),
                     ],
                   );
