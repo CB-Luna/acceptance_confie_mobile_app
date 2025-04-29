@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 
 import '../../domain/entities/office.dart';
 import '../bloc/location_state.dart';
@@ -16,7 +17,7 @@ class LocationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state is LocationAndOfficesLoading) {
-      return _buildLoading();
+      return _buildLoading(context);
     } else if (state is LocationAndOfficesLoaded) {
       return _buildOfficesList((state as LocationAndOfficesLoaded).offices);
     } else if (state is LocationError) {
@@ -26,10 +27,12 @@ class LocationBottomSheet extends StatelessWidget {
     }
   }
 
-  Widget _buildLoading() {
-    return const SizedBox(
+  Widget _buildLoading(BuildContext context) {
+    return SizedBox(
       height: 200,
-      child: Center(child: LoadingView(message: 'Loading...')),
+      child: Center(
+        child: LoadingView(message: context.translate('common.loadingGif')),
+      ),
     );
   }
 

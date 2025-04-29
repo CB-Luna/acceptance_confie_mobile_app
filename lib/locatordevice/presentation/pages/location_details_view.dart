@@ -132,7 +132,7 @@ class _LocationDetailsViewContentState
 
   Widget _buildBody(BuildContext context, LocationController controller) {
     if (controller.state.isLoading) {
-      return const LoadingView();
+      return LoadingView(message: context.translate('common.loadingGif'));
     }
 
     // Si no hay permisos de ubicación, validar si hay codigo postal buscado para mostrar la vista de entrada de código postal

@@ -143,7 +143,7 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: AppTheme.getBackgroundColor(context),
       body: SafeArea(
         child: _isLoading
-            ? const LoadingView()
+            ? LoadingView(message: context.translate('common.loadingGif'))
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -398,14 +398,16 @@ class LoginPageState extends State<LoginPage> {
       } else if (mounted) {
         // Verificar si el mensaje de error es una clave de traducción
         String errorMessage;
-        if (authProvider.errorMessage != null && authProvider.errorMessage!.startsWith('auth.')) {
+        if (authProvider.errorMessage != null &&
+            authProvider.errorMessage!.startsWith('auth.')) {
           // Si es una clave de traducción, obtener el texto traducido
           errorMessage = context.translate(authProvider.errorMessage!);
         } else {
           // Si no es una clave de traducción, usar el mensaje tal cual o el mensaje de error por defecto
-          errorMessage = authProvider.errorMessage ?? context.translate('auth.authError');
+          errorMessage =
+              authProvider.errorMessage ?? context.translate('auth.authError');
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),

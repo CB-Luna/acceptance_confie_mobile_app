@@ -280,7 +280,8 @@
     "close": "Close",
     "noResults": "No results found",
     "tryAgain": "Try Again",
-    "language_changed_to": "Language changed to {0}"
+    "language_changed_to": "Language changed to {0}",
+    "loadingGif": "Loading..."
   },
   "addInsurance": {
     "title": "More Ways to Get Covered",

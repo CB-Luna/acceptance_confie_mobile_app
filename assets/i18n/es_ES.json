@@ -313,6 +313,7 @@
     "close": "Cerrar",
     "noResults": "No se encontraron resultados",
     "tryAgain": "Intentar de nuevo",
-    "language_changed_to": "Idioma cambiado a {0}"
+    "language_changed_to": "Idioma cambiado a {0}",
+    "loadingGif": "Cargando..."
   }
 }

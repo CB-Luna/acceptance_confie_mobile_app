@@ -10,7 +10,7 @@ class LoadingView extends StatelessWidget {
 
   const LoadingView({
     super.key,
-    this.message = 'Cargando...',
+    this.message = 'Loading...',
     this.backgroundColor,
     this.indicatorColor,
     this.textColor,
