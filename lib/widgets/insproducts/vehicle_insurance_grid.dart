@@ -513,8 +513,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       'city': placeName,
       'state': stateAbbreviation,
       'birthDate': formatBirthDate(user),
-      'street': '', // Por defecto vacío, en una implementación real obtendríamos la dirección del usuario
-      'address': '', // Alias para street, algunos formularios usan address en lugar de street
+      'street': user?.street ?? '',
     };
 
     // Verificar si ya se ha mostrado el diálogo anteriormente

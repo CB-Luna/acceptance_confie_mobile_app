@@ -8,7 +8,9 @@ class User {
   final String? email; // Añadido para información de contacto
   final String? phone; // Añadido para información de contacto
   final String? avatar; // URL de la imagen de avatar del usuario
-  final String? languageCode; // Código de idioma del usuario (ej: 'en_US', 'es_MX')
+  final String?
+      languageCode; // Código de idioma del usuario (ej: 'en_US', 'es_MX')
+  final String street;
 
   User({
     required this.username,
@@ -17,6 +19,7 @@ class User {
     required this.nextPayment,
     required this.policyType,
     required this.customerId,
+    required this.street,
     this.email,
     this.phone,
     this.avatar,

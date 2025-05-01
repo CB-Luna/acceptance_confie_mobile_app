@@ -100,7 +100,7 @@ class _WebViewPageState extends State<WebViewPage> {
           fillField(['#city', 'input[name="city"]', 'input[name="lead[city]"]', 'input[placeholder*="city"]', 'input[placeholder*="ciudad"]'], userData.city);
           fillField(['#state', 'input[name="state"]', 'input[name="lead[state]"]', 'input[placeholder*="state"]', 'input[placeholder*="estado"]'], userData.state);
           fillField(['#birthDate', '#tbDateOfBirth', 'input[name="birthDate"]', 'input[placeholder*="nacimiento"]', 'input[placeholder*="birth"]', '[data-field="date-of-birth"]'], userData.birthDate);
-          fillField(['#street', '#form_insurance_street_address', '.address', 'input[name="street"]', 'input[name="lead[street]"]', 'input[placeholder*="dirección"]', 'input[placeholder*="address"]', 'input[autocomplete="street-address"]'], userData.street || userData.address);
+          fillField(['#street', '#form_insurance_street_address', '.address', 'input[name="street"]', 'input[name="lead[street]"]', 'input[placeholder*="dirección"]', 'input[placeholder*="address"]', 'input[autocomplete="street-address"]'], userData.street);
           
           // Lógica específica para diferentes tipos de formularios
           switch('$formType') {
@@ -140,7 +140,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 // Selectores específicos para el formulario de motocicleta
                 fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
                 fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
-                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street);
                 
                 // Activar cualquier evento necesario después de rellenar
                 const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
@@ -165,7 +165,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 // Selectores específicos para el formulario de motocicleta
                 fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
                 fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
-                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.stree);
                 
                 // Activar cualquier evento necesario después de rellenar
                 const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
@@ -190,7 +190,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 // Selectores específicos para el formulario de motocicleta
                 fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
                 fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
-                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street);
                 
                 // Activar cualquier evento necesario después de rellenar
                 const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
@@ -215,7 +215,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 // Selectores específicos para el formulario de motocicleta
                 fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
                 fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
-                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street);
                 
                 // Activar cualquier evento necesario después de rellenar
                 const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');

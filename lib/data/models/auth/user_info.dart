@@ -7,6 +7,7 @@ class UserInfo {
   final String customerId;
   final String? avatar;
   final String? languageCode;
+  final String street;
 
   UserInfo({
     required this.fullName,
@@ -15,6 +16,7 @@ class UserInfo {
     required this.policyNumber,
     required this.policyType,
     required this.customerId,
+    required this.street,
     this.avatar,
     this.languageCode,
   });
@@ -28,11 +30,13 @@ class UserInfo {
       fullName: 'Freeway User',
       email: email,
       phone: '+1 (555) 123-4567',
-      policyNumber: customerId != null ? 'POLICY-$customerId' : 'POLICY-DEFAULT',
+      policyNumber:
+          customerId != null ? 'POLICY-$customerId' : 'POLICY-DEFAULT',
       policyType: 'Auto Policy',
       customerId: customerId ?? 'DEFAULT-ID',
       avatar: null,
       languageCode: 'en_US',
+      street: '123 Main St',
     );
   }
 }

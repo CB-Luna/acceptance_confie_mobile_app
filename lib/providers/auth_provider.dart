@@ -59,7 +59,8 @@ class AuthProvider with ChangeNotifier {
       return await _completeLogin(response);
     } on ApiError catch (e) {
       // Mejorar el mensaje de error para credenciales incorrectas
-      if (e.statusCode == 401 || e.message.toLowerCase().contains('no autorizado') || 
+      if (e.statusCode == 401 ||
+          e.message.toLowerCase().contains('no autorizado') ||
           e.message.toLowerCase().contains('unauthorized')) {
         // Usar la traducción para el mensaje de credenciales incorrectas
         // El contexto no está disponible aquí, así que usamos un mensaje estático
@@ -131,6 +132,7 @@ class AuthProvider with ChangeNotifier {
             phone: apiResponse['Phone'].toString(),
             avatar: null, // No disponible en la API
             languageCode: 'en_US', // Por defecto o basado en preferencias
+            street: apiResponse['Street'] ?? '',
           );
 
           // Parsear la fecha de expiración para usarla como próximo pago
@@ -175,6 +177,7 @@ class AuthProvider with ChangeNotifier {
         phone: userInfo.phone,
         avatar: userInfo.avatar,
         languageCode: userInfo.languageCode,
+        street: userInfo.street,
       );
 
       _isAuthenticated = true;
