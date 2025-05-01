@@ -274,7 +274,7 @@ class LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        if (_isBiometricAvailable)
+                        if (_isBiometricEnabled)
                           Center(
                             child: Consumer<BiometricProvider>(
                               builder: (context, biometricProvider, child) {
