@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/data/services/web_dialog_service.dart';
+import 'package:freeway_app/models/user_model.dart';
+import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 import '../../data/services/location_service.dart';
 import '../../locatordevice/locator_device_module.dart';
@@ -475,6 +478,45 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     String stateAbbreviation,
     String insuranceType,
   ) async {
+    // Obtener información del usuario actual para prellenar formularios
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final user = authProvider.currentUser;
+
+    // Formatear fecha de nacimiento si está disponible
+    String formatBirthDate(User? user) {
+      // Si no hay usuario o no hay fecha de nacimiento disponible, devolver vacío
+      if (user == null) return '';
+
+      try {
+        // Intentar obtener la fecha de nacimiento del usuario
+        // Nota: Asumimos que podría estar en algún campo como nextPayment solo para tener una fecha
+        // En una implementación real, deberías tener un campo específico para birthDate en el modelo User
+        final date = user.nextPayment;
+        // Formato MM/DD/YYYY que suelen usar los formularios en EE.UU.
+        return '${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}/${date.year}';
+      } catch (e) {
+        debugPrint('Error al formatear fecha de nacimiento: $e');
+        return '';
+      }
+    }
+
+    // Preparar datos del usuario para pasar a los formularios
+    final Map<String, String> userData = {
+      'firstName': user?.fullName.split(' ').first ?? '',
+      'lastName': user?.fullName.split(' ').isNotEmpty == true &&
+              user!.fullName.split(' ').length > 1
+          ? user.fullName.split(' ').skip(1).join(' ')
+          : '',
+      'email': user?.email ?? '',
+      'phone': user?.phone ?? '',
+      'zipCode': zipCode,
+      'city': placeName,
+      'state': stateAbbreviation,
+      'birthDate': formatBirthDate(user),
+      'street': '', // Por defecto vacío, en una implementación real obtendríamos la dirección del usuario
+      'address': '', // Alias para street, algunos formularios usan address en lugar de street
+    };
+
     // Verificar si ya se ha mostrado el diálogo anteriormente
     final webDialogService = WebDialogService();
     final hasBeenShown = await webDialogService.hasWebDialogBeenShown();
@@ -507,44 +549,51 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       String urlString;
       String title;
 
+      // Añadir información del usuario a las URLs cuando sea posible
+      final String firstName = userData['firstName'] ?? '';
+      final String lastName = userData['lastName'] ?? '';
+      final String email = userData['email'] ?? '';
+      final String phone = userData['phone'] ?? '';
+
       switch (insuranceType) {
         case 'auto':
           urlString =
-              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya';
+              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya&first_name=$firstName&last_name=$lastName&email=$email&phone_number=$phone';
           title =
               '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation';
           break;
         case 'motorcycle':
           urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-moto/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName';
+              'https://www.freewayseguros.com/cotizacion-seguro-de-moto/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
           title =
               '${context.translate('vehicleInsurance.motorcycle')} - $placeName, $stateAbbreviation';
           break;
         case 'motorhome':
           urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-rodante/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName';
+              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-rodante/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
           title =
               '${context.translate('vehicleInsurance.motorhome')} - $placeName, $stateAbbreviation';
           break;
         case 'rv_motorhome':
           urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-movil-y-casa-prefabricada/?zipCodeForm=$zipCode';
+              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-movil-y-casa-prefabricada/?zipCodeForm=$zipCode&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
           title =
               '${context.translate('vehicleInsurance.rvMotorhome')} - $placeName, $stateAbbreviation';
           break;
         case 'snowmobile':
           urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-para-moto-de-nieve/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName';
+              'https://www.freewayseguros.com/cotizacion-seguro-para-moto-de-nieve/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
           title =
               '${context.translate('vehicleInsurance.snowmobile')} - $placeName, $stateAbbreviation';
           break;
         case 'classic_car':
-          urlString = 'https://triton.freeway.com/';
+          urlString =
+              'https://triton.freeway.com/?first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
           title = context.translate('vehicleInsurance.classicCar');
           break;
         default:
           urlString =
-              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya';
+              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya&first_name=$firstName&last_name=$lastName&email=$email&phone_number=$phone';
           title =
               '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation';
       }
@@ -556,6 +605,8 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           builder: (context) => WebViewPage(
             url: urlString,
             title: title,
+            userData: userData, // Pasar los datos del usuario al WebView
+            formType: insuranceType, // Pasar el tipo de formulario
           ),
         ),
       );

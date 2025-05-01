@@ -5,10 +5,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 class WebViewPage extends StatefulWidget {
   final String url;
   final String title;
+  final Map<String, String>? userData;
+  final String? formType;
 
   const WebViewPage({
     required this.url,
     required this.title,
+    this.userData,
+    this.formType,
     super.key,
   });
 
@@ -36,6 +40,11 @@ class _WebViewPageState extends State<WebViewPage> {
             setState(() {
               _isLoading = false;
             });
+
+            // Si tenemos datos de usuario, intentamos prellenar el formulario
+            if (widget.userData != null) {
+              _injectFormFillingScript();
+            }
           },
           onWebResourceError: (WebResourceError error) {
             debugPrint('WebView error: ${error.description}');
@@ -43,6 +52,229 @@ class _WebViewPageState extends State<WebViewPage> {
         ),
       )
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  // Método para inyectar JavaScript que rellena automáticamente los formularios
+  Future<void> _injectFormFillingScript() async {
+    if (widget.userData == null) return;
+
+    final userData = widget.userData!;
+    final formType = widget.formType ?? '';
+
+    // Crear un script JavaScript basado en el tipo de formulario
+    String script = '';
+
+    // Script genérico para buscar campos comunes por ID, nombre, o atributos
+    script = '''
+      (function() {
+        // Función para encontrar y rellenar campos por diferentes atributos
+        function fillField(selectors, value) {
+          if (!value) return;
+          
+          for (let selector of selectors) {
+            const elements = document.querySelectorAll(selector);
+            for (let el of elements) {
+              if (el && !el.value) {
+                el.value = value;
+                // Disparar evento de cambio para activar validaciones
+                const event = new Event('input', { bubbles: true });
+                el.dispatchEvent(event);
+                return true; // Campo encontrado y rellenado
+              }
+            }
+          }
+          return false; // No se encontró el campo
+        }
+        
+        // Datos del usuario
+        const userData = ${_mapToJsObject(userData)};
+        
+        // Esperar a que el DOM esté completamente cargado
+        setTimeout(function() {
+          // Intentar rellenar campos comunes
+          fillField(['#firstName', '#tbFirstName', '#form_insurance_your_first_name', 'input[name="firstName"]', 'input[name="lead[first_name]"]', '.firstName', 'input[placeholder*="nombre"]', 'input[placeholder*="first"]', '[data-field="first-name"]'], userData.firstName);
+          fillField(['#lastName', '#tbLastName', '#form_insurance_your_last_name', 'input[name="lastName"]', 'input[name="lead[last_name]"]', '.lastName', 'input[placeholder*="apellido"]', 'input[placeholder*="last"]', '[data-field="last-name"]'], userData.lastName);
+          fillField(['#email', '#tbEmail', 'input[type="email"]', 'input[name="email"]', 'input[name="lead[email]"]', 'input[placeholder*="email"]', 'input[placeholder*="correo"]', '[data-field="email-address"]'], userData.email);
+          fillField(['#phone', '#tbPhoneNumber', 'input[type="tel"]', 'input[name="phone"]', 'input[name="lead[phone]"]', 'input[placeholder*="phone"]', 'input[placeholder*="teléfono"]', 'input[placeholder*="telefono"]', '[data-field="phone-number"]'], userData.phone);
+          fillField(['#zipCode', '#postal_code', 'input[name="zipCode"]', 'input[name="lead[zip]"]', 'input[placeholder*="zip"]', 'input[placeholder*="código postal"]', 'input[placeholder*="codigo postal"]', '[data-field="zip-code"]'], userData.zipCode);
+          fillField(['#city', 'input[name="city"]', 'input[name="lead[city]"]', 'input[placeholder*="city"]', 'input[placeholder*="ciudad"]'], userData.city);
+          fillField(['#state', 'input[name="state"]', 'input[name="lead[state]"]', 'input[placeholder*="state"]', 'input[placeholder*="estado"]'], userData.state);
+          fillField(['#birthDate', '#tbDateOfBirth', 'input[name="birthDate"]', 'input[placeholder*="nacimiento"]', 'input[placeholder*="birth"]', '[data-field="date-of-birth"]'], userData.birthDate);
+          fillField(['#street', '#form_insurance_street_address', '.address', 'input[name="street"]', 'input[name="lead[street]"]', 'input[placeholder*="dirección"]', 'input[placeholder*="address"]', 'input[autocomplete="street-address"]'], userData.street || userData.address);
+          
+          // Lógica específica para diferentes tipos de formularios
+          switch('$formType') {
+            case 'auto':
+              // Lógica específica para formularios de auto de Triton
+              console.log('Aplicando lógica específica para formulario de auto');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                fillField(['#tbFirstName', '[data-field="first-name"]'], userData.firstName);
+                fillField(['#tbLastName', '[data-field="last-name"]'], userData.lastName);
+                fillField(['#tbEmail', '[data-field="email-address"]'], userData.email);
+                fillField(['#tbPhoneNumber', '[data-field="phone-number"]'], userData.phone);
+                fillField(['#postal_code', '[data-field="zip-code"]'], userData.zipCode);
+                fillField(['#tbDateOfBirth', '[data-field="date-of-birth"]'], userData.birthDate);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#tbFirstName, #tbLastName, #tbEmail, #tbPhoneNumber, #postal_code, #tbDateOfBirth');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+              
+            case 'motorcycle':
+              // Lógica específica para formularios de motocicleta
+              console.log('Aplicando lógica específica para formulario de motocicleta');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                // Selectores específicos para el formulario de motocicleta
+                fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
+                fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+
+            case 'motorhome':
+              // Lógica específica para formularios de motocicleta
+              console.log('Aplicando lógica específica para formulario de motocicleta');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                // Selectores específicos para el formulario de motocicleta
+                fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
+                fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+
+            case 'rv_motorhome':
+              // Lógica específica para formularios de motocicleta
+              console.log('Aplicando lógica específica para formulario de motocicleta');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                // Selectores específicos para el formulario de motocicleta
+                fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
+                fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+            
+            case 'snowmobile':
+              // Lógica específica para formularios de motocicleta
+              console.log('Aplicando lógica específica para formulario de motocicleta');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                // Selectores específicos para el formulario de motocicleta
+                fillField(['#form_insurance_your_first_name', '.firstName', 'input[name="lead[first_name]"]'], userData.firstName);
+                fillField(['#form_insurance_your_last_name', '.lastName', 'input[name="lead[last_name]"]'], userData.lastName);
+                fillField(['#form_insurance_street_address', '.address', 'input[name="lead[street]"]'], userData.street || userData.address);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#form_insurance_your_first_name, #form_insurance_your_last_name, #form_insurance_street_address');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+            
+            case 'classic_car':
+              // Lógica específica para formularios de auto de Triton
+              console.log('Aplicando lógica específica para formulario de auto');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                fillField(['#tbFirstName', '[data-field="first-name"]'], userData.firstName);
+                fillField(['#tbLastName', '[data-field="last-name"]'], userData.lastName);
+                fillField(['#tbEmail', '[data-field="email-address"]'], userData.email);
+                fillField(['#tbPhoneNumber', '[data-field="phone-number"]'], userData.phone);
+                fillField(['#postal_code', '[data-field="zip-code"]'], userData.zipCode);
+                fillField(['#tbDateOfBirth', '[data-field="date-of-birth"]'], userData.birthDate);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#tbFirstName, #tbLastName, #tbEmail, #tbPhoneNumber, #postal_code, #tbDateOfBirth');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
+            // Añadir más casos según sea necesario
+          }
+          
+          console.log('Formulario prellenado con datos del usuario');
+        }, 2000); // Esperar 2 segundos para asegurar que el DOM está cargado
+      })();
+    ''';
+
+    // Inyectar el script en la página web
+    await _controller.runJavaScript(script);
+  }
+
+  // Convierte un Map<String, String> a una representación de objeto JavaScript
+  String _mapToJsObject(Map<String, String> map) {
+    final entries = map.entries
+        .map((e) => '"${e.key}": "${e.value.replaceAll('"', '\\"')}"')
+        .join(',');
+    return '{$entries}';
   }
 
   @override
