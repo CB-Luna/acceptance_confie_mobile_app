@@ -157,11 +157,13 @@ class IdCardWidget extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.clip,
                               displayPolicyNumber,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],

@@ -119,123 +119,138 @@ class _IdCardPageState extends State<IdCardPage> {
                 builder: (context, constraints) {
                   // Calcular el ancho disponible para la tarjeta
                   final availableWidth = constraints.maxWidth;
-                  final availableHeight = constraints.maxHeight;
-                  
+
                   // Determinar el tamaño de la tarjeta basado en el espacio disponible
                   // Mantener la relación de aspecto original (309:430)
-                  final cardWidth = availableWidth > 350 ? 309.0 : availableWidth * 0.85;
+                  final cardWidth =
+                      availableWidth > 350 ? 309.0 : availableWidth * 0.85;
                   final cardHeight = cardWidth * (430 / 309);
-                  
-                  // Calcular el espacio superior para centrar verticalmente
-                  final topSpace = (availableHeight - cardHeight - 80) / 2;
-                  final positiveTopSpace = topSpace > 0 ? topSpace : 20.0;
-                  
-                  return Stack(
-                    fit: StackFit.expand,
+
+                  // Ya no necesitamos calcular el espacio superior
+                  // porque estamos usando un Column con Expanded para centrar
+
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Add to Apple Wallet (solo en iOS)
-                      if (Platform.isIOS)
-                        Positioned(
-                          top: positiveTopSpace * 0.5,
-                          left: (availableWidth - 146) / 2, // Centrado horizontalmente
-                          child: GestureDetector(
-                            onTap: () {
-                              // TODO: Implementar funcionalidad de Apple Wallet
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Adding to Apple Wallet...'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            },
-                            child: Image.asset(
-                              'assets/home/idcardicons/add_apple_wallet.png',
-                              width: 146,
-                              height: 45,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
+                      // Fila superior con botones de acción y Apple Wallet
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
                         ),
-                      
-                      // Botones de acción (descarga e impresión)
-                      Positioned(
-                        top: positiveTopSpace * 0.5,
-                        right: 20,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.download_outlined,
-                                color: AppTheme.getIconColor(context),
+                            // Botón de Apple Wallet (solo en iOS)
+                            if (Platform.isIOS)
+                              GestureDetector(
+                                onTap: () {
+                                  // TODO: Implementar funcionalidad de Apple Wallet
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Adding to Apple Wallet...'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                child: Image.asset(
+                                  'assets/home/idcardicons/add_apple_wallet.png',
+                                  width: 146,
+                                  height: 45,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                              onPressed: () {
-                                // TODO: Implement download functionality
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Downloading ID card...'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.print_outlined,
-                                color: AppTheme.getIconColor(context),
+
+                            // Botón de Google Wallet (solo en Android)
+                            if (Platform.isAndroid)
+                              GestureDetector(
+                                onTap: () {
+                                  // TODO: Implementar funcionalidad de Google Wallet
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Adding to Google Wallet...'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                child: Image.asset(
+                                  'assets/home/idcardicons/add_google_wallet.png',
+                                  width: 146,
+                                  height: 45,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                              onPressed: () {
-                                // TODO: Implement print functionality
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Printing ID card...'),
-                                    duration: Duration(seconds: 2),
+
+                            // Botones de acción (descarga e impresión)
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.download_outlined,
+                                    color: AppTheme.getIconColor(context),
                                   ),
-                                );
-                              },
+                                  onPressed: () {
+                                    // TODO: Implement download functionality
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Downloading ID card...'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.print_outlined,
+                                    color: AppTheme.getIconColor(context),
+                                  ),
+                                  onPressed: () {
+                                    // TODO: Implement print functionality
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Printing ID card...'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      
-                      // Tarjeta ID (centrada)
-                      Positioned(
-                        top: positiveTopSpace + (Platform.isIOS ? 45 : 0),
-                        left: (availableWidth - cardWidth) / 2, // Centrado horizontalmente
+
+                      // Espacio flexible para centrar la tarjeta verticalmente
+                      Center(
                         child: SizedBox(
                           width: cardWidth,
                           height: cardHeight,
                           child: FittedBox(
                             fit: BoxFit.contain,
-                            child: SizedBox(
-                              width: 309, // Ancho original
-                              height: 430, // Alto original
-                              child: IdCardWidget(
-                                user: user,
-                                // Ejemplo de fechas, en una implementación real vendrían de la API
-                                effectiveDate: DateTime(2023, 6, 18),
-                                expirationDate: DateTime(2026, 12, 18),
-                              ),
+                            child: IdCardWidget(
+                              user: user,
+                              // Ejemplo de fechas, en una implementación real vendrían de la API
+                              effectiveDate: DateTime(2023, 6, 18),
+                              expirationDate: DateTime(2026, 12, 18),
                             ),
                           ),
                         ),
                       ),
-                      
-                      // Texto de aviso legal
-                      Positioned(
-                        bottom: 20,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: Text(
-                              context.translate('idCard.notProofOfCoverage'),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: AppTheme.getTextGreyColor(context),
-                                fontSize: 12,
-                              ),
-                            ),
+
+                      // Texto de aviso legal en la parte inferior
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 20.0,
+                        ),
+                        child: Text(
+                          context.translate('idCard.notProofOfCoverage'),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppTheme.getTextGreyColor(context),
+                            fontSize: 12,
                           ),
                         ),
                       ),
