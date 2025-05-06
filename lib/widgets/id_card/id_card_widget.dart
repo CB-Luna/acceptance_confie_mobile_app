@@ -93,173 +93,203 @@ class IdCardWidget extends StatelessWidget {
           // Contenido de la tarjeta
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Named Insured
-                  Text(
-                    context.translate('idCard.namedInsured'),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.getTextGreyColor(context),
-                      fontWeight: FontWeight.w500,
+                  // Sección de información del asegurado
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Named Insured
+                        Text(
+                          context.translate('idCard.namedInsured'),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.getTextGreyColor(context),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        // Nombre del asegurado
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            user.fullName,
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: AppTheme.getPrimaryColor(context),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    user.fullName,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: AppTheme.getPrimaryColor(context),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+
                   const SizedBox(height: 20),
 
-                  // Carrier y Policy Number
-                  Row(
-                    children: [
-                      // Carrier
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context.translate('idCard.carrier'),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getTextGreyColor(context),
-                                fontWeight: FontWeight.w500,
+                  // Fila con la información de la aseguradora y número de póliza
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Carrier
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.translate('idCard.carrier'),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.getTextGreyColor(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              carrier ?? 'Infinity',
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.w600,
+                              const SizedBox(height: 4),
+                              // Usar FittedBox para adaptar el texto al espacio disponible
+                              Text(
+                                carrier ?? 'Infinity',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.getPrimaryColor(context),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      // Policy Number
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context.translate('idCard.policyNumber'),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getTextGreyColor(context),
-                                fontWeight: FontWeight.w500,
+                        // Policy Number
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.translate('idCard.policyNumber'),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.getTextGreyColor(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
-                              displayPolicyNumber,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.bold,
+                              const SizedBox(height: 4),
+                              // Usar FittedBox para adaptar el número de póliza al espacio disponible
+                              FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  displayPolicyNumber,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.getPrimaryColor(context),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
 
                   const SizedBox(height: 20),
 
                   // State, Effective Date, Expiration Date
-                  Row(
-                    children: [
-                      // State
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context.translate('idCard.state'),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getTextGreyColor(context),
-                                fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        // State
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.translate('idCard.state'),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppTheme.getTextGreyColor(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              state ?? 'FL',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.w600,
+                              const SizedBox(height: 4),
+                              Text(
+                                state ?? 'FL',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: AppTheme.getPrimaryColor(context),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      // Effective Date
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context.translate('idCard.effectiveDate'),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.getTextGreyColor(context),
-                                fontWeight: FontWeight.w500,
+                        // Effective Date
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.translate('idCard.effectiveDate'),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.getTextGreyColor(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              effectiveDateStr,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.w600,
+                              const SizedBox(height: 4),
+                              Text(
+                                effectiveDateStr,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.getPrimaryColor(context),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
-                      // Expiration Date
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context.translate('idCard.expirationDate'),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppTheme.getTextGreyColor(context),
-                                fontWeight: FontWeight.w500,
+                        // Expiration Date
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.translate('idCard.expirationDate'),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.getTextGreyColor(context),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              expirationDateStr,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppTheme.getPrimaryColor(context),
-                                fontWeight: FontWeight.w600,
+                              const SizedBox(height: 4),
+                              Text(
+                                expirationDateStr,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.getPrimaryColor(context),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -124,7 +124,7 @@ class _IdCardPageState extends State<IdCardPage> {
                   // Mantener la relación de aspecto original (309:430)
                   final cardWidth =
                       availableWidth > 350 ? 309.0 : availableWidth * 0.85;
-                  final cardHeight = cardWidth * (430 / 309);
+                  final cardHeight = cardWidth * (450 / 309);
 
                   // Ya no necesitamos calcular el espacio superior
                   // porque estamos usando un Column con Expanded para centrar
