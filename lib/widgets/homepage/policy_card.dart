@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
 import '../../pages/id_card_page.dart';
-import '../../widgets/payments/payment_search_dialog.dart';
 import '../../widgets/theme/app_theme.dart';
 
 class PolicyCard extends StatefulWidget {
@@ -345,36 +344,25 @@ class _PolicyCardState extends State<PolicyCard>
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (context.mounted) {
-                                    final result =
-                                        await PaymentSearchDialog.show(
-                                      context: context,
-                                      initialZipCode:
-                                          null, // Usar null para que se active la geolocalización
-                                    );
+                                    // Usar una única URL con número de póliza y código postal
+                                    final String policyNumber =
+                                        widget.user.policyNumber;
+                                    final zipCode = widget.user.zipCode;
+                                    final String urlString =
+                                        'https://quickpay.freeway.com/PolicySearch?policyNumber=$policyNumber&zipCode=$zipCode&source=Web';
+                                    final String title =
+                                        context.translate('payment.title');
 
-                                    if (result != null && context.mounted) {
-                                      final zipCode = result['zipCode'];
-                                      // Ya no necesitamos el tipo de búsqueda, siempre usamos policyNumber
-
-                                      // Usar una única URL con número de póliza y código postal
-                                      final String policyNumber =
-                                          widget.user.policyNumber;
-                                      final String urlString =
-                                          'https://quickpay.freeway.com/PolicySearch?policyNumber=$policyNumber&zipCode=$zipCode&source=Web';
-                                      final String title =
-                                          context.translate('payment.title');
-
-                                      if (context.mounted) {
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => WebViewPage(
-                                              url: urlString,
-                                              title: title,
-                                            ),
+                                    if (context.mounted) {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => WebViewPage(
+                                            url: urlString,
+                                            title: title,
                                           ),
-                                        );
-                                      }
+                                        ),
+                                      );
                                     }
                                   }
                                 },
