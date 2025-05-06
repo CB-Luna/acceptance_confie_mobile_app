@@ -4,7 +4,6 @@ import 'package:freeway_app/models/user_model.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/services/location_service.dart';
@@ -272,112 +271,62 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     // Mostrar un indicador de progreso
     final overlay = LoadingView.showOverlay(
       context,
-      message: context.translate('vehicleInsurance.location.gettingLocation'),
+      message: context.translate('vehicleInsurance.processing'),
       indicatorColor: AppTheme.getPrimaryColor(context),
       textColor: AppTheme.getTitleTextColor(context),
     );
 
     try {
-      // Verificar si los servicios de ubicación están habilitados
-      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        // Si los servicios de ubicación no están habilitados, ocultar el indicador y mostrar diálogo
-        overlay.remove();
-        if (!context.mounted) {
-          setState(() {
-            _isProcessingAutoInsurance = false;
-          });
-          return;
-        }
-        await _showZipCodeDialog(context, null, insuranceType);
-        setState(() {
-          _isProcessingAutoInsurance = false;
-        });
-        return;
-      }
-
-      // Verificar permisos de ubicación
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          // Si los permisos son denegados, ocultar el indicador y mostrar diálogo
-          overlay.remove();
-          if (!context.mounted) {
-            setState(() {
-              _isProcessingAutoInsurance = false;
-            });
-            return;
-          }
-          await _showZipCodeDialog(context, null, insuranceType);
-          setState(() {
-            _isProcessingAutoInsurance = false;
-          });
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        // Si los permisos están denegados permanentemente, ocultar el indicador y mostrar diálogo
-        overlay.remove();
-        if (!context.mounted) {
-          setState(() {
-            _isProcessingAutoInsurance = false;
-          });
-          return;
-        }
-        await _showZipCodeDialog(context, null, insuranceType);
-        setState(() {
-          _isProcessingAutoInsurance = false;
-        });
-        return;
-      }
-
-      // Obtener la posición actual
-      final Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // Realizar reverse geocoding para obtener el código postal
-      final String? zipCode = await _locationService.getZipCodeFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-
-      // Mostrar el diálogo con el código postal obtenido
-      if (!context.mounted) return;
+      // Obtener información del usuario actual
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final user = authProvider.currentUser;
+      final String zipCode = user?.zipCode ?? ''; // Acceso seguro a zipCode
+      
+      // Validar el código postal con la API de Zippopotam
+      final placeInfo = await _locationService.validateZipCode(zipCode);
+      
       // Ocultar el indicador de progreso
       overlay.remove();
-
+      
       if (!context.mounted) {
         setState(() {
           _isProcessingAutoInsurance = false;
         });
         return;
       }
-
-      await _showZipCodeDialog(context, zipCode, insuranceType);
-
-      // Restablecer la bandera después de completar el proceso
-      setState(() {
-        _isProcessingAutoInsurance = false;
-      });
+      
+      if (placeInfo != null) {
+        // Si el código postal es válido, mostrar directamente el diálogo de página web
+        await _showWebPageDialog(
+          context,
+          zipCode,
+          placeInfo['placeName'],
+          placeInfo['stateAbbreviation'],
+          insuranceType,
+        );
+      } else {
+        // Si el código postal no es válido, permitir al usuario ingresarlo manualmente
+        await _showZipCodeDialog(context, zipCode, insuranceType);
+      }
+      
     } catch (e) {
-      debugPrint('Error al obtener la ubicación: $e');
-
+      debugPrint('Error al procesar la solicitud: $e');
+      
       // Ocultar el indicador de progreso
       overlay.remove();
-
-      // En caso de error, mostrar diálogo sin código postal
+      
       if (!context.mounted) {
         setState(() {
           _isProcessingAutoInsurance = false;
         });
         return;
       }
-
-      await _showZipCodeDialog(context, null, insuranceType);
-
+      
+      // En caso de error, permitir al usuario ingresar el código postal manualmente
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final user = authProvider.currentUser;
+      await _showZipCodeDialog(context, user?.zipCode ?? '', insuranceType);
+    } finally {
       // Restablecer la bandera después de completar el proceso
       setState(() {
         _isProcessingAutoInsurance = false;
