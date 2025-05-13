@@ -47,7 +47,10 @@
     "pleaseSelectBirthDate": "Por favor, selecciona tu fecha de nacimiento",
     "haveAccount": "¿Ya tienes una cuenta?",
     "signUpLoading": "Creando cuenta...",
-    "incorrectCredentials": "Tus credenciales de inicio de sesión son incorrectas. Por favor, intenta de nuevo."
+    "incorrectCredentials": "Tus credenciales de inicio de sesión son incorrectas. Por favor, intenta de nuevo.",
+    "selectCountry": "Seleccionar País",
+    "searchCountry": "Buscar país",
+    "invalidPhoneNumber": "Por favor, ingresa un número de teléfono válido"
   },
   "home": {
     "welcome": "Bienvenido",

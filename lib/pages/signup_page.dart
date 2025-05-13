@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:freeway_app/models/country_phone_model.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/widgets/custom/country_phone_selector.dart';
 import 'package:intl/intl.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_field/phone_number.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
@@ -32,11 +32,8 @@ class SignUpPageState extends State<SignUpPage> {
   bool _obscureText = true;
   bool _isLoading = false;
   DateTime? _selectedDate;
-
-  // Formateador para el número de teléfono con formato internacional
-  // Ya no necesitamos el formateador de máscara para el teléfono
-  // porque IntlPhoneField maneja el formato internamente
   String _completePhoneNumber = ''; // Almacena el número completo con código de país
+  CountryPhoneModel _selectedCountry = countryPhoneList.first;
 
   // Formateador para la fecha de nacimiento en formato estadounidense (MMDDYYYY)
   final _birthDateMaskFormatter = MaskTextInputFormatter(
@@ -109,22 +106,13 @@ class SignUpPageState extends State<SignUpPage> {
     return _birthDateController.text;
   }
 
-  // Método para extraer solo los dígitos del número de teléfono formateado
+  // Método para extraer el número de teléfono completo con código de país
   String _getFormattedPhoneNumber() {
-    // Si tenemos un número completo capturado por IntlPhoneField, usarlo
-    if (_completePhoneNumber.isNotEmpty) {
-      // El número ya incluye el código de país y está en formato E.164
-      return _completePhoneNumber;
+    // Usar _selectedCountry para asegurar que el código de país sea el correcto
+    if (_completePhoneNumber.isEmpty) {
+      return '${_selectedCountry.formattedDialCode}${_phoneController.text}';
     }
-    
-    // Caso de respaldo: usar el texto del controlador
-    final maskedNumber = _phoneController.text;
-    
-    // Eliminar todos los caracteres que no sean dígitos o el signo '+'
-    final cleanedNumber = maskedNumber.replaceAll(RegExp(r'[^\d+]'), '');
-    
-    // Asegurarse de que comience con '+'
-    return cleanedNumber.startsWith('+') ? cleanedNumber : '+1$cleanedNumber'; // Usar +1 como predeterminado para EE.UU.
+    return _completePhoneNumber;
   }
 
   Future<void> _signUp() async {
@@ -321,22 +309,21 @@ class SignUpPageState extends State<SignUpPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  IntlPhoneField(
-                    controller: _phoneController,
-                    decoration: AppTheme.inputDecoration(
-                      context,
-                      labelText: context.translate('auth.phoneNumber'),
-                    ).copyWith(
-                      helperText: context.translate('auth.phoneNumberHelper'),
-                    ),
+                  CountryPhoneSelector(
+                    phoneController: _phoneController,
+                    labelText: context.translate('auth.phoneNumber'),
+                    helperText: context.translate('auth.phoneNumberHelper'),
                     initialCountryCode: 'US', // Código de país predeterminado (Estados Unidos)
-                    disableLengthCheck: false, // Habilitar verificación de longitud
-                    // IntlPhoneField maneja su propia validación
-                    // No necesitamos un validator personalizado aquí
-                    onChanged: (PhoneNumber number) {
+                    showFlag: true,
+                    onPhoneChanged: (completeNumber) {
                       // Actualizar el número completo con código de país cuando cambia
                       setState(() {
-                        _completePhoneNumber = number.completeNumber;
+                        _completePhoneNumber = completeNumber;
+                      });
+                    },
+                    onCountryChanged: (country) {
+                      setState(() {
+                        _selectedCountry = country;
                       });
                     },
                   ),

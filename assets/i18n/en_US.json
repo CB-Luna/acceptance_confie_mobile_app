@@ -48,7 +48,10 @@
     "pleaseSelectBirthDate": "Please select your birth date",
     "haveAccount": "Already have an account?",
     "signUpLoading": "Creating account...",
-    "incorrectCredentials": "Your login credentials are incorrect. Please try again."
+    "incorrectCredentials": "Your login credentials are incorrect. Please try again.",
+    "selectCountry": "Select Country",
+    "searchCountry": "Search country",
+    "invalidPhoneNumber": "Please enter a valid phone number"
   },
   "home": {
     "welcome": "Welcome",
