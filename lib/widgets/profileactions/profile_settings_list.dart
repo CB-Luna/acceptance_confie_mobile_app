@@ -85,6 +85,9 @@ class ProfileSettingsList extends StatelessWidget {
             const ProfileDivider(),
             Consumer<BiometricProvider>(
               builder: (context, biometricProvider, child) {
+                // Establecer el contexto para las traducciones
+                biometricProvider.setContext(context);
+                
                 // Si está cargando o no está disponible, mostrar un widget diferente
                 if (biometricProvider.isLoading) {
                   return Padding(

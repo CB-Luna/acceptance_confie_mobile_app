@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../data/services/biometric_service.dart';
@@ -19,9 +20,17 @@ class BiometricProvider extends ChangeNotifier {
   String get biometricType => _biometricType;
   bool get isLoading => _isLoading;
 
+  // Contexto para traducciones
+  BuildContext? _context;
+
   // Método para establecer el AuthProvider
   void setAuthProvider(AuthProvider authProvider) {
     _authProvider = authProvider;
+  }
+  
+  // Método para establecer el contexto
+  void setContext(BuildContext context) {
+    _context = context;
   }
 
   BiometricProvider() {
@@ -44,7 +53,7 @@ class BiometricProvider extends ChangeNotifier {
 
       if (_isAvailable) {
         // Obtiene el tipo de biometría disponible
-        _biometricType = await _biometricService.getBiometricTypeName();
+        _biometricType = await _biometricService.getBiometricTypeName(context: _context);
       }
     } catch (e) {
       debugPrint('Error al inicializar biometría: $e');
@@ -69,7 +78,7 @@ class BiometricProvider extends ChangeNotifier {
     if (enabled) {
       // Usamos checkEnabled=false porque estamos en el proceso de habilitación
       final authenticated =
-          await _biometricService.authenticate(checkEnabled: false);
+          await _biometricService.authenticate(checkEnabled: false, context: _context);
       if (!authenticated) {
         _isLoading = false;
         notifyListeners();
@@ -126,7 +135,7 @@ class BiometricProvider extends ChangeNotifier {
     }
 
     // Llamamos al servicio con checkEnabled=true para que verifique si la biometría está habilitada
-    return await _biometricService.authenticate(checkEnabled: true);
+    return await _biometricService.authenticate(checkEnabled: true, context: _context);
   }
 
   /// Verifica si la biometría está disponible y habilitada
@@ -148,7 +157,7 @@ class BiometricProvider extends ChangeNotifier {
 
       if (_isAvailable) {
         // Actualizar el tipo de biometría
-        _biometricType = await _biometricService.getBiometricTypeName();
+        _biometricType = await _biometricService.getBiometricTypeName(context: _context);
         debugPrint('BiometricProvider - Tipo de biometría: $_biometricType');
       }
     } catch (e) {

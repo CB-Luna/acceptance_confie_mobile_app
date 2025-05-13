@@ -41,6 +41,9 @@ class LoginPageState extends State<LoginPage> {
     final biometricProvider =
         Provider.of<BiometricProvider>(context, listen: false);
 
+    // Establecer el contexto para las traducciones
+    biometricProvider.setContext(context);
+
     // Forzar una actualización del estado biométrico
     await biometricProvider.refreshBiometricState();
 
@@ -66,6 +69,10 @@ class LoginPageState extends State<LoginPage> {
     try {
       final biometricProvider =
           Provider.of<BiometricProvider>(context, listen: false);
+
+      // Establecer el contexto para las traducciones
+      biometricProvider.setContext(context);
+
       final success = await biometricProvider.authenticate();
 
       if (!success) {
@@ -482,6 +489,10 @@ class LoginPageState extends State<LoginPage> {
       if (success && mounted) {
         // Verificar si la biometría está disponible pero no habilitada
         final biometricProvider = context.read<BiometricProvider>();
+
+        // Establecer el contexto para las traducciones
+        biometricProvider.setContext(context);
+
         await biometricProvider.refreshBiometricState();
 
         // Si la biometría está disponible pero no habilitada, mostrar el diálogo

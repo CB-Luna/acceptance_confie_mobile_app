@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +49,7 @@ class BiometricService {
   ///
   /// Si [checkEnabled] es false, no verificará si la biometría está habilitada.
   /// Esto es útil cuando estamos en el proceso de habilitar la biometría.
-  Future<bool> authenticate({bool checkEnabled = true}) async {
+  Future<bool> authenticate({bool checkEnabled = true, BuildContext? context}) async {
     try {
       // Verifica si la biometría está habilitada en la app (opcional)
       if (checkEnabled && !await isBiometricEnabled()) {
@@ -61,9 +63,11 @@ class BiometricService {
 
       String localizedReason;
       if (Platform.isIOS) {
-        localizedReason = 'Authenticate to access your account';
+        localizedReason = context?.translate('profile.biometricAuth.authenticateToAccess') ?? 
+                         'Authenticate to access your account';
       } else {
-        localizedReason = 'Scan your fingerlog to access your account';
+        localizedReason = context?.translate('profile.biometricAuth.scanFingerprint') ?? 
+                         'Scan your fingerprint to access your account';
       }
 
       return await _localAuth.authenticate(
@@ -113,18 +117,18 @@ class BiometricService {
   }
 
   /// Obtiene el nombre de la biometría principal disponible
-  Future<String> getBiometricTypeName() async {
+  Future<String> getBiometricTypeName({BuildContext? context}) async {
     final biometrics = await getAvailableBiometrics();
 
     if (biometrics.contains(BiometricType.face)) {
-      return 'Face ID';
+      return context?.translate('profile.biometricAuth.faceId') ?? 'Face ID';
     } else if (biometrics.contains(BiometricType.fingerprint)) {
-      return 'Huella digital';
+      return context?.translate('profile.biometricAuth.fingerprint') ?? 'Fingerprint';
     } else if (biometrics.contains(BiometricType.strong) ||
         biometrics.contains(BiometricType.weak)) {
-      return 'Biometría';
+      return context?.translate('profile.biometricAuth.biometrics') ?? 'Biometrics';
     } else {
-      return 'Touch ID';
+      return context?.translate('profile.biometricAuth.touchId') ?? 'Touch ID';
     }
   }
 }
