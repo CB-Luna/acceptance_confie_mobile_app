@@ -19,16 +19,16 @@ class CustomPhoneField extends StatefulWidget {
   final bool showDropdownIcon;
 
   const CustomPhoneField({
-    Key? key,
+    required this.decoration,
+    required this.onChanged,
+    super.key,
     this.controller,
     this.initialCountryCode = 'US',
-    required this.decoration,
     this.disableLengthCheck = false,
     this.invalidNumberMessage,
-    required this.onChanged,
     this.showCountryFlag = true,
     this.showDropdownIcon = true,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomPhoneField> createState() => _CustomPhoneFieldState();
@@ -48,7 +48,7 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
   List<Country> _getCustomOrderedCountries() {
     // Crear una lista completamente nueva para los países prioritarios
     final List<Country> priorityCountries = [];
-    
+
     // Primero, añadir los países prioritarios en el orden especificado
     for (final code in _priorityCountryCodes) {
       // Buscar el país por su código
@@ -58,15 +58,17 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
       );
       priorityCountries.add(country);
     }
-    
+
     // Luego, añadir el resto de países (excluyendo los prioritarios)
-    final remainingCountries = countries.where(
-      (country) => !_priorityCountryCodes.contains(country.code)
-    ).toList();
-    
+    final remainingCountries = countries
+        .where(
+          (country) => !_priorityCountryCodes.contains(country.code),
+        )
+        .toList();
+
     // Ordenar el resto de países alfabéticamente por nombre
     remainingCountries.sort((a, b) => a.name.compareTo(b.name));
-    
+
     // Devolver la lista combinada
     return [...priorityCountries, ...remainingCountries];
   }
