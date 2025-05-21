@@ -112,10 +112,14 @@
     "notProofOfCoverage": "EPrueba de seguro no oficial",
     "namedInsured": "ASEGURADO",
     "carrier": "ASEGURADORA",
+    "cancelToGoogleWallet": "Cancelando acción...",
+    "addedToGoogleWallet": "Añadido a Google Wallet con éxito",
     "policyNumber": "NÚMERO DE PÓLIZA",
     "state": "ESTADO",
     "effectiveDate": "FECHA DE INICIO",
-    "expirationDate": "FECHA DE VENCIMIENTO"
+    "expirationDate": "FECHA DE VENCIMIENTO",
+    "languageCode": "es",
+    "countryCode": "ES"
   },
   "quoteCallcenter": {
     "back": "Atrás",
@@ -317,6 +321,7 @@
       "invalidUrl": "No hay cobertura para este código postal.",
       "cancel": "Cancelar"
     },
+    "processing": "Procesando tu solicitud...",
     "notAvailableMessage": "no está disponible en este momento."
   },
   "propertyInsurance": {
@@ -334,6 +339,57 @@
       "invalidZipCode": "Por favor ingresa un código postal válido",
       "webDialogTitle": "¿Te gustaría visitar nuestro sitio web?",
       "webDialogMessage": "Serás redirigido a nuestro sitio web para completar tu cotización de seguro de propiedad para {0}, {1}.",
+      "visitWebsite": "Visitar Sitio Web",
+      "invalidUrl": "No hay cobertura para este código postal.",
+      "cancel": "Cancelar"
+    },
+    "notAvailableMessage": "no está disponible en este momento.",
+    "processing": "Procesando tu solicitud..."
+  },
+  "businessInsurance": {
+    "back": "Regresar",
+    "title": "Selecciona un producto para comenzar tu cotización",
+    "businessInsurance": "Seguro de Negocio",
+    "landlord": "Propietario",
+    "commercialAuto": "Auto Comercial",
+    "rideShareInsurance": "Seguro para Conductores de Aplicaciones",
+    "location": {
+      "gettingLocation": "Obteniendo tu ubicación...",
+      "zipCodeDialogTitle": "Ingresa tu código postal",
+      "zipCodeDialogMessage": "Por favor ingresa tu código postal para obtener cotizaciones precisas para tu área.",
+      "zipCodeHint": "Código Postal",
+      "continueButton": "Continuar",
+      "invalidZipCode": "Por favor ingresa un código postal válido",
+      "webDialogTitle": "¿Te gustaría visitar nuestro sitio web?",
+      "webDialogMessage": "Serás redirigido a nuestro sitio web para completar tu cotización de seguro de propiedad para {0}, {1}.",
+      "visitWebsite": "Visitar Sitio Web",
+      "invalidUrl": "No hay cobertura para este código postal.",
+      "cancel": "Cancelar"
+    },
+    "notAvailableMessage": "no está disponible en este momento.",
+    "processing": "Procesando tu solicitud..."
+  },
+  "personalProtection": {
+    "back": "Regresar",
+    "title": "Selecciona un producto para comenzar tu cotización",
+    "health": "Seguro de Salud",
+    "dental": "Seguro Dental",
+    "telemedicine": "Telemedicina",
+    "pet": "Seguro para Mascotas",
+    "life": "Seguro de Vida",
+    "accidentalDeath": "Muerte Accidental",
+    "identityTheft": "Robo de Identidad",
+    "mexicanCar": "Seguro de Auto Mexicano",
+    "hospitalIndemnity": "Indemnización Hospitalaria",
+    "location": {
+      "gettingLocation": "Obteniendo tu ubicación...",
+      "zipCodeDialogTitle": "Ingresa tu código postal",
+      "zipCodeDialogMessage": "Por favor ingresa tu código postal para obtener cotizaciones precisas para tu área.",
+      "zipCodeHint": "Código Postal",
+      "continueButton": "Continuar",
+      "invalidZipCode": "Por favor ingresa un código postal válido",
+      "webDialogTitle": "¿Te gustaría visitar nuestro sitio web?",
+      "webDialogMessage": "Serás redirigido a nuestro sitio web para completar tu cotización de protección personal para {0}, {1}.",
       "visitWebsite": "Visitar Sitio Web",
       "invalidUrl": "No hay cobertura para este código postal.",
       "cancel": "Cancelar"

@@ -5,27 +5,26 @@ import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../data/services/location_service.dart';
 import '../../locatordevice/locator_device_module.dart';
-import '../../locatordevice/presentation/widgets/loading_view.dart';
 import '../../pages/home_page.dart';
 import '../../pages/webview_page.dart';
 import '../../utils/menu/circle_nav_bar.dart';
 import '../../widgets/common/custom_dialog.dart';
 import 'zip_code_dialog.dart';
 
-class VehicleInsuranceGrid extends StatefulWidget {
-  const VehicleInsuranceGrid({super.key});
+class PersonalProtectionGrid extends StatefulWidget {
+  const PersonalProtectionGrid({super.key});
 
   @override
-  State<VehicleInsuranceGrid> createState() => _VehicleInsuranceGridState();
+  State<PersonalProtectionGrid> createState() => _PersonalProtectionGridState();
 }
 
-class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
+class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
   int _selectedIndex = 1; // Inicializado en 1 para 'Add Insurance'
   final LocationService _locationService = LocationService();
-  bool _isProcessingAutoInsurance = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              context.translate('vehicleInsurance.back'),
+              context.translate('personalProtection.back'),
               style: const TextStyle(
                 color: AppTheme.white,
                 fontSize: 16,
@@ -67,7 +66,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
             children: [
               Center(
                 child: Text(
-                  context.translate('vehicleInsurance.title'),
+                  context.translate('personalProtection.title'),
                   style: TextStyle(
                     color: AppTheme.getTitleTextColor(context),
                     fontSize: 18,
@@ -88,43 +87,48 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                 children: [
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.auto'),
-                    'auto',
+                    context.translate('personalProtection.health'),
+                    'health_insurance',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.motorcycle'),
-                    'motorcycle',
+                    context.translate('personalProtection.dental'),
+                    'dental_insurance',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.motorhome'),
-                    'motorhome',
+                    context.translate('personalProtection.telemedicine'),
+                    'telemedicine',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.rvMotorhome'),
-                    'rv_motorhome',
+                    context.translate('personalProtection.pet'),
+                    'pet_insurance',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.atv'),
-                    'atv',
+                    context.translate('personalProtection.life'),
+                    'life_insurance',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.snowmobile'),
-                    'snowmobile',
+                    context.translate('personalProtection.accidentalDeath'),
+                    'accidental_death',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.sr22Insurance'),
-                    'sr_22',
+                    context.translate('personalProtection.identityTheft'),
+                    'identity_theft',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.classicCar'),
-                    'classic_car',
+                    context.translate('personalProtection.mexicanCar'),
+                    'mexican_car',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.hospitalIndemnity'),
+                    'hospital_indemnity',
                   ),
                 ],
               ),
@@ -190,36 +194,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
 
     return GestureDetector(
       onTap: () {
-        // Evitar múltiples llamadas mientras se procesa una solicitud
-        if (!_isProcessingAutoInsurance) {
-          // Determinar qué tipo de seguro se ha seleccionado
-          if (title == context.translate('vehicleInsurance.auto')) {
-            _handleAutoInsurance(context);
-          } else if (title ==
-              context.translate('vehicleInsurance.motorcycle')) {
-            _handleMotorcycleInsurance(context);
-          } else if (title == context.translate('vehicleInsurance.motorhome')) {
-            _handleMotorhomeInsurance(context);
-          } else if (title ==
-              context.translate('vehicleInsurance.rvMotorhome')) {
-            _handleRVMotorhomeInsurance(context);
-          } else if (title ==
-              context.translate('vehicleInsurance.snowmobile')) {
-            _handleSnowmobileInsurance(context);
-          } else if (title ==
-              context.translate('vehicleInsurance.classicCar')) {
-            _handleClassicCarInsurance(context);
-          } else if (title ==
-              context.translate('vehicleInsurance.sr22Insurance')) {
-            _handleSR22Insurance(context);
-          } else if (title == context.translate('vehicleInsurance.atv')) {
-            // Mostrar mensaje de que no está disponible actualmente
-            _showNotAvailableMessage(context, title);
-          } else {
-            // Para cualquier otro tipo no reconocido
-            _showNotAvailableMessage(context, title);
-          }
-        }
+        _handleInsurance(context, iconName);
       },
       child: Card(
         child: Padding(
@@ -228,8 +203,17 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/products/vehiclepng/4.0x/$iconName.png',
-                height: 40,
+                'assets/products/personalpng/4.0x/$iconName.png',
+                width: 48,
+                height: 48,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.health_and_safety,
+                    size: 48,
+                    color: Colors.blue,
+                  );
+                },
               ),
               const SizedBox(height: 8),
               Container(
@@ -259,126 +243,84 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     );
   }
 
-  // Método para manejar el seguro de auto con geolocalización
+  // Método para manejar el seguro con geolocalización
   // Método genérico para manejar cualquier tipo de seguro
   Future<void> _handleInsurance(
     BuildContext context,
     String insuranceType,
   ) async {
-    // Establecer la bandera para evitar múltiples llamadas
-    setState(() {
-      _isProcessingAutoInsurance = true;
-    });
-
-    // Mostrar un indicador de progreso
-    final overlay = LoadingView.showOverlay(
-      context,
-      message: context.translate('vehicleInsurance.processing'),
-      indicatorColor: AppTheme.getPrimaryColor(context),
-      textColor: AppTheme.getTitleTextColor(context),
-    );
+    // Obtener el código postal actual del usuario si está disponible
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final user = authProvider.currentUser;
+    final String? initialZipCode = user?.zipCode;
 
     try {
-      // Obtener información del usuario actual
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final user = authProvider.currentUser;
-      final String zipCode = user?.zipCode ?? ''; // Acceso seguro a zipCode
+      // Mostrar mensaje de procesamiento
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.translate('personalProtection.processing')),
+          duration: const Duration(seconds: 2),
+        ),
+      );
 
-      // Validar el código postal con la API de Zippopotam
-      final placeInfo = await _locationService.validateZipCode(zipCode);
-
-      // Ocultar el indicador de progreso
-      overlay.remove();
-
-      if (!context.mounted) {
-        setState(() {
-          _isProcessingAutoInsurance = false;
-        });
-        return;
-      }
-
-      if (placeInfo != null) {
-        // Si el código postal es válido, mostrar directamente el diálogo de página web
-        await _showWebPageDialog(
-          context,
-          zipCode,
-          placeInfo['placeName'],
-          placeInfo['stateAbbreviation'],
-          insuranceType,
+      // Intentar obtener la ubicación actual
+      try {
+        final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: const Duration(seconds: 5),
         );
-      } else {
-        // Si el código postal no es válido, permitir al usuario ingresarlo manualmente
-        await _showZipCodeDialog(context, zipCode, insuranceType);
+        
+        // Obtener el código postal a partir de las coordenadas
+        final zipCode = await _locationService.getZipCodeFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+        
+        if (zipCode != null && zipCode.isNotEmpty) {
+          // Validar el código postal con la API
+          final locationInfo = await _locationService.validateZipCode(zipCode);
+
+          if (locationInfo != null) {
+            // Si se obtuvo la información de ubicación, mostrar el diálogo web
+            await _showWebPageDialog(
+              context,
+              zipCode,
+              locationInfo['placeName'],
+              locationInfo['stateAbbreviation'],
+              insuranceType,
+            );
+          } else {
+            // Si no se pudo obtener la información de ubicación, mostrar el diálogo de código postal
+            if (context.mounted) {
+              await _showZipCodeDialog(context, initialZipCode, insuranceType);
+            }
+          }
+        } else {
+          // Si no se pudo obtener el código postal, mostrar el diálogo de código postal
+          if (context.mounted) {
+            await _showZipCodeDialog(context, initialZipCode, insuranceType);
+          }
+        }
+      } catch (e) {
+        // Si hay un error al obtener la ubicación, mostrar el diálogo de código postal
+        if (context.mounted) {
+          await _showZipCodeDialog(context, initialZipCode, insuranceType);
+        }
       }
     } catch (e) {
-      debugPrint('Error al procesar la solicitud: $e');
-
-      // Ocultar el indicador de progreso
-      overlay.remove();
-
-      if (!context.mounted) {
-        setState(() {
-          _isProcessingAutoInsurance = false;
-        });
-        return;
+      // En caso de error, mostrar un mensaje
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
       }
-
-      // En caso de error, permitir al usuario ingresar el código postal manualmente
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final user = authProvider.currentUser;
-      await _showZipCodeDialog(context, user?.zipCode ?? '', insuranceType);
     } finally {
-      // Restablecer la bandera después de completar el proceso
-      setState(() {
-        _isProcessingAutoInsurance = false;
-      });
+      // No se requiere ninguna acción adicional
     }
-  }
-
-  // Métodos específicos para cada tipo de seguro
-  Future<void> _handleAutoInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'auto');
-  }
-
-  Future<void> _handleMotorcycleInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'motorcycle');
-  }
-
-  Future<void> _handleMotorhomeInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'motorhome');
-  }
-
-  Future<void> _handleRVMotorhomeInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'rv_motorhome');
-  }
-
-  Future<void> _handleSnowmobileInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'snowmobile');
-  }
-
-  Future<void> _handleClassicCarInsurance(BuildContext context) async {
-    await _handleInsurance(context, 'classic_car');
-  }
-
-  Future<void> _handleSR22Insurance(BuildContext context) async {
-    await _handleInsurance(context, 'sr22');
-  }
-
-  // Método para mostrar mensaje cuando un seguro no está disponible
-  void _showNotAvailableMessage(BuildContext context, String insuranceType) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '$insuranceType ${context.translate('vehicleInsurance.notAvailableMessage')}',
-        ),
-        backgroundColor: AppTheme.getOrangeColor(context),
-        duration: const Duration(seconds: 3),
-      ),
-    );
-
-    setState(() {
-      _isProcessingAutoInsurance = false;
-    });
   }
 
   // Método para mostrar el diálogo de código postal
@@ -418,10 +360,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       }
     }
 
-    // Restablecer la bandera después de completar el proceso
-    setState(() {
-      _isProcessingAutoInsurance = false;
-    });
+    // Proceso completado
   }
 
   // Método para mostrar el diálogo de página web
@@ -480,15 +419,15 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
     if (!hasBeenShown && context.mounted) {
       final result = await CustomDialog.show(
         context: context,
-        title: context.translate('vehicleInsurance.location.webDialogTitle'),
+        title: context.translate('personalProtection.location.webDialogTitle'),
         message: context
-            .translate('vehicleInsurance.location.webDialogMessage')
+            .translate('personalProtection.location.webDialogMessage')
             .replaceAll('{0}', placeName)
             .replaceAll('{1}', stateAbbreviation),
         positiveButtonText:
-            context.translate('vehicleInsurance.location.visitWebsite'),
+            context.translate('personalProtection.location.visitWebsite'),
         negativeButtonText:
-            context.translate('vehicleInsurance.location.cancel'),
+            context.translate('personalProtection.location.cancel'),
       );
 
       // Marcar el diálogo como mostrado
@@ -502,72 +441,65 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
       String urlString;
       String title;
 
-      // Añadir información del usuario a las URLs cuando sea posible
-      final String firstName = userData['firstName'] ?? '';
-      final String lastName = userData['lastName'] ?? '';
-      final String email = userData['email'] ?? '';
-      final String phone = userData['phone'] ?? '';
-
       switch (insuranceType) {
-        case 'auto':
-          urlString =
-              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya&first_name=$firstName&last_name=$lastName&email=$email&phone_number=$phone';
-          title =
-              '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation';
+        case 'health_insurance':
+          urlString = 'https://www.freeway.com/health-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = '${context.translate('personalProtection.health')} - $placeName, $stateAbbreviation';
           break;
-        case 'motorcycle':
-          urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-moto/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title =
-              '${context.translate('vehicleInsurance.motorcycle')} - $placeName, $stateAbbreviation';
+        case 'dental_insurance':
+          urlString = 'https://www.freeway.com/dental-insurance-quote/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = '${context.translate('personalProtection.dental')} - $placeName, $stateAbbreviation';
           break;
-        case 'motorhome':
-          urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-rodante/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title =
-              '${context.translate('vehicleInsurance.motorhome')} - $placeName, $stateAbbreviation';
+        case 'telemedicine':
+          urlString = 'https://buy.freeway.com/product/telemedicine/step-2#form__step_2';
+          title = context.translate('personalProtection.telemedicine');
           break;
-        case 'rv_motorhome':
-          urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-de-casa-movil-y-casa-prefabricada/?zipCodeForm=$zipCode&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title =
-              '${context.translate('vehicleInsurance.rvMotorhome')} - $placeName, $stateAbbreviation';
+        case 'pet_insurance':
+          urlString = 'https://www.freeway.com/pet-insurance-quote/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = '${context.translate('personalProtection.pet')} - $placeName, $stateAbbreviation';
           break;
-        case 'snowmobile':
-          urlString =
-              'https://www.freewayseguros.com/cotizacion-seguro-para-moto-de-nieve/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName&first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title =
-              '${context.translate('vehicleInsurance.snowmobile')} - $placeName, $stateAbbreviation';
+        case 'life_insurance':
+          urlString = 'https://www.freeway.com/life-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = '${context.translate('personalProtection.life')} - $placeName, $stateAbbreviation';
           break;
-        case 'classic_car':
-          urlString =
-              'https://triton.freeway.com/?first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title = context.translate('vehicleInsurance.classicCar');
+        case 'accidental_death':
+          urlString = 'https://buy.freeway.com/product/ad-d/step-2?#form__step_2';
+          title = context.translate('personalProtection.accidentalDeath');
           break;
-        case 'sr22':
-          urlString =
-              'https://triton.freeway.com/?first_name=$firstName&last_name=$lastName&email=$email&phone=$phone';
-          title = context.translate('vehicleInsurance.sr22Insurance');
+        case 'identity_theft':
+          urlString = 'https://buy.freeway.com/product/identity-theft/step-2#form__step_2';
+          title = context.translate('personalProtection.identityTheft');
+          break;
+        case 'mexican_car':
+          urlString = 'https://quote.sanborns.com/guest/fastquote/77001';
+          title = context.translate('personalProtection.mexicanCar');
+          break;
+        case 'hospital_indemnity':
+          urlString = 'https://buy.freeway.com/product/hospital-indemnity/step-2?#form__step_2';
+          title = context.translate('personalProtection.hospitalIndemnity');
           break;
         default:
-          urlString =
-              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya&first_name=$firstName&last_name=$lastName&email=$email&phone_number=$phone';
-          title =
-              '${context.translate('vehicleInsurance.auto')} - $placeName, $stateAbbreviation';
+          urlString = 'https://www.freeway.com/';
+          title = context.translate('personalProtection.title');
       }
 
       // Abrir la URL en un WebView embebido en lugar de un navegador externo
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WebViewPage(
-            url: urlString,
-            title: title,
-            userData: userData, // Pasar los datos del usuario al WebView
-            formType: insuranceType, // Pasar el tipo de formulario
+      if (context.mounted) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebViewPage(
+              url: urlString,
+              title: title,
+              userData: userData,
+              formType:
+                  insuranceType, // Pasar el tipo de seguro para el autocompletado
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
+
+// Proceso completado
   }
 }

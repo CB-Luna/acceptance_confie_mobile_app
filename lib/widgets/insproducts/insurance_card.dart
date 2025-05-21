@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
+import 'business_insurance_grid.dart';
 import 'property_insurance_grid.dart';
 import 'vehicle_insurance_grid.dart';
 
@@ -40,6 +41,14 @@ class InsuranceCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => const PropertyInsuranceGrid(),
+              ),
+            );
+          } else if (title ==
+              context.translate('addInsurance.businessInsurance')) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BusinessInsuranceGrid(),
               ),
             );
           } else {

@@ -8,6 +8,7 @@ environment:
   sdk: ">=3.0.6 <4.0.0"
 
 dependencies:
+  add_to_google_wallet: ^0.0.5
   animate_do: ^4.0.1
   circular_profile_avatar: ^2.0.5
   cupertino_icons: ^1.0.8
@@ -42,6 +43,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   toggle_switch: ^2.3.0
   url_launcher: ^6.1.14
+  uuid: ^4.5.1
   webview_flutter: ^4.7.0
 
 dev_dependencies:
@@ -83,6 +85,7 @@ flutter:
     - assets/products/4.0x/
     - assets/products/vehiclepng/4.0x/
     - assets/products/propertypng/4.0x/
+    - assets/products/businesspng/4.0x/
     - assets/location/
     - assets/loading/
     - assets/i18n/

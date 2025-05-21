@@ -257,6 +257,33 @@ class _WebViewPageState extends State<WebViewPage> {
                 });
               }, 1000);
               break;
+            
+            case 'sr22':
+              // Lógica específica para formularios de SR22 de Triton
+              console.log('Aplicando lógica específica para formulario de SR22');
+              
+              // Intentar nuevamente después de un tiempo adicional (algunos formularios cargan dinámicamente)
+              setTimeout(function() {
+                fillField(['#tbFirstName', '[data-field="first-name"]'], userData.firstName);
+                fillField(['#tbLastName', '[data-field="last-name"]'], userData.lastName);
+                fillField(['#tbEmail', '[data-field="email-address"]'], userData.email);
+                fillField(['#tbPhoneNumber', '[data-field="phone-number"]'], userData.phone);
+                fillField(['#postal_code', '[data-field="zip-code"]'], userData.zipCode);
+                fillField(['#tbDateOfBirth', '[data-field="date-of-birth"]'], userData.birthDate);
+                
+                // Activar cualquier evento necesario después de rellenar
+                const inputs = document.querySelectorAll('#tbFirstName, #tbLastName, #tbEmail, #tbPhoneNumber, #postal_code, #tbDateOfBirth');
+                inputs.forEach(input => {
+                  if (input) {
+                    // Disparar múltiples eventos para asegurar la compatibilidad
+                    ['input', 'change', 'blur'].forEach(eventType => {
+                      const event = new Event(eventType, { bubbles: true });
+                      input.dispatchEvent(event);
+                    });
+                  }
+                });
+              }, 1000);
+              break;
               
             case 'auto_club':
               // Lógica específica para formulario de Auto Club
