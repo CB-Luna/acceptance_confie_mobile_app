@@ -87,6 +87,7 @@ flutter:
     - assets/products/propertypng/4.0x/
     - assets/products/businesspng/4.0x/
     - assets/products/personalpng/4.0x/
+    - assets/products/additionalpng/4.0x/
     - assets/location/
     - assets/loading/
     - assets/i18n/

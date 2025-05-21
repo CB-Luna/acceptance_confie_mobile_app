@@ -47,7 +47,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              context.translate('businessInsurance.back'),
+              context.translate('additionalProducts.back'),
               style: const TextStyle(
                 color: AppTheme.white,
                 fontSize: 16,
@@ -66,7 +66,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
             children: [
               Center(
                 child: Text(
-                  context.translate('businessInsurance.title'),
+                  context.translate('additionalProducts.title'),
                   style: TextStyle(
                     color: AppTheme.getTitleTextColor(context),
                     fontSize: 18,
@@ -79,7 +79,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
               GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
                 childAspectRatio:
@@ -87,23 +87,49 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
                 children: [
                   _buildInsuranceItem(
                     context,
-                    context.translate('businessInsurance.businessInsurance'),
-                    'business_insurance',
+                    context.translate('additionalProducts.autoClub'),
+                    'auto_club',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('businessInsurance.landlord'),
-                    'landlord',
+                    context.translate('additionalProducts.windshieldRepair'),
+                    'windshield_repair',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('businessInsurance.commercialAuto'),
-                    'commercial_auto',
+                    context.translate('additionalProducts.vrrOnlineCalifornia'),
+                    'vrr_online_california',
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('businessInsurance.rideShareInsurance'),
-                    'rideshare_insurance',
+                    context
+                        .translate('additionalProducts.tireHazardProtection'),
+                    'tire_hazard_protection',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('additionalProducts.dentRepair'),
+                    'dent_repair',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('additionalProducts.petHealth'),
+                    'pet_health',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('additionalProducts.autoLoan'),
+                    'auto_loan',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('additionalProducts.taxPreparation'),
+                    'tax_preparation',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('additionalProducts.oneStopDui'),
+                    'one_stop_dui',
                   ),
                 ],
               ),
@@ -178,13 +204,13 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/products/businesspng/4.0x/$iconName.png',
+                'assets/products/additionalpng/4.0x/$iconName.png',
                 width: 48,
                 height: 48,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(
-                    Icons.privacy_tip,
+                    Icons.add_circle_outline,
                     size: 48,
                     color: Colors.blue,
                   );
@@ -233,7 +259,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
       // Mostrar mensaje de procesamiento
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(context.translate('businessInsurance.processing')),
+          content: Text(context.translate('additionalProducts.processing')),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -394,15 +420,15 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
     if (!hasBeenShown && context.mounted) {
       final result = await CustomDialog.show(
         context: context,
-        title: context.translate('businessInsurance.location.webDialogTitle'),
+        title: context.translate('additionalProducts.location.webDialogTitle'),
         message: context
-            .translate('businessInsurance.location.webDialogMessage')
+            .translate('additionalProducts.location.webDialogMessage')
             .replaceAll('{0}', placeName)
             .replaceAll('{1}', stateAbbreviation),
         positiveButtonText:
-            context.translate('businessInsurance.location.visitWebsite'),
+            context.translate('additionalProducts.location.visitWebsite'),
         negativeButtonText:
-            context.translate('businessInsurance.location.cancel'),
+            context.translate('additionalProducts.location.cancel'),
       );
 
       // Marcar el diálogo como mostrado
@@ -417,31 +443,53 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
       String title;
 
       switch (insuranceType) {
-        case 'business_insurance':
-          urlString =
-              'https://www.freeway.com/business-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
-          title =
-              '${context.translate('businessInsurance.businessInsurance')} - $placeName, $stateAbbreviation';
+        case 'auto_club':
+          urlString = 'https://www.freeway.com/insurance-options/auto-club/';
+          title = context.translate('additionalProducts.autoClub');
           break;
-        case 'landlord':
+        case 'windshield_repair':
           urlString =
-              'https://www.freeway.com/landlord-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
-          title =
-              '${context.translate('businessInsurance.landlord')} - $placeName, $stateAbbreviation';
+              'https://buy.freeway.com/product/windshield-repair/step-1?';
+          title = context.translate('additionalProducts.windshieldRepair');
           break;
-        case 'commercial_auto':
+        case 'vrr_online_california':
           urlString =
-              'https://www.freeway.com/commercial-vehicle-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
-          title =
-              '${context.translate('businessInsurance.commercialAuto')} - $placeName, $stateAbbreviation';
+              'https://www.carregistration.com/freeway?affid=FWAY&cid=web&utm=&utm_source=FreeWay-Insurance&utm_medium=web&utm_campaign=Freeway&utm_id=Freeway+Insurance&utm_term=web';
+          title = context.translate('additionalProducts.vrrOnlineCalifornia');
           break;
-        case 'rideshare_insurance':
-          urlString = 'https://rate.freeway.com/';
-          title = context.translate('businessInsurance.rideShareInsurance');
+        case 'tire_hazard_protection':
+          urlString =
+              'https://buy.freeway.com/product/paintless-dent-repair/step-1';
+          title = context.translate('additionalProducts.tireHazardProtection');
+          break;
+        case 'dent_repair':
+          urlString =
+              'https://buy.freeway.com/product/paintless-dent-repair/step-1';
+          title = context.translate('additionalProducts.dentRepair');
+          break;
+        case 'pet_health':
+          urlString =
+              'https://www.freeway.com/insurance-options/pet-health-and-discount-services/';
+          title = context.translate('additionalProducts.petHealth');
+          break;
+        case 'auto_loan':
+          urlString =
+              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = context.translate('additionalProducts.autoLoan');
+          break;
+        case 'tax_preparation':
+          urlString =
+              'https://www.taxmax.com/TaxCalculation/ExtLand.aspx?type=confie&id=97265a19-8630-44e4-a427-d476ef0d33cd';
+          title = context.translate('additionalProducts.taxPreparation');
+          break;
+        case 'one_stop_dui':
+          urlString =
+              'https://triton.freeway.com/?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = context.translate('additionalProducts.oneStopDui');
           break;
         default:
           urlString = 'https://www.freeway.com/';
-          title = context.translate('businessInsurance.title');
+          title = context.translate('additionalProducts.title');
       }
 
       // Abrir la URL en un WebView embebido en lugar de un navegador externo

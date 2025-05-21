@@ -397,6 +397,34 @@
     "notAvailableMessage": "no está disponible en este momento.",
     "processing": "Procesando tu solicitud..."
   },
+  "additionalProducts": {
+    "back": "Regresar",
+    "title": "Selecciona un producto adicional",
+    "autoClub": "Club Automotriz",
+    "windshieldRepair": "Reparación de Parabrisas",
+    "vrrOnlineCalifornia": "Registro Vehicular en Línea California",
+    "tireHazardProtection": "Protección contra Riesgos de Neumáticos",
+    "dentRepair": "Reparación de Abolladuras",
+    "petHealth": "Salud para Mascotas",
+    "autoLoan": "Préstamo de Auto",
+    "taxPreparation": "Preparación de Impuestos",
+    "oneStopDui": "Servicio DUI",
+    "location": {
+      "gettingLocation": "Obteniendo tu ubicación...",
+      "zipCodeDialogTitle": "Ingresa tu código postal",
+      "zipCodeDialogMessage": "Por favor ingresa tu código postal para obtener información precisa para tu área.",
+      "zipCodeHint": "Código Postal",
+      "continueButton": "Continuar",
+      "invalidZipCode": "Por favor ingresa un código postal válido",
+      "webDialogTitle": "¿Te gustaría visitar nuestro sitio web?",
+      "webDialogMessage": "Serás redirigido a nuestro sitio web para acceder a productos adicionales para {0}, {1}.",
+      "visitWebsite": "Visitar Sitio Web",
+      "invalidUrl": "No hay cobertura para este código postal.",
+      "cancel": "Cancelar"
+    },
+    "notAvailableMessage": "no está disponible en este momento.",
+    "processing": "Procesando tu solicitud..."
+  },
   "common": {
     "ok": "OK",
     "cancel": "Cancelar",

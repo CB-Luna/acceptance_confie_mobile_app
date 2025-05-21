@@ -41,7 +41,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                   const SizedBox(height: 16),
                   Center(
                     child: Text(
-                      context.translate('addInsurance.title'),
+                      context.translate('addInsurance.addInsurance'),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

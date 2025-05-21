@@ -310,7 +310,7 @@
     "loadingGif": "Loading..."
   },
   "addInsurance": {
-    "title": "More Ways to Get Covered",
+    "addInsurance": "Add Insurance",
     "vehicleInsurance": "Vehicle Insurance",
     "propertyInsurance": "Property Insurance",
     "personalProtection": "Personal Protection",
@@ -416,6 +416,34 @@
       "cancel": "Cancel"
     },
     "notAvailableMessage": "insurance is not available at this time.",
+    "processing": "Processing your request..."
+  },
+  "additionalProducts": {
+    "back": "Back",
+    "title": "Select an additional product",
+    "autoClub": "Auto Club",
+    "windshieldRepair": "Windshield Repair",
+    "vrrOnlineCalifornia": "VRR Online California",
+    "tireHazardProtection": "Tire Hazard Protection",
+    "dentRepair": "Dent Repair",
+    "petHealth": "Pet Health",
+    "autoLoan": "Auto Loan",
+    "taxPreparation": "Tax Preparation",
+    "oneStopDui": "One Stop DUI",
+    "location": {
+      "gettingLocation": "Getting your location...",
+      "zipCodeDialogTitle": "Enter your ZIP code",
+      "zipCodeDialogMessage": "Please enter your ZIP code to get accurate information for your area.",
+      "zipCodeHint": "ZIP Code",
+      "continueButton": "Continue",
+      "invalidZipCode": "Please enter a valid ZIP code",
+      "webDialogTitle": "Would you like to visit our website?",
+      "webDialogMessage": "You'll be redirected to our website to access additional products for {0}, {1}.",
+      "visitWebsite": "Visit Website",
+      "invalidUrl": "No coverage for this zipcode.",
+      "cancel": "Cancel"
+    },
+    "notAvailableMessage": "is not available at this time.",
     "processing": "Processing your request..."
   }
 }
