@@ -2,9 +2,11 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
+import 'package:freeway_app/models/user_model.dart';
 import 'package:freeway_app/pages/add_insurance.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/id_card_printer.dart';
 import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
 import 'package:freeway_app/widgets/id_card/id_card_widget.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
@@ -19,6 +21,8 @@ class IdCardPage extends StatefulWidget {
 
 class _IdCardPageState extends State<IdCardPage> {
   int _selectedIndex = 0;
+  final GlobalKey _idCardKey = GlobalKey();
+  bool _isProcessingRequest = false; // Bandera para evitar múltiples llamadas
 
   @override
   Widget build(BuildContext context) {
@@ -192,13 +196,10 @@ class _IdCardPageState extends State<IdCardPage> {
                                     color: AppTheme.getIconColor(context),
                                   ),
                                   onPressed: () {
-                                    // TODO: Implement download functionality
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Downloading ID card...'),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
+                                    // Evitar múltiples llamadas mientras se procesa una solicitud
+                                    if (!_isProcessingRequest) {
+                                      _handleSaveIdCard(context, user);
+                                    }
                                   },
                                 ),
                                 IconButton(
@@ -207,13 +208,10 @@ class _IdCardPageState extends State<IdCardPage> {
                                     color: AppTheme.getIconColor(context),
                                   ),
                                   onPressed: () {
-                                    // TODO: Implement print functionality
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Printing ID card...'),
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
+                                    // Evitar múltiples llamadas mientras se procesa una solicitud
+                                    if (!_isProcessingRequest) {
+                                      _handlePrintIdCard(context, user);
+                                    }
                                   },
                                 ),
                               ],
@@ -229,16 +227,19 @@ class _IdCardPageState extends State<IdCardPage> {
                           height: cardHeight,
                           child: FittedBox(
                             fit: BoxFit.contain,
-                            child: IdCardWidget(
-                              width: cardWidth,
-                              height: cardHeight,
-                              user: user,
-                              policyNumber: user.policyNumber,
-                              carrier: user.carrierName,
-                              state: user.policyUsaState,
-                              // Ejemplo de fechas, en una implementación real vendrían de la API
-                              effectiveDate: DateTime(2023, 6, 18),
-                              expirationDate: DateTime(2026, 12, 18),
+                            child: RepaintBoundary(
+                              key: _idCardKey,
+                              child: IdCardWidget(
+                                user: user,
+                                width: cardWidth,
+                                height: cardHeight,
+                                policyNumber: user.policyNumber,
+                                carrier: user.carrierName,
+                                state: user.policyUsaState,
+                                // Ejemplo de fechas, en una implementación real vendrían de la API
+                                effectiveDate: DateTime(2023, 6, 18),
+                                expirationDate: DateTime(2026, 12, 18),
+                              ),
                             ),
                           ),
                         ),
@@ -306,6 +307,101 @@ class _IdCardPageState extends State<IdCardPage> {
           ],
         ),
       ),
+    );
+  }
+
+  // Método para manejar la impresión de la tarjeta de ID
+  void _handlePrintIdCard(BuildContext context, User user) {
+    setState(() {
+      _isProcessingRequest = true;
+    });
+
+    // Mostrar un indicador de progreso
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.translate('idCard.preparingForPrint')),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+
+    // Utilizar la clase IdCardPrinter para imprimir la tarjeta
+    IdCardPrinter.printIdCard(
+      context, 
+      _idCardKey, 
+      user,
+      (success) {
+        // Callback cuando se completa la operación
+        if (mounted) {
+          setState(() {
+            _isProcessingRequest = false;
+          });
+
+          if (success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.translate('idCard.printCompleted')),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.translate('idCard.printError')),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        }
+      },
+    );
+  }
+
+  // Método para manejar el guardado de la tarjeta de ID
+  void _handleSaveIdCard(BuildContext context, User user) {
+    setState(() {
+      _isProcessingRequest = true;
+    });
+
+    // Mostrar un indicador de progreso
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.translate('idCard.preparingForDownload')),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+
+    // Utilizar la clase IdCardPrinter para guardar la tarjeta
+    IdCardPrinter.saveIdCard(
+      context, 
+      _idCardKey, 
+      user,
+      (success) {
+        // Callback cuando se completa la operación
+        if (mounted) {
+          setState(() {
+            _isProcessingRequest = false;
+          });
+
+          if (success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.translate('idCard.downloadCompleted')),
+                backgroundColor: Colors.green,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.translate('idCard.downloadCancelled')),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        }
+      },
     );
   }
 }

@@ -115,12 +115,21 @@
     "carrier": "CARRIER",
     "cancelToGoogleWallet": "Canceling action...",
     "addedToGoogleWallet": "Successfully added to Google Wallet",
-    "policyNumber": "POLICY NUMBER",
+    "policyNumberLabel": "POLICY NUMBER",
     "state": "STATE",
     "effectiveDate": "EFFECTIVE DATE",
     "expirationDate": "EXPIRATION DATE",
     "languageCode": "en",
-    "countryCode": "US"
+    "countryCode": "US",
+    "printCompleted": "Print completed",
+    "printError": "Print failed",
+    "preparingForDownload": "Preparing for download...",
+    "downloadCompleted": "Download completed",
+    "preparingForPrint": "Preparing for print...",
+    "downloadCancelled": "Download cancelled",
+    "pdfTitle": "Freeway Insurance ID Card",
+    "pdfDescription1": "This is your official insurance ID card.",
+    "pdfDescription2": "Please keep it with you while driving."
   },
   "quoteCallcenter": {
     "back": "Back",

@@ -233,10 +233,10 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                 height: 48,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
+                  return Icon(
                     Icons.car_rental,
                     size: 48,
-                    color: Colors.blue,
+                    color: AppTheme.getPrimaryColor(context),
                   );
                 },
               ),

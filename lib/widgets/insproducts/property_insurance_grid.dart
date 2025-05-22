@@ -193,10 +193,10 @@ class _PropertyInsuranceGridState extends State<PropertyInsuranceGrid> {
                 height: 48,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
+                  return Icon(
                     Icons.house,
                     size: 48,
-                    color: Colors.blue,
+                    color: AppTheme.getPrimaryColor(context),
                   );
                 },
               ),

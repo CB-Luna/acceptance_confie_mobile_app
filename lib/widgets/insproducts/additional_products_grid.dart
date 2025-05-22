@@ -7,10 +7,9 @@ import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
-import '../../locatordevice/presentation/widgets/loading_view.dart';
-
 import '../../data/services/location_service.dart';
 import '../../locatordevice/locator_device_module.dart';
+import '../../locatordevice/presentation/widgets/loading_view.dart';
 import '../../pages/home_page.dart';
 import '../../pages/webview_page.dart';
 import '../../utils/menu/circle_nav_bar.dart';
@@ -215,10 +214,10 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
                 height: 48,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
-                  return const Icon(
+                  return Icon(
                     Icons.add_circle_outline,
                     size: 48,
-                    color: Colors.blue,
+                    color: AppTheme.getPrimaryColor(context),
                   );
                 },
               ),
@@ -260,7 +259,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
     setState(() {
       _isProcessingRequest = true;
     });
-    
+
     // Mostrar un indicador de progreso
     final overlay = LoadingView.showOverlay(
       context,
@@ -268,7 +267,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
       indicatorColor: AppTheme.getPrimaryColor(context),
       textColor: AppTheme.getTitleTextColor(context),
     );
-    
+
     try {
       // Obtener el código postal actual del usuario si está disponible
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -301,7 +300,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
             });
             return;
           }
-          
+
           if (locationInfo != null) {
             // Si se obtuvo la información de ubicación, mostrar el diálogo web
             await _showWebPageDialog(
@@ -327,7 +326,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
             });
             return;
           }
-          
+
           // Si no se pudo obtener el código postal, mostrar el diálogo de código postal
           if (context.mounted) {
             await _showZipCodeDialog(context, initialZipCode, insuranceType);
@@ -344,7 +343,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
           });
           return;
         }
-        
+
         // Si hay un error al obtener la ubicación, mostrar el diálogo de código postal
         if (context.mounted) {
           await _showZipCodeDialog(context, initialZipCode, insuranceType);
@@ -361,7 +360,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
         });
         return;
       }
-      
+
       // En caso de error, mostrar un mensaje
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -378,7 +377,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
         // El overlay ya podría haber sido eliminado, ignorar el error
         debugPrint('Error al remover overlay: $e');
       }
-      
+
       // Restablecer la bandera después de completar el proceso
       if (mounted) {
         setState(() {
