@@ -127,9 +127,7 @@
     "downloadCompleted": "Download completed",
     "preparingForPrint": "Preparing for print...",
     "downloadCancelled": "Download cancelled",
-    "pdfTitle": "Freeway Insurance ID Card",
-    "pdfDescription1": "This is your official insurance ID card.",
-    "pdfDescription2": "Please keep it with you while driving."
+    "pdfTitle": "Freeway Insurance ID Card"
   },
   "quoteCallcenter": {
     "back": "Back",

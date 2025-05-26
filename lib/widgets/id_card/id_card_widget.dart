@@ -174,7 +174,7 @@ class IdCardWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                context.translate('idCard.policyNumber'),
+                                context.translate('idCard.policyNumberLabel'),
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: AppTheme.getTextGreyColor(context),

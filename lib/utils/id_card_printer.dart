@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -62,13 +64,8 @@ class IdCardPrinter {
                 ),
                 pw.SizedBox(height: 10),
                 pw.Text(
-                  translations['pdfDescription1'] ??
-                      'This is your official insurance ID card.',
-                  style: const pw.TextStyle(fontSize: 12),
-                ),
-                pw.Text(
-                  translations['pdfDescription2'] ??
-                      'Please keep it with you while driving.',
+                  translations['norProofOfCoverage'] ??
+                      'Not proof of coverage.',
                   style: const pw.TextStyle(fontSize: 12),
                 ),
               ],
@@ -94,13 +91,12 @@ class IdCardPrinter {
       if (imageBytes == null) {
         throw Exception('No se pudo capturar la imagen de la tarjeta');
       }
-
+      if (!context.mounted) return;
       // Obtener las traducciones necesarias
       final translations = {
         'pdfTitle': context.translate('idCard.pdfTitle'),
-        'policyNumber': context.translate('idCard.policyNumber'),
-        'pdfDescription1': context.translate('idCard.pdfDescription1'),
-        'pdfDescription2': context.translate('idCard.pdfDescription2'),
+        'policyNumber': context.translate('idCard.policyNumberLabel'),
+        'norProofOfCoverage': context.translate('idCard.notProofOfCoverage'),
       };
 
       // Generar el PDF
@@ -140,9 +136,8 @@ class IdCardPrinter {
       // Obtener las traducciones necesarias
       final translations = {
         'pdfTitle': context.translate('idCard.pdfTitle'),
-        'policyNumber': context.translate('idCard.policyNumber'),
-        'pdfDescription1': context.translate('idCard.pdfDescription1'),
-        'pdfDescription2': context.translate('idCard.pdfDescription2'),
+        'policyNumber': context.translate('idCard.policyNumberLabel'),
+        'norProofOfCoverage': context.translate('idCard.notProofOfCoverage')
       };
 
       // Generar el PDF

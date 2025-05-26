@@ -127,9 +127,7 @@
     "preparingForPrint": "Preparando para imprimir...",
     "downloadCancelled": "Descarga cancelada",
     "pdfTitle": "Tarjeta de Seguro Freeway",
-    "policyNumber": "Número de Póliza",
-    "pdfDescription1": "Esta es su tarjeta de seguro oficial.",
-    "pdfDescription2": "Por favor, llévela consigo mientras conduce."
+    "policyNumber": "Número de Póliza"
   },
   "quoteCallcenter": {
     "back": "Atrás",
