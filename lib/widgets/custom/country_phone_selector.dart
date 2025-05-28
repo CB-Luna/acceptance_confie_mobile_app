@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:freeway_app/models/country_phone_model.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 
@@ -38,6 +39,7 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
   late List<CountryPhoneModel> _filteredCountries;
   late String _completePhoneNumber;
   final TextEditingController _searchController = TextEditingController();
+  late List<TextInputFormatter> _inputFormatters;
 
   @override
   void initState() {
@@ -50,6 +52,9 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
     );
     _completePhoneNumber =
         '${_selectedCountry.formattedDialCode}${widget.phoneController.text}';
+
+    // Inicializar los input formatters según el país seleccionado
+    _updateInputFormatters();
 
     // Configurar el listener para la búsqueda
     _searchController.addListener(_filterCountries);
@@ -88,6 +93,31 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
       _completePhoneNumber = '${_selectedCountry.formattedDialCode}$value';
     });
     widget.onPhoneChanged(_completePhoneNumber);
+  }
+
+  /// Actualiza los input formatters según el país seleccionado
+  void _updateInputFormatters() {
+    _inputFormatters = [
+      // Solo permitir dígitos
+      FilteringTextInputFormatter.digitsOnly,
+      // Formatter personalizado según el país (incluye la limitación de longitud)
+      _getCountrySpecificFormatter(_selectedCountry),
+    ];
+  }
+
+  /// Obtiene un formatter específico según el país seleccionado
+  TextInputFormatter _getCountrySpecificFormatter(CountryPhoneModel country) {
+    // Formatters específicos para países prioritarios
+    switch (country.code) {
+      case 'US':
+      case 'CA':
+      case 'MX':
+        // Formato unificado para Norteamérica: XXX-XXX-XXXX
+        return NorthAmericaPhoneFormatter();
+      default:
+        // Para otros países, formato internacional: XX-XXXX-XXXX
+        return InternationalPhoneFormatter();
+    }
   }
 
   void _showCountryPicker() {
@@ -185,6 +215,8 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
                         _selectedCountry = country;
                         _completePhoneNumber =
                             '${_selectedCountry.formattedDialCode}${widget.phoneController.text}';
+                        // Actualizar los input formatters cuando cambia el país
+                        _updateInputFormatters();
                       });
                       widget.onCountryChanged(country);
                       widget.onPhoneChanged(_completePhoneNumber);
@@ -209,6 +241,7 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
           controller: widget.phoneController,
           enabled: widget.enabled,
           keyboardType: TextInputType.phone,
+          inputFormatters: _inputFormatters,
           decoration: InputDecoration(
             labelText: widget.labelText,
             helperText: widget.helperText,
@@ -252,6 +285,92 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
           onChanged: _updatePhoneNumber,
         ),
       ],
+    );
+  }
+}
+
+/// Formatter para números de teléfono de Norteamérica (México, Estados Unidos y Canadá)
+/// Formato: XXX-XXX-XXXX
+class NorthAmericaPhoneFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final newText = newValue.text;
+
+    // Si está vacío, devolver como está
+    if (newText.isEmpty) {
+      return newValue;
+    }
+
+    // Eliminar cualquier carácter que no sea dígito
+    final digitsOnly = newText.replaceAll(RegExp(r'\D'), '');
+
+    // Limitar a 10 dígitos (número local sin código de país)
+    // Si ya hay 10 dígitos y el usuario intenta añadir más, mantener los primeros 10
+    final limitedDigits =
+        digitsOnly.length > 10 ? digitsOnly.substring(0, 10) : digitsOnly;
+
+    var formattedText = '';
+
+    // Aplicar formato XXX-XXX-XXXX
+    for (var i = 0; i < limitedDigits.length; i++) {
+      if (i == 0) {
+        formattedText += limitedDigits[i];
+      } else if (i == 3 || i == 6) {
+        formattedText += '-${limitedDigits[i]}';
+      } else {
+        formattedText += limitedDigits[i];
+      }
+    }
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
+    );
+  }
+}
+
+/// Formatter para números de teléfono internacionales
+/// Formato: XXX-XXX-XXXX
+class InternationalPhoneFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final newText = newValue.text;
+
+    // Si está vacío, devolver como está
+    if (newText.isEmpty) {
+      return newValue;
+    }
+
+    // Eliminar cualquier carácter que no sea dígito
+    final digitsOnly = newText.replaceAll(RegExp(r'\D'), '');
+
+    // Limitar a 10 dígitos (número local sin código de país)
+    // Si ya hay 10 dígitos y el usuario intenta añadir más, mantener los primeros 10
+    final limitedDigits =
+        digitsOnly.length > 10 ? digitsOnly.substring(0, 10) : digitsOnly;
+
+    var formattedText = '';
+
+    // Aplicar formato XXX-XXX-XXXX
+    for (var i = 0; i < limitedDigits.length; i++) {
+      if (i == 0) {
+        formattedText += limitedDigits[i];
+      } else if (i == 3 || i == 6) {
+        formattedText += '-${limitedDigits[i]}';
+      } else {
+        formattedText += limitedDigits[i];
+      }
+    }
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
     );
   }
 }
