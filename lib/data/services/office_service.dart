@@ -13,10 +13,10 @@ class OfficeService {
   /// Busca oficinas cercanas a un código postal específico
   ///
   /// [zipCode] El código postal para buscar oficinas cercanas
-  /// [count] Número máximo de oficinas a devolver (por defecto 5)
+  /// [count] Número máximo de oficinas a devolver (por defecto 100)
   Future<List<Office>> getNearbyOfficesByZipCode(
     String zipCode, {
-    int count = 5,
+    int count = 100,
   }) async {
     try {
       final request = OfficeRequest(zipCode: zipCode, count: count);
@@ -57,11 +57,11 @@ class OfficeService {
   ///
   /// [latitude] Latitud de la ubicación
   /// [longitude] Longitud de la ubicación
-  /// [count] Número máximo de oficinas a devolver (por defecto 5)
+  /// [count] Número máximo de oficinas a devolver (por defecto 100)
   Future<List<Office>> getNearbyOfficesByLocation(
     double latitude,
     double longitude, {
-    int count = 5,
+    int count = 100,
   }) async {
     try {
       final request = OfficeRequest(

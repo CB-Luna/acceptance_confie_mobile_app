@@ -2,8 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
-class ProductList extends StatelessWidget {
+class ProductList extends StatefulWidget {
   const ProductList({super.key});
+
+  @override
+  State<ProductList> createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showIndicator = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    // Oculta el indicador si el usuario llega al final del scroll
+    if (_scrollController.position.hasContentDimensions) {
+      final atEnd = _scrollController.position.pixels >=
+          (_scrollController.position.maxScrollExtent - 8);
+      if (atEnd && _showIndicator) {
+        setState(() => _showIndicator = false);
+      } else if (!atEnd && !_showIndicator) {
+        setState(() => _showIndicator = true);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +63,62 @@ class ProductList extends StatelessWidget {
       ),
     ];
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Row(
-        children: products
-            .map(
-              (product) => Container(
-                width: cardWidth,
-                margin: const EdgeInsets.only(right: 12.0),
-                child: ProductCard(
-                  product: product,
-                  cardWidth: cardWidth,
+    return Stack(
+      alignment: Alignment.centerRight,
+      children: [
+        SingleChildScrollView(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Row(
+            children: products
+                .map(
+                  (product) => Container(
+                    width: cardWidth,
+                    margin: const EdgeInsets.only(right: 12.0),
+                    child: ProductCard(
+                      product: product,
+                      cardWidth: cardWidth,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        if (_showIndicator)
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: IgnorePointer(
+              child: Container(
+                width: 32,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft,
+                    colors: [
+                      AppTheme.getBackgroundColor(context)
+                          .withValues(alpha: 0.5),
+                      AppTheme.getBackgroundColor(context)
+                          .withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppTheme.getPrimaryColor(context),
+                  size: 35,
                 ),
               ),
-            )
-            .toList(),
-      ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -68,7 +140,7 @@ class ProductCard extends StatelessWidget {
     // Calcular tamaño del icono proporcional al ancho de la tarjeta
     final iconSize = cardWidth * 0.3;
     // Calcular tamaño de fuente basado en el ancho de la tarjeta
-    final fontSize = cardWidth < 140 ? 14.0 : 12.0;
+    final fontSize = cardWidth < 140 ? 14.0 : 8.0;
 
     return Card(
       elevation: 4,

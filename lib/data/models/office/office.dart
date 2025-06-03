@@ -1,3 +1,5 @@
+// ignore_for_file: always_put_required_named_parameters_first
+
 class Office {
   final int locationId;
   final int organizationId;
@@ -33,14 +35,14 @@ class Office {
     return Office(
       locationId: json['location_id'] as int,
       organizationId: json['organization_id'] as int,
-      name: json['name'] as String,
-      streetAddress: json['street_address'] as String,
-      city: json['city'] as String,
-      state: json['state'] as String,
-      postalCode: json['postal_code'] as String,
-      country: json['country'] as String,
-      phone: json['phone'] as String,
-      languages: json['languages'] as String,
+      name: json['name'] ?? '',
+      streetAddress: json['street_address'] ?? '',
+      city: json['city'] ?? '',
+      state: json['state'] ?? '',
+      postalCode: json['postal_code'] ?? '',
+      country: json['country'] ?? '',
+      phone: json['phone'] ?? '',
+      languages: json['languages'] ?? '',
       latitude: json['latitude'] as double,
       longitude: json['longitude'] as double,
       distance: json['distance'] as double,
