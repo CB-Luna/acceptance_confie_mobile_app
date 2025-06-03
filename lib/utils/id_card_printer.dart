@@ -17,7 +17,8 @@ class IdCardPrinter {
     try {
       final RenderRepaintBoundary boundary =
           key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-      final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      // Increased pixelRatio for higher quality image capture
+      final ui.Image image = await boundary.toImage(pixelRatio: 4.0);
       final ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData != null) {
@@ -35,9 +36,16 @@ class IdCardPrinter {
     final pdf = pw.Document();
     final image = pw.MemoryImage(imageBytes);
 
+    // Calculate optimal size for the ID card image
+    // Using a larger portion of the A4 page width (500-600px is about 70-80% of A4 width)
+    final cardWidth = 600.0;
+    // Calculate height to maintain aspect ratio (original was 350x220 = 1.59:1)
+    final cardHeight = cardWidth / 1.59;
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(30),
         build: (pw.Context context) {
           return pw.Center(
             child: pw.Column(
@@ -56,7 +64,8 @@ class IdCardPrinter {
                   style: const pw.TextStyle(fontSize: 18),
                 ),
                 pw.SizedBox(height: 30),
-                pw.Image(image, width: 350, height: 220),
+                // Larger image size for better visibility
+                pw.Image(image, width: cardWidth, height: cardHeight),
                 pw.SizedBox(height: 30),
                 pw.Text(
                   '${translations['policyNumber'] ?? 'Policy Number'}: ${user.policyNumber}',
