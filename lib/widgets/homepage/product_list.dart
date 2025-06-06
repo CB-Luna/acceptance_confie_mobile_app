@@ -11,7 +11,8 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   final ScrollController _scrollController = ScrollController();
-  bool _showIndicator = true;
+  bool _showRightIndicator = true; // Indicador de scroll a la derecha
+  bool _showLeftIndicator = false; // Indicador de scroll a la izquierda
 
   @override
   void initState() {
@@ -20,14 +21,28 @@ class _ProductListState extends State<ProductList> {
   }
 
   void _onScroll() {
-    // Oculta el indicador si el usuario llega al final del scroll
+    // Solo procesar si el ScrollController tiene dimensiones válidas
     if (_scrollController.position.hasContentDimensions) {
+      // Verificar si estamos cerca del final del scroll (derecha)
       final atEnd = _scrollController.position.pixels >=
           (_scrollController.position.maxScrollExtent - 8);
-      if (atEnd && _showIndicator) {
-        setState(() => _showIndicator = false);
-      } else if (!atEnd && !_showIndicator) {
-        setState(() => _showIndicator = true);
+      
+      // Verificar si estamos cerca del inicio del scroll (izquierda)
+      final atStart = _scrollController.position.pixels <= 8;
+      
+      // Actualizar estado de indicador derecho
+      if (atEnd && _showRightIndicator) {
+        setState(() => _showRightIndicator = false);
+      } else if (!atEnd && !_showRightIndicator) {
+        setState(() => _showRightIndicator = true);
+      }
+      
+      // Actualizar estado de indicador izquierdo
+      // Solo mostrar el indicador izquierdo si no estamos al inicio
+      if (!atStart && !_showLeftIndicator) {
+        setState(() => _showLeftIndicator = true);
+      } else if (atStart && _showLeftIndicator) {
+        setState(() => _showLeftIndicator = false);
       }
     }
   }
@@ -85,19 +100,62 @@ class _ProductListState extends State<ProductList> {
                 .toList(),
           ),
         ),
-        if (_showIndicator)
+        // Indicador de scroll a la izquierda
+        if (_showLeftIndicator)
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            child: GestureDetector(
+              onTap: () {
+                // Scroll hacia la izquierda al hacer tap en el indicador
+                _scrollController.animateTo(
+                  _scrollController.position.pixels - cardWidth,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: Container(
+                width: 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      AppTheme.getBackgroundColor(context)
+                          .withValues(alpha: 0.5),
+                      AppTheme.getBackgroundColor(context)
+                          .withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: AppTheme.getPrimaryColor(context),
+                  size: 35,
+                ),
+              ),
+            ),
+          ),
+        // Indicador de scroll a la derecha
+        if (_showRightIndicator)
           Positioned(
             right: 0,
             top: 0,
             bottom: 0,
-            child: IgnorePointer(
+            child: GestureDetector(
+              onTap: () {
+                // Scroll hacia la derecha al hacer tap en el indicador
+                _scrollController.animateTo(
+                  _scrollController.position.pixels + cardWidth,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
               child: Container(
-                width: 32,
+                width: 50,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
                   gradient: LinearGradient(
                     begin: Alignment.centerRight,
                     end: Alignment.centerLeft,

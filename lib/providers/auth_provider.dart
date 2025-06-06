@@ -129,7 +129,7 @@ class AuthProvider with ChangeNotifier {
                 'Auto', // Valor por defecto o se podría extraer de la respuesta
             customerId: apiResponse['PolicyNumber'] ?? '1001',
             email: apiResponse['Email'] ?? _lastUsername ?? 'user@example.com',
-            phone: apiResponse['Phone'].toString(),
+            phone: _formatPhoneNumber(apiResponse['Phone']?.toString() ?? ''),
             avatar: null, // No disponible en la API
             languageCode: 'en_US', // Por defecto o basado en preferencias
             street: apiResponse['Street'] ?? '',
@@ -290,8 +290,27 @@ class AuthProvider with ChangeNotifier {
     return await loginStep1(username, password);
   }
 
+  /// Método para formatear números telefónicos
+  /// Elimina el código de país, guiones y otros caracteres no numéricos
+  /// y extrae los últimos 10 dígitos
+  String _formatPhoneNumber(String phoneNumber) {
+    // Si el número está vacío, devolver cadena vacía
+    if (phoneNumber.isEmpty) return '';
+
+    // Eliminar todos los caracteres no numéricos (guiones, espacios, paréntesis, etc.)
+    String digitsOnly = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+    // Si el número tiene más de 10 dígitos, tomar solo los últimos 10
+    // Esto elimina automáticamente los códigos de país como +1 o +52
+    if (digitsOnly.length > 10) {
+      digitsOnly = digitsOnly.substring(digitsOnly.length - 10);
+    }
+
+    return digitsOnly;
+  }
+
   /// Método simple para cerrar sesión - solo limpia el estado
-  void logout() {
+  Future<void> logout() async {
     _currentUser = null;
     _isAuthenticated = false;
     _errorMessage = null;
