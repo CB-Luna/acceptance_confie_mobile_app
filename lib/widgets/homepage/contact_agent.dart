@@ -30,7 +30,7 @@ class ContactAgent extends StatelessWidget {
             final availableWidth = constraints.maxWidth;
 
             // Determinar si debemos usar layout vertical
-            final useVerticalLayout = availableWidth < 340;
+            final useVerticalLayout = availableWidth < 360;
 
             if (useVerticalLayout) {
               return Column(

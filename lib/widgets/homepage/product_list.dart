@@ -26,17 +26,17 @@ class _ProductListState extends State<ProductList> {
       // Verificar si estamos cerca del final del scroll (derecha)
       final atEnd = _scrollController.position.pixels >=
           (_scrollController.position.maxScrollExtent - 8);
-      
+
       // Verificar si estamos cerca del inicio del scroll (izquierda)
       final atStart = _scrollController.position.pixels <= 8;
-      
+
       // Actualizar estado de indicador derecho
       if (atEnd && _showRightIndicator) {
         setState(() => _showRightIndicator = false);
       } else if (!atEnd && !_showRightIndicator) {
         setState(() => _showRightIndicator = true);
       }
-      
+
       // Actualizar estado de indicador izquierdo
       // Solo mostrar el indicador izquierdo si no estamos al inicio
       if (!atStart && !_showLeftIndicator) {
@@ -58,7 +58,7 @@ class _ProductListState extends State<ProductList> {
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
     // Calcular el ancho ideal para las tarjetas basado en el ancho de la pantalla
-    final cardWidth = screenWidth < 360 ? screenWidth * 0.4 : 140.0;
+    final cardWidth = screenWidth < 360 ? screenWidth * 0.4 : 160.0;
 
     final List<ProductItem> products = [
       ProductItem(
@@ -196,12 +196,12 @@ class ProductCard extends StatelessWidget {
     // Calcular altura proporcional al ancho
     final cardHeight = cardWidth * 0.45;
     // Calcular tamaño del icono proporcional al ancho de la tarjeta
-    final iconSize = cardWidth * 0.3;
+    final iconSize = cardWidth * 0.25;
     // Obtener el TextScaler del dispositivo
     final textScaler = MediaQuery.of(context).textScaler;
 
     // Calcular tamaño de fuente base basado en el ancho de la tarjeta
-    final baseFontSize = cardWidth <= 140 ? 10.0 : 12.0;
+    final baseFontSize = cardWidth <= 160 ? 5.0 : 12.0;
 
     // Ajustar el tamaño de fuente según el textScaler
     // Usamos textScaler.scale(baseFontSize) para obtener el tamaño de fuente escalado.
@@ -213,10 +213,10 @@ class ProductCard extends StatelessWidget {
     // Por ejemplo, si el baseFontSize es 8, y el textScaleFactor es 2.0 (muy grande),
     // el adjustedFontSize sería 16. Si el cardWidth es pequeño, esto podría ser demasiado.
     // Si el baseFontSize es 12 y textScaleFactor es 0.85 (pequeño), adjustedFontSize sería ~10.2
-    if (cardWidth <= 140) {
+    if (cardWidth <= 160) {
       // Para tarjetas más pequeñas, los límites son más estrictos
       adjustedFontSize =
-          adjustedFontSize.clamp(8.0, 12.0); // Ejemplo: Mínimo 8, Máximo 12
+          adjustedFontSize.clamp(8.0, 10.0); // Ejemplo: Mínimo 8, Máximo 12
     } else {
       // Para tarjetas más grandes, podemos permitir un poco más de flexibilidad
       adjustedFontSize =

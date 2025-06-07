@@ -220,7 +220,7 @@ class _PolicyCardState extends State<PolicyCard>
                 // Calcular el ancho disponible para los botones
                 final availableWidth = constraints.maxWidth;
                 // Determinar si estamos en una pantalla muy pequeña
-                final isVerySmallScreen = availableWidth < 300;
+                final isVerySmallScreen = availableWidth < 360;
 
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,7 +259,7 @@ class _PolicyCardState extends State<PolicyCard>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Open Sans',
-                                fontSize: 13,
+                                fontSize: isVerySmallScreen ? 8 : 13,
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.getOrangeColor(context),
                               ),
@@ -293,9 +293,9 @@ class _PolicyCardState extends State<PolicyCard>
                             child: Text(
                               context.translate('home.policyCard.submitClaim'),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Open Sans',
-                                fontSize: 13,
+                                fontSize: isVerySmallScreen ? 8 : 13,
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.white,
                               ),
@@ -381,10 +381,10 @@ class _PolicyCardState extends State<PolicyCard>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     // Añadir un icono para hacerlo más llamativo
-                                    const Icon(
+                                    Icon(
                                       Icons.payment_rounded,
                                       color: AppTheme.white,
-                                      size: 16,
+                                      size: isVerySmallScreen ? 12 : 16,
                                     ),
                                     const SizedBox(width: 4),
                                     FittedBox(
@@ -394,10 +394,9 @@ class _PolicyCardState extends State<PolicyCard>
                                           'home.policyCard.payNow',
                                         ),
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily: 'Open Sans',
-                                          fontSize:
-                                              14, // Ligeramente más grande
+                                          fontSize: isVerySmallScreen ? 10 : 14,
                                           fontWeight: FontWeight.w700,
                                           color: AppTheme.white,
                                         ),
