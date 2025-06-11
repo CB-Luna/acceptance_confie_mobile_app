@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,7 @@ class NotificationsWidget extends StatelessWidget {
                     style: TextStyle(
                       color: AppTheme.getSubtitleTextColor(context),
                       fontFamily: 'Open Sans',
-                      fontSize: isSmallScreen ? 13 : 14,
+                      fontSize: responsiveFontSizes.bodyLarge(context),
                       fontWeight: FontWeight.w600,
                       height: 1.5,
                     ),
@@ -90,7 +91,7 @@ class NotificationsWidget extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getRedColor(context),
-                              fontSize: isSmallScreen ? 13 : 14,
+                              fontSize: responsiveFontSizes.bodyMedium(context),
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -100,7 +101,7 @@ class NotificationsWidget extends StatelessWidget {
                               args: [notificationProvider.errorMessage ?? ''],
                             ),
                             style: TextStyle(
-                              fontSize: isSmallScreen ? 11 : 12,
+                              fontSize: responsiveFontSizes.bodySmall(context),
                               color: AppTheme.getBodyTextColor(context),
                             ),
                           ),
@@ -142,7 +143,7 @@ class NotificationsWidget extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.getSubtitleTextColor(context),
                     fontFamily: 'Open Sans',
-                    fontSize: isSmallScreen ? 13 : 14,
+                    fontSize: responsiveFontSizes.bodyLarge(context),
                     fontWeight: FontWeight.w600,
                     height: 1.5,
                   ),
@@ -298,7 +299,7 @@ class NotificationsWidget extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.getSubtitleTextColor(context),
               fontFamily: 'Open Sans',
-              fontSize: isSmallScreen ? 13 : 14,
+              fontSize: responsiveFontSizes.bodyLarge(context),
               fontWeight: FontWeight.w600,
               height: 1.5,
             ),
@@ -362,7 +363,7 @@ class NotificationsWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppTheme.getTextGreyColor(context),
-                  fontSize: isSmallScreen ? 12 : 13,
+                  fontSize: responsiveFontSizes.bodySmall(context),
                 ),
               ),
             ),

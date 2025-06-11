@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
 import '../../widgets/theme/app_theme.dart';
@@ -49,8 +50,8 @@ class PolicyInactiveCard extends StatelessWidget {
                   children: [
                     Text(
                       policyType,
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: TextStyle(
+                        fontSize: responsiveFontSizes.policyCardTitle(context),
                         fontWeight: FontWeight.bold,
                         color: AppTheme.grey,
                       ),
@@ -61,9 +62,10 @@ class PolicyInactiveCard extends StatelessWidget {
                         plateNumber,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: 14,
+                          fontSize:
+                              responsiveFontSizes.policyCardSubtitle(context),
                           fontWeight: FontWeight.w600,
                           color: AppTheme.grey,
                         ),
@@ -79,20 +81,21 @@ class PolicyInactiveCard extends StatelessWidget {
                     color: Colors.red.withAlpha(50),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.cancel,
                         color: Colors.red,
                         size: 16,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         'Inactive',
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.w500,
+                          fontSize: responsiveFontSizes.button(context),
                         ),
                       ),
                     ],
@@ -115,11 +118,11 @@ class PolicyInactiveCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Renew Policy',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: responsiveFontSizes.bodyMedium(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             user != null ? user.fullName : defaultUserName,
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: responsiveFontSizes.titleLarge(context),
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getPrimaryColor(context),
                             ),

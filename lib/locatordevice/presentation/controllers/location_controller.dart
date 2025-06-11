@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -80,12 +81,15 @@ class LocationController extends ChangeNotifier {
 
   GoogleMapController? mapController;
   StreamSubscription<Position>? _positionStreamSubscription;
-  
+
   // Variables para el manejo dinámico de la carga de oficinas según la posición de la cámara
   LatLng? _initialCameraPosition; // Posición inicial de la cámara
-  LatLng? _lastCameraPosition; // Última posición de la cámara donde se cargaron oficinas
-  double _maxDistanceToOffice = 0.0; // Distancia máxima a la oficina más lejana (en millas)
-  bool _isLoadingOffices = false; // Bandera para evitar múltiples cargas simultáneas
+  LatLng?
+      _lastCameraPosition; // Última posición de la cámara donde se cargaron oficinas
+  double _maxDistanceToOffice =
+      0.0; // Distancia máxima a la oficina más lejana (en millas)
+  bool _isLoadingOffices =
+      false; // Bandera para evitar múltiples cargas simultáneas
 
   LocationState _state = LocationState();
   LocationState get state => _state;
@@ -505,8 +509,9 @@ class LocationController extends ChangeNotifier {
         zoom: 14.0,
       );
 
-      mapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-      
+      mapController!
+          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
       // Actualizar la posición inicial y última posición de la cámara
       _initialCameraPosition = LatLng(
         state.currentPosition!.latitude,
@@ -518,7 +523,7 @@ class LocationController extends ChangeNotifier {
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    
+
     // Guardar la posición inicial de la cámara cuando se crea el mapa
     if (state.currentPosition != null) {
       _initialCameraPosition = LatLng(
@@ -528,7 +533,7 @@ class LocationController extends ChangeNotifier {
       _lastCameraPosition = _initialCameraPosition;
     }
   }
-  
+
   // Método para manejar el movimiento de la cámara
   void onCameraMove(CameraPosition position) {
     // Si no tenemos posición inicial o última posición, establecerlas
@@ -537,10 +542,10 @@ class LocationController extends ChangeNotifier {
       _lastCameraPosition = position.target;
       return;
     }
-    
+
     // Si estamos cargando oficinas, no hacer nada
     if (_isLoadingOffices) return;
-    
+
     // Calcular la distancia entre la posición actual de la cámara y la última posición donde cargamos oficinas
     final distanceInMeters = Geolocator.distanceBetween(
       _lastCameraPosition!.latitude,
@@ -548,30 +553,32 @@ class LocationController extends ChangeNotifier {
       position.target.latitude,
       position.target.longitude,
     );
-    
+
     // Convertir la distancia a millas (1 milla = 1609.34 metros)
     final distanceInMiles = distanceInMeters / 1609.34;
-    
+
     // Si la distancia es mayor que la distancia máxima a la oficina más lejana,
     // o si estamos mostrando todas las oficinas y nos hemos movido significativamente,
     // cargar nuevas oficinas
-    final significantDistance = state.showAllOffices ? 5.0 : _maxDistanceToOffice;
-    if (distanceInMiles > significantDistance * 0.7) { // 70% de la distancia máxima como umbral
+    final significantDistance =
+        state.showAllOffices ? 5.0 : _maxDistanceToOffice;
+    if (distanceInMiles > significantDistance * 0.7) {
+      // 70% de la distancia máxima como umbral
       _loadOfficesAtPosition(position.target);
     }
   }
-  
+
   // Método para cargar oficinas en una posición específica
   Future<void> _loadOfficesAtPosition(LatLng position) async {
     // Evitar múltiples cargas simultáneas
     if (_isLoadingOffices) return;
-    
+
     _isLoadingOffices = true;
-    
+
     try {
       // No mostrar indicador de carga para no interrumpir la experiencia del usuario
       // pero sí actualizar el estado interno
-      
+
       // Crear una posición temporal para pasar al caso de uso
       final tempPosition = Position(
         latitude: position.latitude,
@@ -585,28 +592,31 @@ class LocationController extends ChangeNotifier {
         altitudeAccuracy: 0,
         headingAccuracy: 0,
       );
-      
+
       // Obtener oficinas cercanas a la posición actual de la cámara
       final result = await getOffices.execute(currentPosition: tempPosition);
-      
+
       if (result.isNotEmpty) {
         // Actualizar la última posición donde cargamos oficinas
         _lastCameraPosition = position;
-        
+
         // Combinar las nuevas oficinas con las existentes, evitando duplicados
-        final existingOfficeIds = state.offices.map((o) => o.locationId).toSet();
+        final existingOfficeIds =
+            state.offices.map((o) => o.locationId).toSet();
         final newOffices = [
           ...state.offices,
-          ...result.where((office) => !existingOfficeIds.contains(office.locationId)),
+          ...result.where(
+            (office) => !existingOfficeIds.contains(office.locationId),
+          ),
         ];
-        
+
         // Actualizar la lista de oficinas
         _updateState(offices: newOffices);
-        
+
         // Recalcular las distancias y actualizar los marcadores
         _calculateDistancesToOffices();
         _updateOfficeMarkers();
-        
+
         // Actualizar la distancia máxima a la oficina más lejana
         if (state.nearbyOffices.isNotEmpty) {
           _maxDistanceToOffice = state.nearbyOffices.last.distance;
@@ -633,7 +643,7 @@ class LocationController extends ChangeNotifier {
 
     // Actualizar los marcadores para reflejar la selección
     _updateOfficeMarkers();
-  
+
     // Notificar a la vista que debe expandir el DraggableScrollableSheet
     if (onMarkerTap != null) {
       onMarkerTap!();
@@ -725,7 +735,12 @@ class LocationController extends ChangeNotifier {
       // Mostrar un mensaje al usuario indicando que se ha alcanzado el límite
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(context.translate('office.maxRadius')),
+          content: Text(
+            context.translate('office.maxRadius'),
+            style: TextStyle(
+              fontSize: responsiveFontSizes.snackBarText(context),
+            ),
+          ),
           duration: const Duration(seconds: 2),
           backgroundColor: AppTheme.getOrangeColor(context),
         ),
@@ -752,6 +767,9 @@ class LocationController extends ChangeNotifier {
           context.translateWithArgs(
             'office.searchRadius',
             args: ['${newRadius.toInt()}'],
+          ),
+          style: TextStyle(
+            fontSize: responsiveFontSizes.snackBarText(context),
           ),
         ),
         duration: const Duration(seconds: 2),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,7 +41,7 @@ class BluefireClaimCard extends StatelessWidget {
             context.translate('submitClaim.bluefireClaim.title'),
             style: TextStyle(
               color: AppTheme.getPrimaryColor(context),
-              fontSize: 20,
+              fontSize: responsiveFontSizes.titleMedium(context),
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w700,
             ),
@@ -51,7 +52,7 @@ class BluefireClaimCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
-              fontSize: 14,
+              fontSize: responsiveFontSizes.bodyMedium(context),
               height:
                   1.43, // This gives us the 20px line height (14 * 1.43 ≈ 20)
               fontFamily: 'Open Sans',
@@ -64,10 +65,11 @@ class BluefireClaimCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: context.translate('submitClaim.bluefireClaim.cnmPolicyPrefix'),
+                  text: context
+                      .translate('submitClaim.bluefireClaim.cnmPolicyPrefix'),
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
-                    fontSize: 14,
+                    fontSize: responsiveFontSizes.bodyMedium(context),
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w400,
                   ),
@@ -79,7 +81,7 @@ class BluefireClaimCard extends StatelessWidget {
                       '(833) 286-3057',
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
-                        fontSize: 14,
+                        fontSize: responsiveFontSizes.bodyMedium(context),
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       ),
@@ -95,10 +97,11 @@ class BluefireClaimCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: context.translate('submitClaim.bluefireClaim.gspPolicyPrefix'),
+                  text: context
+                      .translate('submitClaim.bluefireClaim.gspPolicyPrefix'),
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
-                    fontSize: 14,
+                    fontSize: responsiveFontSizes.bodyMedium(context),
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w400,
                   ),
@@ -110,7 +113,7 @@ class BluefireClaimCard extends StatelessWidget {
                       '(800) 468-3466',
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
-                        fontSize: 14,
+                        fontSize: responsiveFontSizes.bodyMedium(context),
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       ),
@@ -145,10 +148,12 @@ class BluefireClaimCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                context.translate('submitClaim.bluefireClaim.policyholderConfirmation'),
+                context.translate(
+                  'submitClaim.bluefireClaim.policyholderConfirmation',
+                ),
                 style: TextStyle(
                   color: AppTheme.getTextGreyColor(context),
-                  fontSize: 14,
+                  fontSize: responsiveFontSizes.bodyMedium(context),
                   fontFamily: 'Open Sans',
                   fontWeight: FontWeight.w400,
                 ),
@@ -157,10 +162,12 @@ class BluefireClaimCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            context.translate('submitClaim.bluefireClaim.policyNumberInstructions'),
+            context.translate(
+              'submitClaim.bluefireClaim.policyNumberInstructions',
+            ),
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
-              fontSize: 12,
+              fontSize: responsiveFontSizes.bodySmall(context),
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w400,
             ),
@@ -183,8 +190,8 @@ class BluefireClaimCard extends StatelessWidget {
               ),
               child: Text(
                 context.translate('submitClaim.bluefireClaim.startClaim'),
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: responsiveFontSizes.bodyLarge(context),
                   fontWeight: FontWeight.w600,
                 ),
               ),

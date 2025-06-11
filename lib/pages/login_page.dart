@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -253,7 +254,7 @@ class LoginPageState extends State<LoginPage> {
                         Text(
                           context.translate('auth.welcomeBack'),
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: responsiveFontSizes.titleLarge(context),
                             fontWeight: FontWeight.bold,
                             color: AppTheme.getTitleTextColor(context),
                           ),
@@ -262,7 +263,7 @@ class LoginPageState extends State<LoginPage> {
                         Text(
                           context.translate('auth.signInToAccount'),
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: responsiveFontSizes.titleMedium(context),
                             color: AppTheme.getTextGreyColor(context),
                           ),
                         ),
@@ -275,6 +276,9 @@ class LoginPageState extends State<LoginPage> {
                             decoration: AppTheme.inputDecoration(
                               context,
                               labelText: context.translate('auth.username'),
+                            ),
+                            style: TextStyle(
+                              fontSize: responsiveFontSizes.bodyMedium(context),
                             ),
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
@@ -318,6 +322,9 @@ class LoginPageState extends State<LoginPage> {
                                 },
                               ),
                             ),
+                            style: TextStyle(
+                              fontSize: responsiveFontSizes.bodyMedium(context),
+                            ),
                             obscureText: _obscureText,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -337,6 +344,10 @@ class LoginPageState extends State<LoginPage> {
                             style: TextButton.styleFrom(
                               foregroundColor:
                                   AppTheme.getPrimaryColor(context),
+                              textStyle: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                              ),
                             ),
                             child:
                                 Text(context.translate('auth.forgotPassword')),
@@ -356,8 +367,9 @@ class LoginPageState extends State<LoginPage> {
                             ),
                             child: Text(
                               context.translate('auth.loginButton'),
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.white,
                               ),
@@ -409,7 +421,8 @@ class LoginPageState extends State<LoginPage> {
                               context.translate('auth.noAccount'),
                               style: TextStyle(
                                 color: AppTheme.getTextGreyColor(context),
-                                fontSize: 14,
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
                               ),
                             ),
                             TextButton(
@@ -430,8 +443,9 @@ class LoginPageState extends State<LoginPage> {
                               ),
                               child: Text(
                                 context.translate('auth.createAccount'),
-                                style: const TextStyle(
-                                  fontSize: 14,
+                                style: TextStyle(
+                                  fontSize:
+                                      responsiveFontSizes.bodyMedium(context),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

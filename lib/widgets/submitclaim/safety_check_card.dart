@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class SafetyCheckCard extends StatelessWidget {
@@ -35,7 +36,7 @@ class SafetyCheckCard extends StatelessWidget {
               context.translate('submitClaim.safetyCheck.title'),
               style: TextStyle(
                 color: AppTheme.getPrimaryColor(context),
-                fontSize: 24,
+                fontSize: responsiveFontSizes.titleLarge(context),
                 fontFamily: 'Open Sans',
                 fontWeight: FontWeight.w700,
               ),
@@ -46,7 +47,7 @@ class SafetyCheckCard extends StatelessWidget {
             context.translate('submitClaim.safetyCheck.helpMessage'),
             style: TextStyle(
               color: AppTheme.getSubtitleTextColor(context),
-              fontSize: 14,
+              fontSize: responsiveFontSizes.bodyLarge(context),
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w400,
             ),
@@ -71,8 +72,8 @@ class SafetyCheckCard extends StatelessWidget {
                 ),
                 child: Text(
                   context.translate('submitClaim.safetyCheck.call911'),
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: responsiveFontSizes.bodyMedium(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -90,8 +91,8 @@ class SafetyCheckCard extends StatelessWidget {
                 ),
                 child: Text(
                   context.translate('submitClaim.safetyCheck.imSafe'),
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: responsiveFontSizes.bodyMedium(context),
                     fontWeight: FontWeight.w600,
                     color: AppTheme.white,
                   ),

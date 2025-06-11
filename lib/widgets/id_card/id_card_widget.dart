@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/models/user_model.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -77,11 +78,11 @@ class IdCardWidget extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'Freeway Insurance',
                     style: TextStyle(
                       color: AppTheme.white,
-                      fontSize: 22,
+                      fontSize: responsiveFontSizes.titleMedium(context),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -108,7 +109,7 @@ class IdCardWidget extends StatelessWidget {
                         Text(
                           context.translate('idCard.namedInsured'),
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: responsiveFontSizes.labelLarge(context),
                             color: AppTheme.getTextGreyColor(context),
                             fontWeight: FontWeight.w500,
                           ),
@@ -121,7 +122,8 @@ class IdCardWidget extends StatelessWidget {
                           child: Text(
                             user.fullName,
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize:
+                                  responsiveFontSizes.titleMedium(context),
                               color: AppTheme.getPrimaryColor(context),
                               fontWeight: FontWeight.bold,
                             ),
@@ -147,7 +149,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 context.translate('idCard.carrier'),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize:
+                                      responsiveFontSizes.bodyMedium(context),
                                   color: AppTheme.getTextGreyColor(context),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -159,7 +162,8 @@ class IdCardWidget extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize:
+                                      responsiveFontSizes.bodyMedium(context),
                                   color: AppTheme.getPrimaryColor(context),
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -176,7 +180,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 context.translate('idCard.policyNumberLabel'),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize:
+                                      responsiveFontSizes.bodyMedium(context),
                                   color: AppTheme.getTextGreyColor(context),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -191,7 +196,8 @@ class IdCardWidget extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize:
+                                        responsiveFontSizes.bodyMedium(context),
                                     color: AppTheme.getPrimaryColor(context),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -219,7 +225,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 context.translate('idCard.state'),
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize:
+                                      responsiveFontSizes.bodyMedium(context),
                                   color: AppTheme.getTextGreyColor(context),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -228,7 +235,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 state ?? 'FL',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize:
+                                      responsiveFontSizes.bodyLarge(context),
                                   color: AppTheme.getPrimaryColor(context),
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -245,7 +253,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 context.translate('idCard.effectiveDate'),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize:
+                                      responsiveFontSizes.bodySmall(context),
                                   color: AppTheme.getTextGreyColor(context),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -254,7 +263,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 effectiveDateStr,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize:
+                                      responsiveFontSizes.bodySmall(context),
                                   color: AppTheme.getPrimaryColor(context),
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -271,7 +281,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 context.translate('idCard.expirationDate'),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize:
+                                      responsiveFontSizes.bodySmall(context),
                                   color: AppTheme.getTextGreyColor(context),
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -280,7 +291,8 @@ class IdCardWidget extends StatelessWidget {
                               Text(
                                 expirationDateStr,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize:
+                                      responsiveFontSizes.bodySmall(context),
                                   color: AppTheme.getPrimaryColor(context),
                                   fontWeight: FontWeight.w600,
                                 ),

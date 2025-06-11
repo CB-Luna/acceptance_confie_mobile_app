@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
 import '../../widgets/theme/app_theme.dart';
@@ -46,10 +47,11 @@ class RoadsideAssist extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Roadside Assistance',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize:
+                              responsiveFontSizes.policyCardTitle(context),
                           fontWeight: FontWeight.bold,
                           color: AppTheme.primaryColor,
                         ),
@@ -61,9 +63,10 @@ class RoadsideAssist extends StatelessWidget {
                           plateNumber,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Open Sans',
-                            fontSize: 13,
+                            fontSize:
+                                responsiveFontSizes.policyCardSubtitle(context),
                             fontWeight: FontWeight.w600,
                             color: AppTheme.primaryColor,
                           ),
@@ -80,21 +83,21 @@ class RoadsideAssist extends StatelessWidget {
                     color: Colors.green[50],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: Colors.green,
                         size: 12,
                       ),
-                      SizedBox(width: 2),
+                      const SizedBox(width: 2),
                       Text(
                         'Active',
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: responsiveFontSizes.button(context),
                         ),
                       ),
                     ],
@@ -121,17 +124,17 @@ class RoadsideAssist extends StatelessWidget {
                     children: [
                       Text(
                         'Member Since $memberSince',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: 11,
-                          color: Color(0xFF414648),
+                          fontSize: responsiveFontSizes.bodySmall(context),
+                          color: const Color(0xFF414648),
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Single Annual Plan',
                         style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: 13,
+                          fontSize: responsiveFontSizes.bodySmall(context),
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         ),
@@ -169,16 +172,16 @@ class RoadsideAssist extends StatelessWidget {
                       minimumSize: const Size(85, 38),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: const Text(
+                    child: Text(
                       'ID Card',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Open Sans',
-                        fontSize: 13,
+                        fontSize: responsiveFontSizes.button(context),
                         fontWeight: FontWeight.w700,
                         height: 18 / 14,
                         letterSpacing: 0,
-                        color: Color(0xFFC74E10),
+                        color: const Color(0xFFC74E10),
                       ),
                     ),
                   ),
@@ -201,14 +204,14 @@ class RoadsideAssist extends StatelessWidget {
                         vertical: 10,
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Service Request',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: 'Open Sans',
-                        fontSize: 13,
+                        fontSize: responsiveFontSizes.button(context),
                         fontWeight: FontWeight.w700,
                         height: 18 / 14,
                         letterSpacing: 0,
@@ -235,14 +238,14 @@ class RoadsideAssist extends StatelessWidget {
                         vertical: 10,
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Plan Details',
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: 'Open Sans',
-                        fontSize: 13,
+                        fontSize: responsiveFontSizes.button(context),
                         fontWeight: FontWeight.w700,
                         height: 18 / 14,
                         letterSpacing: 0,

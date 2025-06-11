@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileAvatarName extends StatelessWidget {
@@ -14,7 +15,11 @@ class ProfileAvatarName extends StatelessWidget {
   });
 
   // Método para construir un avatar con las iniciales del usuario
-  Widget _buildInitialsAvatar(String fullName, {required double size}) {
+  Widget _buildInitialsAvatar(
+    String fullName, {
+    required double size,
+    required BuildContext context,
+  }) {
     // Obtener las iniciales del nombre completo
     final initials = _getInitials(fullName);
 
@@ -33,7 +38,8 @@ class ProfileAvatarName extends StatelessWidget {
           initials,
           style: TextStyle(
             color: AppTheme.white,
-            fontSize: size * 0.4, // Tamaño proporcional al contenedor
+            fontSize: responsiveFontSizes
+                .avatarName(context), // Tamaño proporcional al contenedor
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -114,10 +120,14 @@ class ProfileAvatarName extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       // Si hay un error al cargar la imagen, mostrar las iniciales
-                      return _buildInitialsAvatar(userName, size: 100);
+                      return _buildInitialsAvatar(
+                        userName,
+                        size: 100,
+                        context: context,
+                      );
                     },
                   )
-                : _buildInitialsAvatar(userName, size: 100),
+                : _buildInitialsAvatar(userName, size: 100, context: context),
           ),
         ),
         // Nombre (opcional)
@@ -126,7 +136,7 @@ class ProfileAvatarName extends StatelessWidget {
           Text(
             userName,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: responsiveFontSizes.titleLarge(context),
               fontWeight: FontWeight.bold,
               color: AppTheme.getPrimaryColor(context),
             ),

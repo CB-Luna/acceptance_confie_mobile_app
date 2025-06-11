@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 
 class AppTheme {
   // Método para obtener colores según el tema
@@ -281,7 +282,10 @@ class AppTheme {
       {required String labelText}) {
     return InputDecoration(
       labelText: labelText,
-      labelStyle: TextStyle(color: getTitleTextColor(context)),
+      labelStyle: TextStyle(
+        color: getTitleTextColor(context),
+        fontSize: responsiveFontSizes.bodyMedium(context),
+      ),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -299,13 +303,13 @@ class AppTheme {
       errorMaxLines: 3, // Permitir hasta 3 líneas para mensajes de error
       errorStyle: TextStyle(
         color: Colors.red[700],
-        fontSize: 12.0,
+        fontSize: responsiveFontSizes.errorText(context),
         height: 1.2, // Espaciado de línea más compacto
       ),
       helperMaxLines: 3, // Permitir hasta 3 líneas para mensajes de ayuda
       helperStyle: TextStyle(
         color: getTextGreyColor(context),
-        fontSize: 11.0,
+        fontSize: responsiveFontSizes.helperText(context),
         height: 1.2, // Espaciado de línea más compacto
       ),
     );

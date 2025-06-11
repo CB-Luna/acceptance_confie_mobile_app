@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -125,9 +126,9 @@ class NotificationItemContentState extends State<NotificationItemContent> {
           ); // Máximo 320px o 75% del ancho en pantallas normales
 
     // Ajustar tamaños de fuente y espaciado según el tamaño de pantalla
-    final titleFontSize = widget.isSmallScreen ? 13.0 : 14.0;
-    final policyFontSize = widget.isSmallScreen ? 11.0 : 12.0;
-    final detailsFontSize = widget.isSmallScreen ? 10.0 : 10.0;
+    final titleFontSize = responsiveFontSizes.labelLarge(context);
+    final policyFontSize = responsiveFontSizes.labelMedium(context);
+    final detailsFontSize = responsiveFontSizes.label(context);
     final iconSize = widget.isSmallScreen ? 36.0 : 40.0;
     final padding = widget.isSmallScreen ? 6.0 : 8.0;
 

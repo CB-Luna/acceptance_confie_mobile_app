@@ -9,6 +9,7 @@ import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/id_card_printer.dart';
 import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/id_card/id_card_widget.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -51,7 +52,9 @@ class _IdCardPageState extends State<IdCardPage> {
         body: Center(
           child: Text(
             context.translate('common.notAuthenticated'),
-            style: const TextStyle(fontSize: 18),
+            style: TextStyle(
+              fontSize: responsiveFontSizes.titleMedium(context),
+            ),
           ),
         ),
       );
@@ -80,9 +83,9 @@ class _IdCardPageState extends State<IdCardPage> {
               children: [
                 Text(
                   context.translate('idCard.title'),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.white,
-                    fontSize: 20,
+                    fontSize: responsiveFontSizes.titleHeader(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -92,9 +95,9 @@ class _IdCardPageState extends State<IdCardPage> {
               left: 0,
               child: Text(
                 context.translate('idCard.back'),
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppTheme.white,
-                  fontSize: 16,
+                  fontSize: responsiveFontSizes.titleMedium(context),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -255,7 +258,7 @@ class _IdCardPageState extends State<IdCardPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppTheme.getTextGreyColor(context),
-                            fontSize: 12,
+                            fontSize: responsiveFontSizes.bodyMedium(context),
                           ),
                         ),
                       ),

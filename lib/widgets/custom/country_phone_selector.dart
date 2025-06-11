@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freeway_app/models/country_phone_model.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 /// Widget personalizado para seleccionar un país y número de teléfono
@@ -164,7 +165,16 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _searchController,
+                style: TextStyle(
+                  fontSize: responsiveFontSizes.bodyMedium(context),
+                ),
                 decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    fontSize: responsiveFontSizes.bodyMedium(context),
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: responsiveFontSizes.bodyLarge(context),
+                  ),
                   hintText: context.translate('auth.searchCountry'),
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
@@ -195,16 +205,19 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
                   return ListTile(
                     leading: Text(
                       country.flag,
-                      style: const TextStyle(fontSize: 24),
                     ),
-                    title: Text(country.name),
+                    title: Text(
+                      country.name,
+                      style: TextStyle(
+                        fontSize: responsiveFontSizes.bodyMedium(context),
+                      ),
+                    ),
                     trailing: Text(
                       country.formattedDialCode,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize:
-                            16, // Aumentar el tamaño de los códigos de país
+                        fontSize: responsiveFontSizes.bodyMedium(context),
                       ),
                     ),
                     selected: isSelected,
@@ -243,11 +256,17 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
           enabled: widget.enabled,
           keyboardType: TextInputType.phone,
           inputFormatters: _inputFormatters,
+          style: TextStyle(
+            fontSize: responsiveFontSizes.bodyMedium(context),
+          ),
           decoration: InputDecoration(
             labelText: widget.labelText,
             helperText: widget.helperText,
             errorText: widget.errorText,
-            labelStyle: TextStyle(color: AppTheme.getTitleTextColor(context)),
+            labelStyle: TextStyle(
+              color: AppTheme.getTitleTextColor(context),
+              fontSize: responsiveFontSizes.bodyMedium(context),
+            ),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
@@ -264,7 +283,7 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
             fillColor: AppTheme.getCardColor(context),
             helperStyle: TextStyle(
               color: AppTheme.getTextGreyColor(context),
-              fontSize: 11.0,
+              fontSize: responsiveFontSizes.helperText(context),
               height: 1.2, // Espaciado de línea más compacto
             ),
             prefixIcon: GestureDetector(
@@ -278,7 +297,9 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
                     if (widget.showFlag) ...[
                       Text(
                         _selectedCountry.flag,
-                        style: const TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: responsiveFontSizes.bodyLarge(context),
+                        ),
                       ),
                       const SizedBox(width: 4),
                     ],
@@ -287,8 +308,7 @@ class _CountryPhoneSelectorState extends State<CountryPhoneSelector> {
                       style: TextStyle(
                         color: AppTheme.getTitleTextColor(context),
                         fontWeight: FontWeight.bold,
-                        fontSize:
-                            16, // Aumentar el tamaño de los códigos de país
+                        fontSize: responsiveFontSizes.bodyLarge(context),
                       ),
                     ),
                     const Icon(Icons.arrow_drop_down),

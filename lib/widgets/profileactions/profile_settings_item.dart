@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileSettingsItem extends StatelessWidget {
@@ -39,8 +40,8 @@ class ProfileSettingsItem extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: responsiveFontSizes.titleMedium(context),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -50,7 +51,7 @@ class ProfileSettingsItem extends StatelessWidget {
                         child: Text(
                           subtitle!,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: responsiveFontSizes.titleSmall(context),
                             color: AppTheme.getTextGreyColor(context),
                           ),
                         ),

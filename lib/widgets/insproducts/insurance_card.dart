@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/insproducts/personal_protection_grid.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
@@ -87,7 +88,7 @@ class InsuranceCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontFamily: 'Open Sans',
-                        fontSize: 16,
+                        fontSize: responsiveFontSizes.titleMedium(context),
                         fontWeight: FontWeight.w600,
                         color: AppTheme.getTitleTextColor(context),
                       ),

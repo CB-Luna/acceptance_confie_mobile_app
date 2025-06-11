@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart'
@@ -51,7 +52,12 @@ class _OfficeListState extends State<OfficeList> {
         !RegExp(r'^[0-9]{5}$').hasMatch(zipCode)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(context.translate('office.zipCode.invalidZipCode')),
+          content: Text(
+            context.translate('office.zipCode.invalidZipCode'),
+            style: TextStyle(
+              fontSize: responsiveFontSizes.snackBarText(context),
+            ),
+          ),
           duration: const Duration(seconds: 2),
           backgroundColor: AppTheme.getRedColor(context),
         ),
@@ -76,6 +82,9 @@ class _OfficeListState extends State<OfficeList> {
             'office.zipCode.searchingNear',
             args: [zipCode],
           ),
+          style: TextStyle(
+            fontSize: responsiveFontSizes.snackBarText(context),
+          ),
         ),
         duration: const Duration(seconds: 2),
         backgroundColor: AppTheme.getBlueColor(context),
@@ -94,7 +103,6 @@ class _OfficeListState extends State<OfficeList> {
 
     // Ajustar el padding según el tamaño de la pantalla
     final horizontalPadding = isSmallScreen ? 12.0 : 16.0;
-    final textFontSize = isSmallScreen ? 16.0 : 18.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -147,7 +155,12 @@ class _OfficeListState extends State<OfficeList> {
             // Cuando la lista de oficinas está vacía
             Expanded(
               child: Center(
-                child: Text(context.translate('office.noOfficesAvailable')),
+                child: Text(
+                  context.translate('office.noOfficesAvailable'),
+                  style: TextStyle(
+                    fontSize: responsiveFontSizes.bodyTextLocation(context),
+                  ),
+                ),
               ),
             )
           else
@@ -171,7 +184,7 @@ class _OfficeListState extends State<OfficeList> {
                           child: Text(
                             context.translate('office.nearestOffice'),
                             style: TextStyle(
-                              fontSize: isSmallScreen ? 16 : 18,
+                              fontSize: responsiveFontSizes.bodyLarge(context),
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getTextGreyColor(context),
                             ),
@@ -207,6 +220,8 @@ class _OfficeListState extends State<OfficeList> {
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.bold,
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
                               ),
                             ),
                             style: TextButton.styleFrom(
@@ -238,7 +253,7 @@ class _OfficeListState extends State<OfficeList> {
                               'office.zipCode.searchOfficeByZipcode',
                             ),
                             style: TextStyle(
-                              fontSize: textFontSize,
+                              fontSize: responsiveFontSizes.bodyMedium(context),
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getTextGreyColor(context),
                             ),
@@ -259,14 +274,16 @@ class _OfficeListState extends State<OfficeList> {
                                   keyboardType: TextInputType.number,
                                   maxLength: 5,
                                   style: TextStyle(
-                                    fontSize: isSmallScreen ? 14 : 15,
+                                    fontSize:
+                                        responsiveFontSizes.bodyMedium(context),
                                   ),
                                   decoration: InputDecoration(
                                     hintText: context.translate(
                                       'office.zipCode.zipCodeHint',
                                     ),
                                     hintStyle: TextStyle(
-                                      fontSize: isSmallScreen ? 14 : 15,
+                                      fontSize: responsiveFontSizes
+                                          .bodyMedium(context),
                                     ),
                                     counterText: '',
                                     filled: true,
@@ -316,7 +333,8 @@ class _OfficeListState extends State<OfficeList> {
                                   label: Text(
                                     context.translate('office.zipCode.search'),
                                     style: TextStyle(
-                                      fontSize: isSmallScreen ? 13 : 14,
+                                      fontSize: responsiveFontSizes
+                                          .bodyMedium(context),
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -414,8 +432,8 @@ class OfficeListItem extends StatelessWidget {
     final isSmallScreen = screenWidth < 360;
 
     // Ajustar tamaños de fuente y espaciado según el tamaño de la pantalla
-    final smallFontSize = isSmallScreen ? 10.0 : 12.0;
-    final mediumFontSize = isSmallScreen ? 12.0 : 14.0;
+    final smallFontSize = responsiveFontSizes.bodySmall(context);
+    final mediumFontSize = responsiveFontSizes.bodyMedium(context);
     final buttonPaddingH = isSmallScreen ? 10.0 : 16.0;
     final buttonPaddingV = isSmallScreen ? 8.0 : 12.0;
     final buttonSpacing = isSmallScreen ? 8.0 : 12.0;
@@ -511,7 +529,12 @@ class OfficeListItem extends StatelessWidget {
                     color: AppTheme.white,
                     size: isSmallScreen ? 18 : 24,
                   ),
-                  label: Text(context.translate('office.callOffice')),
+                  label: Text(
+                    context.translate('office.callOffice'),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.buttonTextLocation(context),
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
                         AppTheme.getPrimaryColor(context), // Azul oscuro
@@ -560,6 +583,10 @@ class OfficeListItem extends StatelessWidget {
                         SnackBar(
                           content: Text(
                             context.translate('office.couldNotOpenMaps'),
+                            style: TextStyle(
+                              fontSize:
+                                  responsiveFontSizes.snackBarText(context),
+                            ),
                           ),
                           backgroundColor: AppTheme.getRedColor(context),
                         ),
@@ -572,7 +599,10 @@ class OfficeListItem extends StatelessWidget {
                   ),
                   label: Text(
                     context.translate('office.getDirections'),
-                    style: TextStyle(color: AppTheme.getPrimaryColor(context)),
+                    style: TextStyle(
+                      color: AppTheme.getPrimaryColor(context),
+                      fontSize: responsiveFontSizes.buttonTextLocation(context),
+                    ),
                   ),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/models/country_phone_model.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/custom/country_phone_selector.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -192,7 +193,7 @@ class SignUpPageState extends State<SignUpPage> {
                   Text(
                     context.translate('auth.signUp'),
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: responsiveFontSizes.titleHeader(context),
                       fontWeight: FontWeight.bold,
                       color: AppTheme.getTitleTextColor(context),
                     ),
@@ -205,6 +206,9 @@ class SignUpPageState extends State<SignUpPage> {
                     decoration: AppTheme.inputDecoration(
                       context,
                       labelText: context.translate('auth.firstName'),
+                    ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
                     ),
                     textInputAction: TextInputAction.next,
                     onFieldSubmitted: (_) {
@@ -225,6 +229,9 @@ class SignUpPageState extends State<SignUpPage> {
                       context,
                       labelText: context.translate('auth.lastName'),
                     ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return context.translate('auth.pleaseEnterLastName');
@@ -240,6 +247,9 @@ class SignUpPageState extends State<SignUpPage> {
                     decoration: AppTheme.inputDecoration(
                       context,
                       labelText: context.translate('auth.email'),
+                    ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
                     ),
                     // Convertir automáticamente a minúsculas mientras el usuario escribe
                     onChanged: (value) {
@@ -284,6 +294,9 @@ class SignUpPageState extends State<SignUpPage> {
                       helperText:
                           context.translate('auth.passwordRequirements'),
                       helperMaxLines: 3,
+                    ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -338,6 +351,9 @@ class SignUpPageState extends State<SignUpPage> {
                     ).copyWith(
                       prefixIcon: const Icon(Icons.calendar_today),
                       helperText: 'MM/DD/YYYY', // Indicar el formato esperado
+                    ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
                     ),
                     inputFormatters: [_birthDateMaskFormatter],
                     keyboardType: TextInputType.datetime,
@@ -406,6 +422,9 @@ class SignUpPageState extends State<SignUpPage> {
                       context,
                       labelText: context.translate('auth.policyNumber'),
                     ),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
+                    ),
                     // No hay validación porque es opcional
                   ),
                   const SizedBox(height: 24),
@@ -418,7 +437,9 @@ class SignUpPageState extends State<SignUpPage> {
                           )
                         : Text(
                             context.translate('auth.signUp'),
-                            style: const TextStyle(fontSize: 16),
+                            style: TextStyle(
+                              fontSize: responsiveFontSizes.bodyMedium(context),
+                            ),
                           ),
                   ),
                   const SizedBox(height: 16),
@@ -429,7 +450,7 @@ class SignUpPageState extends State<SignUpPage> {
                         context.translate('auth.haveAccount'),
                         style: TextStyle(
                           color: AppTheme.getTextGreyColor(context),
-                          fontSize: 14,
+                          fontSize: responsiveFontSizes.bodyMedium(context),
                         ),
                       ),
                       TextButton(
@@ -440,6 +461,7 @@ class SignUpPageState extends State<SignUpPage> {
                           context.translate('auth.loginButton'),
                           style: TextStyle(
                             color: AppTheme.getPrimaryColor(context),
+                            fontSize: responsiveFontSizes.bodyMedium(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),

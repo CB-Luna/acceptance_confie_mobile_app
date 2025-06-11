@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:rive_animated_icon/rive_animated_icon.dart';
@@ -24,10 +25,10 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget _buildInitialsAvatar(String fullName, {required double size}) {
     // Obtener las iniciales del nombre completo
     final initials = _getInitials(fullName);
-    
+
     // Generar un color basado en el nombre (para que sea consistente para el mismo usuario)
     final color = _getAvatarColor(fullName);
-    
+
     return Container(
       width: size,
       height: size,
@@ -40,18 +41,18 @@ class _HeaderSectionState extends State<HeaderSection> {
           initials,
           style: TextStyle(
             color: Colors.white,
-            fontSize: size * 0.4, // Tamaño proporcional al contenedor
+            fontSize: responsiveFontSizes.labelLarge(context),
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
-  
+
   // Método para obtener las iniciales del nombre
   String _getInitials(String fullName) {
     if (fullName.isEmpty) return '';
-    
+
     final nameParts = fullName.trim().split(' ');
     if (nameParts.length >= 2) {
       // Si hay al menos dos partes en el nombre, tomar la primera letra de cada una
@@ -60,17 +61,18 @@ class _HeaderSectionState extends State<HeaderSection> {
       // Si solo hay una parte, tomar la primera letra
       return nameParts[0][0].toUpperCase();
     }
-    
+
     return '';
   }
-  
+
   // Método para generar un color basado en el nombre
   Color _getAvatarColor(String fullName) {
     if (fullName.isEmpty) return Colors.blue;
-    
+
     // Usar la suma de los códigos ASCII de los caracteres para generar un número
-    final int hashCode = fullName.codeUnits.fold(0, (prev, element) => prev + element);
-    
+    final int hashCode =
+        fullName.codeUnits.fold(0, (prev, element) => prev + element);
+
     // Lista de colores para los avatares
     final colors = [
       Colors.blue[700]!,
@@ -82,11 +84,11 @@ class _HeaderSectionState extends State<HeaderSection> {
       Colors.pink[700]!,
       Colors.indigo[700]!,
     ];
-    
+
     // Seleccionar un color basado en el hash del nombre
     return colors[hashCode % colors.length];
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -210,9 +212,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                               ? '99+'
                               : notificationCount.toString(),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppTheme.white,
-                            fontSize: 10,
+                            fontSize: responsiveFontSizes.label(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -227,7 +229,8 @@ class _HeaderSectionState extends State<HeaderSection> {
                   Navigator.of(context).pushNamed('/profile');
                 },
                 child: ClipOval(
-                  child: authProvider.currentUser?.avatar != null && authProvider.currentUser!.avatar!.isNotEmpty
+                  child: authProvider.currentUser?.avatar != null &&
+                          authProvider.currentUser!.avatar!.isNotEmpty
                       ? Image.network(
                           authProvider.currentUser!.avatar!,
                           width: 33,

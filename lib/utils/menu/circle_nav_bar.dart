@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class TabData {
@@ -46,6 +47,7 @@ class _CircleNavBarState extends State<CircleNavBar>
 
   @override
   Widget build(BuildContext context) {
+    // Usamos la utilidad de tamaños responsivos para manejar el escalado
     return Container(
       width: 410,
       height: 65,
@@ -69,13 +71,13 @@ class _CircleNavBarState extends State<CircleNavBar>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: List.generate(
           widget.tabItems.length,
-          (index) => _buildNavItem(index),
+          (index) => _buildNavItem(index, context),
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index) {
+  Widget _buildNavItem(int index, BuildContext context) {
     final isSelected = index == widget.selectedPos;
     if (isSelected) {
       if (_previousIndex != index) {
@@ -149,7 +151,7 @@ class _CircleNavBarState extends State<CircleNavBar>
                         context,
                       ) // Color naranja para opción seleccionada
                     : AppTheme.getIconColor(context),
-                fontSize: 11,
+                fontSize: responsiveFontSizes.navBar(context),
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
               ),

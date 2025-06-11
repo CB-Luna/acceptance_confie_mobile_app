@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -68,6 +69,7 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
                     style: TextStyle(
                       color: AppTheme.getRedColor(context),
                       fontWeight: FontWeight.w500,
+                      fontSize: responsiveFontSizes.bodyMedium(context),
                     ),
                   ),
                 ),
@@ -79,7 +81,7 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
           Text(
             context.translate('office.zipCode.enterZipCode'),
             style: TextStyle(
-              fontSize: 18,
+              fontSize: responsiveFontSizes.bodyLarge(context),
               fontWeight: FontWeight.w600,
               color: AppTheme.getTitleTextColor(context),
             ),
@@ -92,6 +94,9 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
             focusNode: _zipFocusNode,
             keyboardType: TextInputType.number,
             maxLength: 5,
+            style: TextStyle(
+              fontSize: responsiveFontSizes.bodyMedium(context),
+            ),
             decoration: InputDecoration(
               hintText: context.translate('office.zipCode.zipCodeHint'),
               counterText: '',
@@ -134,8 +139,8 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
               ),
               child: Text(
                 context.translate('office.zipCode.search'),
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: responsiveFontSizes.button(context),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -159,6 +164,7 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
               style: TextStyle(
                 color: AppTheme.getPrimaryColor(context),
                 fontWeight: FontWeight.w600,
+                fontSize: responsiveFontSizes.bodyMedium(context),
               ),
             ),
             style: OutlinedButton.styleFrom(
@@ -186,7 +192,12 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
         !RegExp(r'^[0-9]{5}$').hasMatch(zipCode)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(context.translate('office.zipCode.invalidZipCode')),
+          content: Text(
+            context.translate('office.zipCode.invalidZipCode'),
+            style: TextStyle(
+              fontSize: responsiveFontSizes.snackBarText(context),
+            ),
+          ),
           duration: const Duration(seconds: 2),
           backgroundColor: AppTheme.getRedColor(context),
         ),
@@ -210,6 +221,9 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
           context.translateWithArgs(
             'office.zipCode.searchingNear',
             args: [zipCode],
+          ),
+          style: TextStyle(
+            fontSize: responsiveFontSizes.snackBarText(context),
           ),
         ),
         duration: const Duration(seconds: 2),

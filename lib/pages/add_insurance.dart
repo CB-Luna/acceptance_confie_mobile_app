@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../locatordevice/locator_device_module.dart';
@@ -43,7 +44,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                     child: Text(
                       context.translate('addInsurance.addInsurance'),
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: responsiveFontSizes.titleLarge(context),
                         fontWeight: FontWeight.bold,
                         color: AppTheme.getTitleTextColor(context),
                       ),

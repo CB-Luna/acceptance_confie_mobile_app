@@ -58,7 +58,7 @@ class _ProductListState extends State<ProductList> {
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
     // Calcular el ancho ideal para las tarjetas basado en el ancho de la pantalla
-    final cardWidth = screenWidth < 360 ? screenWidth * 0.4 : 160.0;
+    final cardWidth = screenWidth * 0.4;
 
     final List<ProductItem> products = [
       ProductItem(
@@ -200,30 +200,18 @@ class ProductCard extends StatelessWidget {
     // Obtener el TextScaler del dispositivo
     final textScaler = MediaQuery.of(context).textScaler;
 
+    debugPrint(textScaler.toString());
+
     // Calcular tamaño de fuente base basado en el ancho de la tarjeta
-    final baseFontSize = cardWidth <= 160 ? 5.0 : 12.0;
+    final baseFontSize = cardWidth <= 160 ? 10.0 : 12.0;
 
     // Ajustar el tamaño de fuente según el textScaler
     // Usamos textScaler.scale(baseFontSize) para obtener el tamaño de fuente escalado.
     // Esto maneja correctamente el escalado lineal y no lineal.
-    var adjustedFontSize = textScaler.scale(baseFontSize);
-
-    // Limitar el tamaño de fuente para evitar que sea demasiado pequeño o grande y rompa el UI
-    // Estos límites pueden ajustarse según las necesidades del diseño.
-    // Por ejemplo, si el baseFontSize es 8, y el textScaleFactor es 2.0 (muy grande),
-    // el adjustedFontSize sería 16. Si el cardWidth es pequeño, esto podría ser demasiado.
-    // Si el baseFontSize es 12 y textScaleFactor es 0.85 (pequeño), adjustedFontSize sería ~10.2
-    if (cardWidth <= 160) {
-      // Para tarjetas más pequeñas, los límites son más estrictos
-      adjustedFontSize =
-          adjustedFontSize.clamp(8.0, 10.0); // Ejemplo: Mínimo 8, Máximo 12
-    } else {
-      // Para tarjetas más grandes, podemos permitir un poco más de flexibilidad
-      adjustedFontSize =
-          adjustedFontSize.clamp(12.0, 16.0); // Ejemplo: Mínimo 12, Máximo 16
-    }
+    final adjustedFontSizeFactor =
+        baseFontSize / textScaler.scale(baseFontSize);
     // Asignar el valor final a fontSize para usarlo en el widget Text
-    final fontSize = adjustedFontSize;
+    final fontSize = baseFontSize * adjustedFontSizeFactor;
 
     return Card(
       elevation: 4,

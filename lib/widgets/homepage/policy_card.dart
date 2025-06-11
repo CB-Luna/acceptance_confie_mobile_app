@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/models/user_model.dart';
 import 'package:freeway_app/pages/webview_page.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/models/home_policy/vehicle.dart';
@@ -97,7 +98,8 @@ class _PolicyCardState extends State<PolicyCard>
                       Text(
                         policyType,
                         style: TextStyle(
-                          fontSize: 18, // Reducido ligeramente
+                          fontSize:
+                              responsiveFontSizes.policyCardTitle(context),
                           fontWeight: FontWeight.bold,
                           color: AppTheme.getPrimaryColor(context),
                         ),
@@ -110,7 +112,8 @@ class _PolicyCardState extends State<PolicyCard>
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: 14,
+                          fontSize:
+                              responsiveFontSizes.policyCardSubtitle(context),
                           fontWeight: FontWeight.w600,
                           color: AppTheme.getPrimaryColor(context),
                         ),
@@ -143,7 +146,9 @@ class _PolicyCardState extends State<PolicyCard>
                             ? context.translate('home.policyCard.active')
                             : context.translate('home.policyCard.inactive'),
                         style: TextStyle(
-                          fontSize: 12, // Reducido para asegurar que quepa
+                          fontSize: responsiveFontSizes.button(
+                            context,
+                          ), // Reducido para asegurar que quepa
                           color: isActive
                               ? AppTheme.getGreenColor(context)
                               : AppTheme.getRedColor(context),
@@ -188,7 +193,9 @@ class _PolicyCardState extends State<PolicyCard>
                         child: Text(
                           context.translate('home.policyCard.nextPayment'),
                           style: TextStyle(
-                            fontSize: 12, // Reducido para asegurar que quepa
+                            fontSize: responsiveFontSizes.bodyMedium(
+                              context,
+                            ), // Reducido para asegurar que quepa
                             color: AppTheme.getTextGreyColor(context),
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -202,7 +209,9 @@ class _PolicyCardState extends State<PolicyCard>
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: 'Open Sans',
-                            fontSize: 12, // Reducido para asegurar que quepa
+                            fontSize: responsiveFontSizes.bodyMedium(
+                              context,
+                            ), // Reducido para asegurar que quepa
                             fontWeight: FontWeight.w600,
                             color: AppTheme.getTextGreyColor(context),
                           ),
@@ -259,7 +268,8 @@ class _PolicyCardState extends State<PolicyCard>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Open Sans',
-                                fontSize: isVerySmallScreen ? 8 : 13,
+                                fontSize: responsiveFontSizes
+                                    .policyCardButton(context),
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.getOrangeColor(context),
                               ),
@@ -295,7 +305,8 @@ class _PolicyCardState extends State<PolicyCard>
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Open Sans',
-                                fontSize: isVerySmallScreen ? 8 : 13,
+                                fontSize: responsiveFontSizes
+                                    .policyCardButton(context),
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.white,
                               ),
@@ -381,10 +392,10 @@ class _PolicyCardState extends State<PolicyCard>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     // Añadir un icono para hacerlo más llamativo
-                                    Icon(
+                                    const Icon(
                                       Icons.payment_rounded,
                                       color: AppTheme.white,
-                                      size: isVerySmallScreen ? 12 : 16,
+                                      size: 14,
                                     ),
                                     const SizedBox(width: 4),
                                     FittedBox(
@@ -396,7 +407,8 @@ class _PolicyCardState extends State<PolicyCard>
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Open Sans',
-                                          fontSize: isVerySmallScreen ? 10 : 14,
+                                          fontSize: responsiveFontSizes
+                                              .policyCardButton(context),
                                           fontWeight: FontWeight.w700,
                                           color: AppTheme.white,
                                         ),

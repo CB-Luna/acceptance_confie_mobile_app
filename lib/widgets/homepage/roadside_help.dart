@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/data/services/web_dialog_service.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/common/custom_dialog.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +103,7 @@ class _RoadsideHelpState extends State<RoadsideHelp>
                     Text(
                       context.translate('home.roadsideHelp.needHelp'),
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: responsiveFontSizes.bodyMedium(context),
                         fontWeight: FontWeight.w500,
                         color: AppTheme.getTextGreyColor(context),
                       ),
@@ -115,7 +116,7 @@ class _RoadsideHelpState extends State<RoadsideHelp>
                         color: AppTheme.getPrimaryColor(context),
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: responsiveFontSizes.bodyMedium(context),
                         height: 18 / 14,
                       ),
                       // Eliminamos maxLines y overflow para que el texto se muestre completo

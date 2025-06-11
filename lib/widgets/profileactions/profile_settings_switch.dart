@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileSettingsSwitch extends StatelessWidget {
@@ -31,7 +32,7 @@ class ProfileSettingsSwitch extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: responsiveFontSizes.titleMedium(context),
                 fontWeight: FontWeight.w500,
                 color: AppTheme.getTextGreyColor(context),
               ),

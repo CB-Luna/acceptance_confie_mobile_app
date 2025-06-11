@@ -67,7 +67,6 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
       builder: (context, policyProvider, child) {
         if (policyProvider.isLoading) {
           return SizedBox(
-            height: 170,
             width: double.infinity,
             child: Center(
               child: LoadingView(
@@ -167,7 +166,6 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
       children: [
         // Carrusel de tarjetas
         SizedBox(
-          height: 180,
           width: double.infinity,
           child: cards.isEmpty
               ? Center(child: Text(context.translate('home.noCardsAvailable')))

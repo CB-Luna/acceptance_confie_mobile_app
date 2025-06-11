@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class NoNearbyOfficesView extends StatelessWidget {
@@ -17,16 +18,17 @@ class NoNearbyOfficesView extends StatelessWidget {
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmallScreen = screenWidth < 360;
-    
+
     // Ajustar tamaños de fuente y espaciado según el tamaño de la pantalla
-    final textFontSize = isSmallScreen ? 12.0 : 14.0;
+    final textFontSize = responsiveFontSizes.bodyTextLocation(context);
+    final buttonFontSize = responsiveFontSizes.buttonTextLocation(context);
     final buttonPaddingH = isSmallScreen ? 16.0 : 20.0;
     final buttonPaddingV = isSmallScreen ? 10.0 : 12.0;
     final buttonSpacing = isSmallScreen ? 12.0 : 16.0;
     final iconSize = isSmallScreen ? 18.0 : 24.0;
     final helpButtonPaddingH = isSmallScreen ? 30.0 : 40.0;
     final helpButtonPaddingV = isSmallScreen ? 12.0 : 16.0;
-    
+
     // Eliminamos el SingleChildScrollView anidado ya que ya tenemos uno en OfficeList
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -57,7 +59,10 @@ class NoNearbyOfficesView extends StatelessWidget {
           ),
           label: Text(
             context.translate('office.expandSearchRadius'),
-            style: TextStyle(color: AppTheme.getPrimaryColor(context)),
+            style: TextStyle(
+              color: AppTheme.getPrimaryColor(context),
+              fontSize: buttonFontSize,
+            ),
           ),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
@@ -84,7 +89,10 @@ class NoNearbyOfficesView extends StatelessWidget {
           ),
           label: Text(
             context.translate('office.viewAllOffices'),
-            style: TextStyle(color: AppTheme.getPrimaryColor(context)),
+            style: TextStyle(
+              color: AppTheme.getPrimaryColor(context),
+              fontSize: buttonFontSize,
+            ),
           ),
           style: OutlinedButton.styleFrom(
             side: BorderSide(
@@ -111,7 +119,12 @@ class NoNearbyOfficesView extends StatelessWidget {
             color: AppTheme.white,
             size: iconSize,
           ),
-          label: Text(context.translate('office.help')),
+          label: Text(
+            context.translate('office.help'),
+            style: TextStyle(
+              fontSize: buttonFontSize,
+            ),
+          ),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppTheme.getPrimaryColor(context),
             foregroundColor: AppTheme.white,

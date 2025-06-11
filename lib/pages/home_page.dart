@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/homepage/contact_agent.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -168,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: 20,
+                          fontSize: responsiveFontSizes.titleLarge(context),
                           fontWeight: FontWeight.w700,
                           height: 24 / 20,
                           letterSpacing: 0,
@@ -218,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               color: AppTheme.getSubtitleTextColor(context),
                               fontFamily: 'Open Sans',
-                              fontSize: 14,
+                              fontSize: responsiveFontSizes.bodyLarge(context),
                               fontWeight: FontWeight.w600,
                               height: 22 / 14,
                               letterSpacing: 0,

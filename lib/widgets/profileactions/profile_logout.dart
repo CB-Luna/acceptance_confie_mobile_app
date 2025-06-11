@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -43,8 +44,8 @@ class ProfileLogoutButton extends StatelessWidget {
             // Texto de salida
             Text(
               context.translate('profile.logout'),
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: responsiveFontSizes.titleMedium(context),
                 fontWeight: FontWeight.w500,
                 color: AppTheme.white,
               ),
@@ -138,7 +139,7 @@ class ProfileLogoutButton extends StatelessWidget {
                           Text(
                             context.translate('profile.logout'),
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: responsiveFontSizes.titleLarge(context),
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getTitleTextColor(context),
                             ),
@@ -150,7 +151,8 @@ class ProfileLogoutButton extends StatelessWidget {
                             context.translate('profile.confirmLogout'),
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize:
+                                  responsiveFontSizes.titleMedium(context),
                               color: AppTheme.getSubtitleTextColor(context),
                               height: 1.4,
                             ),
@@ -188,8 +190,10 @@ class ProfileLogoutButton extends StatelessWidget {
                                   ),
                                   child: Text(
                                     context.translate('profile.cancel'),
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                    style: TextStyle(
+                                      fontSize: responsiveFontSizes.titleSmall(
+                                        context,
+                                      ),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -223,8 +227,10 @@ class ProfileLogoutButton extends StatelessWidget {
                                   ),
                                   child: Text(
                                     context.translate('profile.logout'),
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                    style: TextStyle(
+                                      fontSize: responsiveFontSizes.titleSmall(
+                                        context,
+                                      ),
                                       fontWeight: FontWeight.w600,
                                       color: AppTheme.white,
                                     ),
