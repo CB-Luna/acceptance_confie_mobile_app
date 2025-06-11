@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
+import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProductList extends StatefulWidget {
@@ -197,21 +198,6 @@ class ProductCard extends StatelessWidget {
     final cardHeight = cardWidth * 0.45;
     // Calcular tamaño del icono proporcional al ancho de la tarjeta
     final iconSize = cardWidth * 0.25;
-    // Obtener el TextScaler del dispositivo
-    final textScaler = MediaQuery.of(context).textScaler;
-
-    debugPrint(textScaler.toString());
-
-    // Calcular tamaño de fuente base basado en el ancho de la tarjeta
-    final baseFontSize = cardWidth <= 160 ? 10.0 : 12.0;
-
-    // Ajustar el tamaño de fuente según el textScaler
-    // Usamos textScaler.scale(baseFontSize) para obtener el tamaño de fuente escalado.
-    // Esto maneja correctamente el escalado lineal y no lineal.
-    final adjustedFontSizeFactor =
-        baseFontSize / textScaler.scale(baseFontSize);
-    // Asignar el valor final a fontSize para usarlo en el widget Text
-    final fontSize = baseFontSize * adjustedFontSizeFactor;
 
     return Card(
       elevation: 4,
@@ -263,7 +249,9 @@ class ProductCard extends StatelessWidget {
                   product.title,
                   style: TextStyle(
                     fontFamily: 'Open Sans',
-                    fontSize: fontSize, // Usará el adjustedFontSize calculado
+                    fontSize: responsiveFontSizes.bodyTextLocation(
+                      context,
+                    ), // Usará el adjustedFontSize calculado
                     fontWeight: FontWeight.w600,
                     height:
                         1.3, // Ajustar el interlineado si es necesario con fuentes grandes
