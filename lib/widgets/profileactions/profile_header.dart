@@ -17,7 +17,7 @@ class ProfileHeader extends StatelessWidget {
           color: AppTheme.white,
         ),
       ),
-      leadingWidth: 100,
+      leadingWidth: 160,
       automaticallyImplyLeading: false,
       leading: InkWell(
         onTap: () {
@@ -34,7 +34,7 @@ class ProfileHeader extends StatelessWidget {
             Text(
               context.translate('profile.back'),
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.white,
               ),
