@@ -51,9 +51,9 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
           children: [
             Text(
               context.translate('personalProtection.back'),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: responsiveFontSizes.titleHeader(context),
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

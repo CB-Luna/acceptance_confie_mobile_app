@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -12,8 +11,8 @@ class ProfileHeader extends StatelessWidget {
       backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       title: Text(
         context.translate('profile.title'),
-        style: TextStyle(
-          fontSize: responsiveFontSizes.titleHeader(context),
+        style: const TextStyle(
+          fontSize: 22,
           fontWeight: FontWeight.bold,
           color: AppTheme.white,
         ),
@@ -34,8 +33,8 @@ class ProfileHeader extends StatelessWidget {
             ),
             Text(
               context.translate('profile.back'),
-              style: TextStyle(
-                fontSize: responsiveFontSizes.backText(context),
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.white,
               ),

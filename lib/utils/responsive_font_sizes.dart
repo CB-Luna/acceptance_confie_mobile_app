@@ -31,10 +31,10 @@ class ResponsiveFontSizes {
     final scaledSize = textScaler.scale(baseFontSize);
 
     // Esto maneja correctamente el escalado lineal y no lineal.
-    final adjustedFontSizeFactor = baseFontSize / scaledSize;
+    final adjustedFontSizeFactor = scaledSize / baseFontSize;
 
     // Asignar el valor final a fontSize para usarlo en el widget Text
-    final fontSize = baseFontSize * adjustedFontSizeFactor;
+    final fontSize = baseFontSize / adjustedFontSizeFactor;
 
     // Limitar el tamaño dentro del rango especificado
     return fontSize;
@@ -55,8 +55,8 @@ class ResponsiveFontSizes {
   double titleHeader(BuildContext context) {
     return getResponsiveFontSize(
       context,
-      minSize: 40.0,
-      maxSize: 45.0,
+      minSize: 20.0,
+      maxSize: 22.0,
     );
   }
 
@@ -64,7 +64,7 @@ class ResponsiveFontSizes {
   double backText(BuildContext context) {
     return getResponsiveFontSize(
       context,
-      minSize: 15.0,
+      minSize: 16.0,
       maxSize: 18.0,
     );
   }

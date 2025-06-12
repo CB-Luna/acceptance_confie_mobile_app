@@ -69,7 +69,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                 context.translate('quoteCallcenter.back'),
                 style: TextStyle(
                   color: AppTheme.getIconColor(context),
-                  fontSize: 16,
+                  fontSize: 18,
                   fontFamily: 'Open Sans',
                   fontWeight: FontWeight.w600,
                 ),

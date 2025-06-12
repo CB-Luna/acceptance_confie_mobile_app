@@ -39,9 +39,9 @@ class _RequestCallPageState extends State<RequestCallPage> {
           children: [
             Text(
               context.translate('requestCall.back'),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: responsiveFontSizes.titleHeader(context),
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

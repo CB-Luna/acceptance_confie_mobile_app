@@ -105,7 +105,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               context.translate('quotePlans.back'),
               style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

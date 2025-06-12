@@ -51,9 +51,9 @@ class _BusinessInsuranceGridState extends State<BusinessInsuranceGrid> {
           children: [
             Text(
               context.translate('businessInsurance.back'),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: responsiveFontSizes.titleHeader(context),
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

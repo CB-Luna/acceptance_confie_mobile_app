@@ -50,9 +50,9 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           children: [
             Text(
               context.translate('vehicleInsurance.back'),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: responsiveFontSizes.titleHeader(context),
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

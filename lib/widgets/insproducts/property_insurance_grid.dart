@@ -50,9 +50,9 @@ class _PropertyInsuranceGridState extends State<PropertyInsuranceGrid> {
           children: [
             Text(
               context.translate('propertyInsurance.back'),
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppTheme.white,
-                fontSize: responsiveFontSizes.titleHeader(context),
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),

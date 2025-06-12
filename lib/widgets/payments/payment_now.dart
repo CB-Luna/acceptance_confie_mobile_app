@@ -131,7 +131,7 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                 context.translate('payment.back'),
                 style: const TextStyle(
                   color: AppTheme.white,
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -281,7 +281,8 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
                                         '${cardType.capitalize()}*$lastFourDigits';
 
                                     // Formatear la fecha de expiración
-                                    final formattedExpiry = '${context.translate('payment.cardForm.expires')} $expiry';
+                                    final formattedExpiry =
+                                        '${context.translate('payment.cardForm.expires')} $expiry';
 
                                     // Agregar la nueva tarjeta
                                     _cards.add({
@@ -336,15 +337,15 @@ class _PaymentNowPageState extends State<PaymentNowPage> {
           },
           tabItems: [
             TabData(
-              Icons.home_outlined, 
+              Icons.home_outlined,
               context.translate('home.navigation.myProducts'),
             ),
             TabData(
-              Icons.verified_user_outlined, 
+              Icons.verified_user_outlined,
               context.translate('home.navigation.addInsurance'),
             ),
             TabData(
-              Icons.location_on_outlined, 
+              Icons.location_on_outlined,
               context.translate('home.navigation.location'),
             ),
           ],
