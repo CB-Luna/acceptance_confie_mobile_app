@@ -7,25 +7,29 @@ import '../models/office/office.dart';
 import '../models/office/office_request.dart';
 
 class OfficeService {
-  static const String baseUrl = 'https://u-n8n.virtalus.cbluna-dev.com';
-  static const String officesEndpoint = '/webhook/confie_office_locations';
+  static const String baseUrl = 'https://stg-inquiry.confie.com';
+  static const String officesEndpoint = '/api/StoreLocator';
+  static const String apiKey = 'fjzzkOuCefd8-Z86i9HMGWQ=';
 
   /// Busca oficinas cercanas a un código postal específico
   ///
   /// [zipCode] El código postal para buscar oficinas cercanas
-  /// [count] Número máximo de oficinas a devolver (por defecto 100)
+  /// [radius] Radio de búsqueda en millas (por defecto 100)
   Future<List<Office>> getNearbyOfficesByZipCode(
     String zipCode, {
-    int count = 100,
+    int radius = 100,
   }) async {
     try {
-      final request = OfficeRequest(zipCode: zipCode, count: count);
+      final request = OfficeRequest(zipCode: zipCode, radius: radius);
 
       debugPrint('Buscando oficinas cercanas al código postal: $zipCode');
 
       final response = await http.post(
         Uri.parse('$baseUrl$officesEndpoint'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Apikey': apiKey,
+        },
         body: jsonEncode(request.toJson()),
       );
 
@@ -57,17 +61,17 @@ class OfficeService {
   ///
   /// [latitude] Latitud de la ubicación
   /// [longitude] Longitud de la ubicación
-  /// [count] Número máximo de oficinas a devolver (por defecto 100)
+  /// [radius] Radio de búsqueda en millas (por defecto 100)
   Future<List<Office>> getNearbyOfficesByLocation(
     double latitude,
     double longitude, {
-    int count = 100,
+    int radius = 100,
   }) async {
     try {
       final request = OfficeRequest(
         latitude: latitude,
         longitude: longitude,
-        count: count,
+        radius: radius,
       );
 
       debugPrint(
@@ -76,7 +80,10 @@ class OfficeService {
 
       final response = await http.post(
         Uri.parse('$baseUrl$officesEndpoint'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Apikey': apiKey,
+        },
         body: jsonEncode(request.toJson()),
       );
 

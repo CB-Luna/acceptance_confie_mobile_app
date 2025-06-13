@@ -1,69 +1,87 @@
 // ignore_for_file: always_put_required_named_parameters_first
 
 class Office {
-  final int locationId;
-  final int organizationId;
-  final String name;
-  final String streetAddress;
-  final String city;
-  final String state;
-  final String postalCode;
-  final String country;
-  final String phone;
-  final String languages;
+  final String officeName;
+  final String storeAddress;
+  final String phoneNumber;
+  final String mondayStoreHours;
+  final String tuesdayStoreHours;
+  final String wednesdayStoreHours;
+  final String thursdayStoreHours;
+  final String fridayStoreHours;
+  final String saturdayStoreHours;
+  final String sundayStoreHours;
+  final String officeHours;
+  final String officehoursCurrentStatus;
   final double latitude;
   final double longitude;
   final double distance;
+  final String legalEntity;
+  
+  // Getters para mantener compatibilidad con el código existente
+  String get name => officeName;
+  String get streetAddress => storeAddress;
+  String get phone => phoneNumber;
+  int get locationId => officeName.hashCode; // Usamos el hash del nombre como ID único
 
   Office({
-    required this.locationId,
-    required this.organizationId,
-    required this.name,
-    required this.streetAddress,
-    required this.city,
-    required this.state,
-    required this.postalCode,
-    required this.country,
-    required this.phone,
-    required this.languages,
+    required this.officeName,
+    required this.storeAddress,
+    required this.phoneNumber,
+    required this.mondayStoreHours,
+    required this.tuesdayStoreHours,
+    required this.wednesdayStoreHours,
+    required this.thursdayStoreHours,
+    required this.fridayStoreHours,
+    required this.saturdayStoreHours,
+    required this.sundayStoreHours,
+    required this.officeHours,
+    required this.officehoursCurrentStatus,
     required this.latitude,
     required this.longitude,
     required this.distance,
+    required this.legalEntity,
   });
 
   factory Office.fromJson(Map<String, dynamic> json) {
     return Office(
-      locationId: json['location_id'] as int,
-      organizationId: json['organization_id'] as int,
-      name: json['name'] ?? '',
-      streetAddress: json['street_address'] ?? '',
-      city: json['city'] ?? '',
-      state: json['state'] ?? '',
-      postalCode: json['postal_code'] ?? '',
-      country: json['country'] ?? '',
-      phone: json['phone'] ?? '',
-      languages: json['languages'] ?? '',
-      latitude: json['latitude'] as double,
-      longitude: json['longitude'] as double,
-      distance: json['distance'] as double,
+      officeName: json['officeName'] ?? '',
+      storeAddress: json['storeAddress'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      mondayStoreHours: json['mondayStoreHours'] ?? '',
+      tuesdayStoreHours: json['tuesdayStoreHours'] ?? '',
+      wednesdayStoreHours: json['wednesdayStoreHours'] ?? '',
+      thursdayStoreHours: json['thursdayStoreHours'] ?? '',
+      fridayStoreHours: json['fridayStoreHours'] ?? '',
+      saturdayStoreHours: json['saturdayStoreHours'] ?? '',
+      sundayStoreHours: json['sundayStoreHours'] ?? '',
+      officeHours: json['officeHours'] ?? '',
+      officehoursCurrentStatus: json['officehoursCurrentStatus'] ?? '',
+      latitude: double.tryParse(json['latitude'] ?? '0') ?? 0.0,
+      longitude: double.tryParse(json['longitude'] ?? '0') ?? 0.0,
+      distance: json['distance'] as double? ?? 0.0,
+      legalEntity: json['legalEntity'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'location_id': locationId,
-      'organization_id': organizationId,
-      'name': name,
-      'street_address': streetAddress,
-      'city': city,
-      'state': state,
-      'postal_code': postalCode,
-      'country': country,
-      'phone': phone,
-      'languages': languages,
-      'latitude': latitude,
-      'longitude': longitude,
+      'officeName': officeName,
+      'storeAddress': storeAddress,
+      'phoneNumber': phoneNumber,
+      'mondayStoreHours': mondayStoreHours,
+      'tuesdayStoreHours': tuesdayStoreHours,
+      'wednesdayStoreHours': wednesdayStoreHours,
+      'thursdayStoreHours': thursdayStoreHours,
+      'fridayStoreHours': fridayStoreHours,
+      'saturdayStoreHours': saturdayStoreHours,
+      'sundayStoreHours': sundayStoreHours,
+      'officeHours': officeHours,
+      'officehoursCurrentStatus': officehoursCurrentStatus,
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
       'distance': distance,
+      'legalEntity': legalEntity,
     };
   }
 }
