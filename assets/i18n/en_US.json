@@ -275,7 +275,7 @@
     "closesAt": "Closes at {0}",
     "callOffice": "Call Office",
     "getDirections": "Get Directions",
-    "miles": "miles",
+    "miles": "mi",
     "landmark": "Landmark: {0}",
     "todayHours": "{0} (Today): {1} - {2}",
     "languages": "Languages: {0}",
@@ -427,7 +427,7 @@
   },
   "additionalProducts": {
     "back": "Back",
-    "title": "Select an additional product",
+    "title": "Select a product to start your quote",
     "autoClub": "Auto Club",
     "windshieldRepair": "Windshield Repair",
     "vrrOnlineCalifornia": "VRR Online California",

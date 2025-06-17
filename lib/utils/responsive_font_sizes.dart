@@ -21,6 +21,27 @@ class ResponsiveFontSizes {
     // Obtener el ancho de la pantalla
     final screenWidth = MediaQuery.of(context).size.width;
 
+    // Determinar el tamaño base según el ancho de la pantalla
+    final baseFontSize = screenWidth <= 360 ? minSize : maxSize;
+
+    // Esto maneja correctamente el escalado lineal y no lineal.
+    final adjustedFontSizeFactor = 1;
+
+    // Asignar el valor final a fontSize para usarlo en el widget Text
+    final fontSize = baseFontSize / adjustedFontSizeFactor;
+
+    // Limitar el tamaño dentro del rango especificado
+    return fontSize;
+  }
+
+  double getResponsiveFontSizeHold(
+    BuildContext context, {
+    required double minSize,
+    required double maxSize,
+  }) {
+    // Obtener el ancho de la pantalla
+    final screenWidth = MediaQuery.of(context).size.width;
+
     // Obtener el TextScaler del dispositivo
     final textScaler = MediaQuery.of(context).textScaler;
 
@@ -30,7 +51,7 @@ class ResponsiveFontSizes {
     // Ajustar el tamaño de fuente según el textScaler
     final scaledSize = textScaler.scale(baseFontSize);
 
-    // Esto maneja correctamente el escalado lineal y no lineal.
+    // // Esto maneja correctamente el escalado lineal y no lineal.
     final adjustedFontSizeFactor = scaledSize / baseFontSize;
 
     // Asignar el valor final a fontSize para usarlo en el widget Text
@@ -46,8 +67,17 @@ class ResponsiveFontSizes {
   double avatarName(BuildContext context) {
     return getResponsiveFontSize(
       context,
-      minSize: 30.0,
-      maxSize: 40.0,
+      minSize: 28.0,
+      maxSize: 32.0,
+    );
+  }
+
+  /// Tamaño para títulos principales
+  double avatarIcon(BuildContext context) {
+    return getResponsiveFontSizeHold(
+      context,
+      minSize: 12.0,
+      maxSize: 13.0,
     );
   }
 
@@ -170,7 +200,7 @@ class ResponsiveFontSizes {
 
   /// Tamaño para texto de barra de navegación
   double navBar(BuildContext context) {
-    return getResponsiveFontSize(
+    return getResponsiveFontSizeHold(
       context,
       minSize: 9.0,
       maxSize: 14.0,
@@ -200,6 +230,15 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 9.0,
+      maxSize: 11.0,
+    );
+  }
+
+  /// Tamaño para tarjetas de póliza - botones
+  double policyCardButtonBig(BuildContext context) {
+    return getResponsiveFontSize(
+      context,
+      minSize: 11.0,
       maxSize: 13.0,
     );
   }

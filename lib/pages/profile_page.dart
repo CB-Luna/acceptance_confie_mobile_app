@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       body: CustomScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        controller: ScrollController(),
         slivers: [
           const ProfileHeader(),
           SliverToBoxAdapter(
@@ -45,8 +45,7 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             user != null ? user.fullName : defaultUserName,
                             style: TextStyle(
-                              fontSize:
-                                  responsiveFontSizes.titleMedium(context),
+                              fontSize: responsiveFontSizes.titleSmall(context),
                               fontWeight: FontWeight.bold,
                               color: AppTheme.getPrimaryColor(context),
                             ),

@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         style: TextStyle(
                           fontFamily: 'Open Sans',
-                          fontSize: responsiveFontSizes.titleLarge(context),
+                          fontSize: responsiveFontSizes.titleMedium(context),
                           fontWeight: FontWeight.w700,
                           height: 24 / 20,
                           letterSpacing: 0,

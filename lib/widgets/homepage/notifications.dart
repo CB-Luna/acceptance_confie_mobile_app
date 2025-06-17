@@ -23,15 +23,14 @@ class NotificationsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener las dimensiones de la pantalla para cálculos responsivos
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenWidth < 360;
 
     // Calcular alturas responsivas basadas en el tamaño de la pantalla
     final double expandedHeight =
-        screenHeight * 0.5; // 50% de la altura de la pantalla
+        screenWidth * 0.5; // 50% de la altura de la pantalla
     final double multiNotificationHeight = isSmallScreen ? 180 : 210;
     final double singleNotificationHeight = isSmallScreen ? 90 : 102;
-    final double emptyStateHeight = isSmallScreen ? 150 : 200;
+    final double emptyStateHeight = isSmallScreen ? 190 : 210;
 
     return Consumer<NotificationProvider>(
       builder: (context, notificationProvider, child) {
@@ -65,7 +64,6 @@ class NotificationsWidget extends StatelessWidget {
                       fontFamily: 'Open Sans',
                       fontSize: responsiveFontSizes.bodyLarge(context),
                       fontWeight: FontWeight.w600,
-                      height: 1.5,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -145,7 +143,6 @@ class NotificationsWidget extends StatelessWidget {
                     fontFamily: 'Open Sans',
                     fontSize: responsiveFontSizes.bodyLarge(context),
                     fontWeight: FontWeight.w600,
-                    height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -153,7 +150,7 @@ class NotificationsWidget extends StatelessWidget {
             ),
             Center(
               child: SizedBox(
-                width: screenWidth - (isSmallScreen ? 32 : 48),
+                width: screenWidth,
                 // Ajustar la altura según la cantidad de notificaciones y si está expandida
                 height: isExpanded
                     ? expandedHeight // Altura expandida proporcional a la pantalla
@@ -197,9 +194,8 @@ class NotificationsWidget extends StatelessWidget {
                               ),
                             Expanded(
                               child: SingleChildScrollView(
-                                physics: isExpanded
-                                    ? const AlwaysScrollableScrollPhysics() // Scroll habilitado cuando está expandido
-                                    : const NeverScrollableScrollPhysics(), // Scroll deshabilitado cuando no está expandido
+                                physics:
+                                    const AlwaysScrollableScrollPhysics(), // Scroll habilitado cuando está expandido
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: isSmallScreen ? 8.0 : 16.0,

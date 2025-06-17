@@ -151,18 +151,6 @@ class _OfficeListState extends State<OfficeList> {
                 ),
               ),
             )
-          else if (widget.offices.isEmpty)
-            // Cuando la lista de oficinas está vacía
-            Expanded(
-              child: Center(
-                child: Text(
-                  context.translate('office.noOfficesAvailable'),
-                  style: TextStyle(
-                    fontSize: responsiveFontSizes.bodyTextLocation(context),
-                  ),
-                ),
-              ),
-            )
           else
             // Cuando hay oficinas para mostrar
             Expanded(
@@ -265,7 +253,7 @@ class _OfficeListState extends State<OfficeList> {
                           children: [
                             // Campo de entrada de código postal (más pequeño)
                             Expanded(
-                              flex: 7,
+                              flex: 5,
                               child: SizedBox(
                                 height: isSmallScreen ? 40 : 44,
                                 child: TextField(
@@ -474,8 +462,7 @@ class OfficeListItem extends StatelessWidget {
               color: AppTheme.getTitleTextColor(context),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          Wrap(
             children: [
               Text(
                 office.name,
@@ -489,7 +476,8 @@ class OfficeListItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Horario
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Icon(
                 Icons.access_time,

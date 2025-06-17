@@ -34,6 +34,8 @@ class _IdCardPageState extends State<IdCardPage> {
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.currentUser;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
     // Si no hay usuario autenticado, mostrar un mensaje
     if (user == null) {
       return Scaffold(
@@ -128,17 +130,15 @@ class _IdCardPageState extends State<IdCardPage> {
         ),
         child: Column(
           children: [
-            Expanded(
+            SingleChildScrollView(
+              controller: ScrollController(),
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   // Calcular el ancho disponible para la tarjeta
                   final availableWidth = constraints.maxWidth;
 
-                  // Determinar el tamaño de la tarjeta basado en el espacio disponible
-                  // Mantener la relación de aspecto original (309:430)
-                  final cardWidth =
-                      availableWidth > 350 ? 309.0 : availableWidth * 0.85;
-                  final cardHeight = cardWidth * (450 / 309);
+                  // Determinar el ancho de la tarjeta basado en el espacio disponible
+                  final cardWidth = availableWidth * 0.85;
 
                   // Ya no necesitamos calcular el espacio superior
                   // porque estamos usando un Column con Expanded para centrar
@@ -149,79 +149,82 @@ class _IdCardPageState extends State<IdCardPage> {
                       // Fila superior con botones de acción y Apple Wallet
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8.0,
+                          horizontal: 20.0,
+                          vertical: 16.0,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // Botón de Apple Wallet (solo en iOS)
-                            if (Platform.isIOS)
-                              GestureDetector(
-                                onTap: () {
-                                  // TODO: Implementar funcionalidad de Apple Wallet
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Adding to Apple Wallet...'),
-                                      duration: Duration(seconds: 2),
+                        child: SizedBox(
+                          width: screenWidth,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Botón de Apple Wallet (solo en iOS)
+                              if (Platform.isIOS)
+                                GestureDetector(
+                                  onTap: () {
+                                    // TODO: Implementar funcionalidad de Apple Wallet
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Adding to Apple Wallet...'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                  child: Image.asset(
+                                    'assets/home/idcardicons/add_apple_wallet.png',
+                                    width: screenWidth * 0.4,
+                                    height: screenWidth * 0.1,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+
+                              // Botón de Google Wallet (solo en Android)
+                              if (Platform.isAndroid)
+                                GestureDetector(
+                                  onTap: () {
+                                    if (!_isProcessingRequest) {
+                                      _handleAddToGoogleWallet(context, user);
+                                    }
+                                  },
+                                  child: Image.asset(
+                                    'assets/home/idcardicons/add_google_wallet.png',
+                                    width: screenWidth * 0.4,
+                                    height: screenWidth * 0.1,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+
+                              // Botones de acción (descarga e impresión)
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.download_outlined,
+                                      color: AppTheme.getIconColor(context),
                                     ),
-                                  );
-                                },
-                                child: Image.asset(
-                                  'assets/home/idcardicons/add_apple_wallet.png',
-                                  width: 146,
-                                  height: 45,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-
-                            // Botón de Google Wallet (solo en Android)
-                            if (Platform.isAndroid)
-                              GestureDetector(
-                                onTap: () {
-                                  if (!_isProcessingRequest) {
-                                    _handleAddToGoogleWallet(context, user);
-                                  }
-                                },
-                                child: Image.asset(
-                                  'assets/home/idcardicons/add_google_wallet.png',
-                                  width: 146,
-                                  height: 45,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-
-                            // Botones de acción (descarga e impresión)
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.download_outlined,
-                                    color: AppTheme.getIconColor(context),
+                                    onPressed: () {
+                                      // Evitar múltiples llamadas mientras se procesa una solicitud
+                                      if (!_isProcessingRequest) {
+                                        _handleSaveIdCard(context, user);
+                                      }
+                                    },
                                   ),
-                                  onPressed: () {
-                                    // Evitar múltiples llamadas mientras se procesa una solicitud
-                                    if (!_isProcessingRequest) {
-                                      _handleSaveIdCard(context, user);
-                                    }
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.print_outlined,
-                                    color: AppTheme.getIconColor(context),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.print_outlined,
+                                      color: AppTheme.getIconColor(context),
+                                    ),
+                                    onPressed: () {
+                                      // Evitar múltiples llamadas mientras se procesa una solicitud
+                                      if (!_isProcessingRequest) {
+                                        _handlePrintIdCard(context, user);
+                                      }
+                                    },
                                   ),
-                                  onPressed: () {
-                                    // Evitar múltiples llamadas mientras se procesa una solicitud
-                                    if (!_isProcessingRequest) {
-                                      _handlePrintIdCard(context, user);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
 
@@ -229,22 +232,17 @@ class _IdCardPageState extends State<IdCardPage> {
                       Center(
                         child: SizedBox(
                           width: cardWidth,
-                          height: cardHeight,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: RepaintBoundary(
-                              key: _idCardKey,
-                              child: IdCardWidget(
-                                user: user,
-                                width: cardWidth,
-                                height: cardHeight,
-                                policyNumber: user.policyNumber,
-                                carrier: user.carrierName,
-                                state: user.policyUsaState,
-                                // Ejemplo de fechas, en una implementación real vendrían de la API
-                                effectiveDate: DateTime(2023, 6, 18),
-                                expirationDate: DateTime(2026, 12, 18),
-                              ),
+                          child: RepaintBoundary(
+                            key: _idCardKey,
+                            child: IdCardWidget(
+                              user: user,
+                              width: cardWidth,
+                              policyNumber: user.policyNumber,
+                              carrier: user.carrierName,
+                              state: user.policyUsaState,
+                              // Ejemplo de fechas, en una implementación real vendrían de la API
+                              effectiveDate: DateTime(2023, 6, 18),
+                              expirationDate: DateTime(2026, 12, 18),
                             ),
                           ),
                         ),

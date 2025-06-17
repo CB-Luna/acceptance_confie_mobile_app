@@ -139,8 +139,8 @@ class _RoadsideHelpState extends State<RoadsideHelp>
                     children: [
                       Image.asset(
                         'assets/home/icons/truckwhite.png',
-                        width: 60, // Reducido ligeramente
-                        height: 24,
+                        width: screenWidth * 0.18, // Reducido ligeramente
+                        height: screenWidth * 0.07,
                         fit: BoxFit.contain,
                       ),
                       const SizedBox(width: 8), // Reducido

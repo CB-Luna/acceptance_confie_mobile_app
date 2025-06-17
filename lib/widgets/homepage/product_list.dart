@@ -58,8 +58,10 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
+    // Obtener el TextScaler del dispositivo
+    final textScaler = MediaQuery.of(context).textScaler.scale(1);
     // Calcular el ancho ideal para las tarjetas basado en el ancho de la pantalla
-    final cardWidth = screenWidth * 0.4;
+    final cardWidth = screenWidth * (textScaler > 1 ? 0.55 : 0.4);
 
     final List<ProductItem> products = [
       ProductItem(
@@ -87,11 +89,12 @@ class _ProductListState extends State<ProductList> {
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.only(right: 16.0),
           child: Row(
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Alinea las tarjetas desde arriba
             children: products
                 .map(
-                  (product) => Container(
-                    width: cardWidth,
-                    margin: const EdgeInsets.only(right: 12.0),
+                  (product) => Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
                     child: ProductCard(
                       product: product,
                       cardWidth: cardWidth,
@@ -194,8 +197,6 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calcular altura proporcional al ancho
-    final cardHeight = cardWidth * 0.45;
     // Calcular tamaño del icono proporcional al ancho de la tarjeta
     final iconSize = cardWidth * 0.25;
 
@@ -207,7 +208,6 @@ class ProductCard extends StatelessWidget {
       shadowColor: AppTheme.getBoxShadowColor(context).withValues(alpha: 0.3),
       child: Container(
         width: cardWidth,
-        height: cardHeight,
         decoration: BoxDecoration(
           color: product.backgroundColor,
           borderRadius: BorderRadius.circular(12),
@@ -229,35 +229,31 @@ class ProductCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.all(cardWidth * 0.075), // Padding proporcional
+          padding: const EdgeInsets.all(10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: iconSize,
                 height: iconSize,
-                padding:
-                    EdgeInsets.all(iconSize * 0.15), // Padding proporcional
+                padding: EdgeInsets.all(iconSize * 0.15),
                 child: Image.asset(
                   product.imagePath,
                   fit: BoxFit.contain,
                 ),
               ),
-              SizedBox(width: cardWidth * 0.06), // Espacio proporcional
+              SizedBox(width: cardWidth * 0.06),
               Expanded(
                 child: Text(
                   product.title,
                   style: TextStyle(
                     fontFamily: 'Open Sans',
-                    fontSize: responsiveFontSizes.bodyTextLocation(
-                      context,
-                    ), // Usará el adjustedFontSize calculado
+                    fontSize: responsiveFontSizes.bodyTextLocation(context),
                     fontWeight: FontWeight.w600,
-                    height:
-                        1.3, // Ajustar el interlineado si es necesario con fuentes grandes
                     color: AppTheme.black,
                   ),
-                  maxLines: 2,
+                  maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

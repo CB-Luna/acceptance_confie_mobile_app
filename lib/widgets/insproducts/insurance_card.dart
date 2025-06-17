@@ -27,8 +27,9 @@ class InsuranceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       child: InkWell(
         onTap: () {
           if (title == context.translate('addInsurance.vehicleInsurance')) {
@@ -75,8 +76,7 @@ class InsuranceCard extends StatelessWidget {
           }
         },
         child: SizedBox(
-          width: 390, // Ancho ajustado
-          height: 86, // Alto ajustado
+          width: screenWidth * 0.9, // Ancho ajustado
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -99,6 +99,8 @@ class InsuranceCard extends StatelessWidget {
                   Expanded(
                     flex: 2, // Reducido para balancear con el texto
                     child: Image.asset(
+                      width: imageWidth,
+                      height: imageHeight,
                       imagePath,
                       fit: BoxFit.contain,
                     ),

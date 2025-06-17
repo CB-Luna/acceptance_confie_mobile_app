@@ -19,6 +19,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppTheme.getBackgroundHeaderColor(context),
       appBar: AppBar(
@@ -92,10 +93,9 @@ class _RequestCallPageState extends State<RequestCallPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppTheme.getTitleTextColor(context),
-                            fontSize: responsiveFontSizes.titleMedium(context),
+                            fontSize: responsiveFontSizes.bodyMedium(context),
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w600,
-                            height: 1.5,
                           ),
                         ),
                       ),
@@ -103,8 +103,8 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       Center(
                         child: Image.asset(
                           'assets/home/icons/contactagent.png',
-                          width: 227.12,
-                          height: 120,
+                          width: screenWidth * 0.5,
+                          height: screenWidth * 0.25,
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -112,7 +112,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                         context.translate('requestCall.customerService'),
                         style: TextStyle(
                           color: AppTheme.getSubtitleTextColor(context),
-                          fontSize: responsiveFontSizes.bodyMedium(context),
+                          fontSize: responsiveFontSizes.bodySmall(context),
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
                         ),
@@ -144,7 +144,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                               style: TextStyle(
                                 color: AppTheme.white,
                                 fontSize:
-                                    responsiveFontSizes.bodyMedium(context),
+                                    responsiveFontSizes.bodySmall(context),
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
                               ),
@@ -157,7 +157,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                         context.translate('requestCall.insuranceQuotes'),
                         style: TextStyle(
                           color: AppTheme.getSubtitleTextColor(context),
-                          fontSize: responsiveFontSizes.bodyMedium(context),
+                          fontSize: responsiveFontSizes.bodySmall(context),
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
                         ),
@@ -189,7 +189,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                               style: TextStyle(
                                 color: AppTheme.white,
                                 fontSize:
-                                    responsiveFontSizes.bodyMedium(context),
+                                    responsiveFontSizes.bodySmall(context),
                                 fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
                               ),

@@ -197,7 +197,7 @@ class NotificationItemContentState extends State<NotificationItemContent> {
                             height: 1.3,
                             color: widget.iconColor,
                           ),
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: widget.isSmallScreen ? 1.0 : 2.0),

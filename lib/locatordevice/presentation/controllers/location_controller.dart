@@ -320,50 +320,52 @@ class LocationController extends ChangeNotifier {
   }
 
   void _calculateDistancesToOffices() {
-    if (state.currentPosition == null || state.offices.isEmpty) return;
+    if (state.currentPosition == null) return;
 
-    final List<Office> updatedOffices = [];
-    final List<Office> nearbyOffices = [];
+    if (state.offices.isNotEmpty) {
+      final List<Office> updatedOffices = [];
+      final List<Office> nearbyOffices = [];
 
-    for (var office in state.offices) {
-      updatedOffices.add(office);
+      for (var office in state.offices) {
+        updatedOffices.add(office);
 
-      // Filtrar oficinas dentro del radio de búsqueda
-      if (office.distance <= state.searchRadiusInMiles) {
-        nearbyOffices.add(office);
+        // Filtrar oficinas dentro del radio de búsqueda
+        if (office.distance <= state.searchRadiusInMiles) {
+          nearbyOffices.add(office);
+        }
       }
-    }
 
-    // Ordenar por distancia
-    updatedOffices.sort(
-      (a, b) => a.distance.compareTo(b.distance),
-    );
-
-    nearbyOffices.sort(
-      (a, b) => a.distance.compareTo(b.distance),
-    );
-
-    // Si hay una oficina seleccionada, no actualizar las oficinas cercanas
-    if (state.selectedOfficeId != null) {
-      // Encontrar la oficina seleccionada
-      final selectedOffice = updatedOffices.firstWhere(
-        (office) => office.locationId == state.selectedOfficeId,
-        orElse: () => updatedOffices.first,
+      // Ordenar por distancia
+      updatedOffices.sort(
+        (a, b) => a.distance.compareTo(b.distance),
       );
 
-      _updateState(
-        offices: updatedOffices,
-        nearbyOffices: [selectedOffice],
-        // Si estamos mostrando todas las oficinas, mantener ese estado
-        showAllOffices: state.showAllOffices,
+      nearbyOffices.sort(
+        (a, b) => a.distance.compareTo(b.distance),
       );
-    } else {
-      _updateState(
-        offices: updatedOffices,
-        nearbyOffices: nearbyOffices,
-        // Si estamos mostrando todas las oficinas, mantener ese estado
-        showAllOffices: state.showAllOffices,
-      );
+
+      // Si hay una oficina seleccionada, no actualizar las oficinas cercanas
+      if (state.selectedOfficeId != null) {
+        // Encontrar la oficina seleccionada
+        final selectedOffice = updatedOffices.firstWhere(
+          (office) => office.locationId == state.selectedOfficeId,
+          orElse: () => updatedOffices.first,
+        );
+
+        _updateState(
+          offices: updatedOffices,
+          nearbyOffices: [selectedOffice],
+          // Si estamos mostrando todas las oficinas, mantener ese estado
+          showAllOffices: state.showAllOffices,
+        );
+      } else {
+        _updateState(
+          offices: updatedOffices,
+          nearbyOffices: nearbyOffices,
+          // Si estamos mostrando todas las oficinas, mantener ese estado
+          showAllOffices: state.showAllOffices,
+        );
+      }
     }
 
     // Actualizar el círculo de cobertura para reflejar el radio de búsqueda

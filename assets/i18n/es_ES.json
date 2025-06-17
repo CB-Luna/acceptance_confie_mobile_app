@@ -275,7 +275,7 @@
     "closesAt": "Cierra a las {0}",
     "callOffice": "Llamar a la Oficina",
     "getDirections": "Obtener Indicaciones",
-    "miles": "millas",
+    "miles": "mi",
     "landmark": "Punto de referencia: {0}",
     "todayHours": "{0} (Hoy): {1} - {2}",
     "languages": "Idiomas: {0}",
@@ -407,7 +407,7 @@
   },
   "additionalProducts": {
     "back": "Regresar",
-    "title": "Selecciona un producto adicional",
+    "title": "Selecciona un producto para iniciar tu cotización",
     "autoClub": "Club Automotriz",
     "windshieldRepair": "Reparación de Parabrisas",
     "vrrOnlineCalifornia": "Registro Vehicular en Línea California",

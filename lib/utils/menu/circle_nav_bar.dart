@@ -50,7 +50,6 @@ class _CircleNavBarState extends State<CircleNavBar>
     // Usamos la utilidad de tamaños responsivos para manejar el escalado
     return Container(
       width: 410,
-      height: 65,
       margin: const EdgeInsets.only(top: 12),
       decoration: BoxDecoration(
         color: AppTheme.getCardColor(context),
@@ -94,50 +93,47 @@ class _CircleNavBarState extends State<CircleNavBar>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              height: 40,
-              child: Center(
-                child: TweenAnimationBuilder(
-                  duration: const Duration(milliseconds: 300),
-                  tween: Tween<double>(begin: 0, end: isSelected ? 1 : 0),
-                  builder: (context, double value, child) {
-                    return Transform.translate(
-                      offset: Offset(0, -12 * value),
-                      child: Transform.rotate(
-                        angle: 6.28319 * value,
-                        child: Transform.scale(
-                          scale: 1 + (0.2 * value),
-                          child: child!,
-                        ),
+            Center(
+              child: TweenAnimationBuilder(
+                duration: const Duration(milliseconds: 300),
+                tween: Tween<double>(begin: 0, end: isSelected ? 1 : 0),
+                builder: (context, double value, child) {
+                  return Transform.translate(
+                    offset: Offset(0, -12 * value),
+                    child: Transform.rotate(
+                      angle: 6.28319 * value,
+                      child: Transform.scale(
+                        scale: 1 + (0.2 * value),
+                        child: child!,
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: isSelected ? 33 : 24,
-                    height: isSelected ? 33 : 24,
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppTheme.getBlueColor(context)
-                          : Colors.transparent,
-                      shape: BoxShape.circle,
-                      boxShadow: isSelected
-                          ? [
-                              BoxShadow(
-                                color: AppTheme.getIconColor(context)
-                                    .withAlpha(51),
-                                blurRadius: 8,
-                                spreadRadius: 4,
-                              ),
-                            ]
-                          : null,
                     ),
-                    child: Icon(
-                      widget.tabItems[index].icon,
-                      size: isSelected ? 28 : 24,
-                      color: isSelected
-                          ? AppTheme.white
-                          : AppTheme.getIconColor(context),
-                    ),
+                  );
+                },
+                child: Container(
+                  width: isSelected ? 33 : 24,
+                  height: isSelected ? 33 : 24,
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? AppTheme.getBlueColor(context)
+                        : Colors.transparent,
+                    shape: BoxShape.circle,
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color:
+                                  AppTheme.getIconColor(context).withAlpha(51),
+                              blurRadius: 8,
+                              spreadRadius: 4,
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Icon(
+                    widget.tabItems[index].icon,
+                    size: isSelected ? 28 : 24,
+                    color: isSelected
+                        ? AppTheme.white
+                        : AppTheme.getIconColor(context),
                   ),
                 ),
               ),
@@ -155,6 +151,7 @@ class _CircleNavBarState extends State<CircleNavBar>
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

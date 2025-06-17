@@ -13,9 +13,9 @@ class SafetyCheckCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      width: 350,
-      height: 256,
+      width: width * 0.8,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.getCardColor(context),
@@ -29,7 +29,7 @@ class SafetyCheckCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
             child: Text(
@@ -56,45 +56,55 @@ class SafetyCheckCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: Implement call 911
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.getBackgroundOrangeColor(context),
-                  foregroundColor: AppTheme.getOrangeColor(context),
-                  side: BorderSide(color: AppTheme.getOrangeColor(context)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              Flexible(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement call 911
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.getBackgroundOrangeColor(context),
+                    foregroundColor: AppTheme.getOrangeColor(context),
+                    side: BorderSide(color: AppTheme.getOrangeColor(context)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                ),
-                child: Text(
-                  context.translate('submitClaim.safetyCheck.call911'),
-                  style: TextStyle(
-                    fontSize: responsiveFontSizes.bodyMedium(context),
-                    fontWeight: FontWeight.w600,
+                  child: Text(
+                    context.translate('submitClaim.safetyCheck.call911'),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
               const SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: onSafetyConfirmed,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.getPrimaryColor(context),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              Flexible(
+                child: ElevatedButton(
+                  onPressed: onSafetyConfirmed,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.getPrimaryColor(context),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                ),
-                child: Text(
-                  context.translate('submitClaim.safetyCheck.imSafe'),
-                  style: TextStyle(
-                    fontSize: responsiveFontSizes.bodyMedium(context),
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.white,
+                  child: Text(
+                    context.translate('submitClaim.safetyCheck.imSafe'),
+                    style: TextStyle(
+                      fontSize: responsiveFontSizes.bodyMedium(context),
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

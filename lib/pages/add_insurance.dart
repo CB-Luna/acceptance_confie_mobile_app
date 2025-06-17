@@ -93,7 +93,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
         ),
       ),
       bottomNavigationBar: Transform.translate(
-        offset: const Offset(0, 0),
+        offset: const Offset(0, -12),
         child: CircleNavBar(
           selectedPos: _selectedIndex,
           onTap: (index) {

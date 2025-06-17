@@ -93,7 +93,7 @@ class _LocationDetailsViewContentState
           ),
           body: _buildBody(context, controller),
           bottomNavigationBar: Transform.translate(
-            offset: const Offset(0, 0),
+            offset: const Offset(0, -12),
             child: CircleNavBar(
               selectedPos: 2,
               onTap: (index) {

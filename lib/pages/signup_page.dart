@@ -443,8 +443,7 @@ class SignUpPageState extends State<SignUpPage> {
                           ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
                     children: [
                       Text(
                         context.translate('auth.haveAccount'),

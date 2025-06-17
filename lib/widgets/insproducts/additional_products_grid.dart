@@ -76,6 +76,7 @@ class _AdditionalProductsGridState extends State<AdditionalProductsGrid> {
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w600,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 24),

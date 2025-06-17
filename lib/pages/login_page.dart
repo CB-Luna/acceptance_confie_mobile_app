@@ -430,8 +430,7 @@ class LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         const SizedBox(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Wrap(
                           children: [
                             Text(
                               context.translate('auth.noAccount'),

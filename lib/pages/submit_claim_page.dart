@@ -52,38 +52,41 @@ class _SubmitClaimPageState extends State<SubmitClaimPage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            // Contenedor principal
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    context.translate('submitClaim.title'),
-                    style: TextStyle(
-                      color: AppTheme.getTitleTextColor(context),
-                      fontSize: responsiveFontSizes.titleLarge(context),
-                      fontWeight: FontWeight.w600,
+        child: SingleChildScrollView(
+          controller: ScrollController(),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              // Contenedor principal
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      context.translate('submitClaim.title'),
+                      style: TextStyle(
+                        color: AppTheme.getTitleTextColor(context),
+                        fontSize: responsiveFontSizes.titleLarge(context),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Center(
-              child: _showBluefireCard
-                  ? const BluefireClaimCard()
-                  : SafetyCheckCard(
-                      onSafetyConfirmed: () {
-                        setState(() {
-                          _showBluefireCard = true;
-                        });
-                      },
-                    ),
-            ),
-          ],
+              Center(
+                child: _showBluefireCard
+                    ? const BluefireClaimCard()
+                    : SafetyCheckCard(
+                        onSafetyConfirmed: () {
+                          setState(() {
+                            _showBluefireCard = true;
+                          });
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Transform.translate(

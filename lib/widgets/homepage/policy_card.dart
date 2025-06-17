@@ -77,17 +77,17 @@ class _PolicyCardState extends State<PolicyCard>
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             // Primera fila: Información de la póliza y estado
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 // Icono del auto
                 Image.asset(
                   'assets/home/icons/icon-car-1.png',
-                  width: 48,
-                  height: 48,
+                  width: screenWidth * 0.15,
+                  height: screenWidth * 0.15,
                 ),
                 const SizedBox(width: 12),
                 // Información de la póliza
@@ -103,12 +103,10 @@ class _PolicyCardState extends State<PolicyCard>
                           fontWeight: FontWeight.bold,
                           color: AppTheme.getPrimaryColor(context),
                         ),
-                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         plateNumber,
-                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'Open Sans',
@@ -162,30 +160,31 @@ class _PolicyCardState extends State<PolicyCard>
             ),
             const SizedBox(height: 12),
             // Segunda fila: Logo y próximo pago
-            Row(
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 // Logo
                 isBluefire
                     ? Image.asset(
                         'assets/home/icons/Bluefire.png',
-                        width: 80,
-                        height: 22,
+                        width: screenWidth * 0.2,
+                        height: screenWidth * 0.05,
                       )
                     : Image.asset(
                         AppTheme.getFreewayLogoType(context),
-                        width: 80,
-                        height: 22,
+                        width: screenWidth * 0.2,
+                        height: screenWidth * 0.1,
                       ),
                 const SizedBox(width: 8),
                 // Información de próximo pago
                 Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Icon(
                         Icons.credit_card,
                         color: AppTheme.getGreenColor(context),
-                        size: 14, // Reducido ligeramente
+                        size: screenWidth * 0.05, // Reducido ligeramente
                       ),
                       const SizedBox(width: 4),
                       // Texto "Next Payment" que se puede ocultar en pantallas muy pequeñas
@@ -201,7 +200,7 @@ class _PolicyCardState extends State<PolicyCard>
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 8),
                       // Fecha del próximo pago
                       Flexible(
                         child: Text(
@@ -238,7 +237,6 @@ class _PolicyCardState extends State<PolicyCard>
                     Expanded(
                       flex: 2,
                       child: SizedBox(
-                        height: 38,
                         child: OutlinedButton(
                           onPressed: () {
                             Navigator.push(
@@ -261,8 +259,7 @@ class _PolicyCardState extends State<PolicyCard>
                               vertical: 0,
                             ),
                           ),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
+                          child: Flexible(
                             child: Text(
                               context.translate('home.policyCard.idCard'),
                               textAlign: TextAlign.center,
@@ -273,6 +270,8 @@ class _PolicyCardState extends State<PolicyCard>
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.getOrangeColor(context),
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -283,7 +282,6 @@ class _PolicyCardState extends State<PolicyCard>
                     Expanded(
                       flex: 3,
                       child: SizedBox(
-                        height: 38,
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/submit-claim');
@@ -298,8 +296,7 @@ class _PolicyCardState extends State<PolicyCard>
                               vertical: 0,
                             ),
                           ),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
+                          child: Flexible(
                             child: Text(
                               context.translate('home.policyCard.submitClaim'),
                               textAlign: TextAlign.center,
@@ -310,6 +307,8 @@ class _PolicyCardState extends State<PolicyCard>
                                 fontWeight: FontWeight.w700,
                                 color: AppTheme.white,
                               ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -320,8 +319,6 @@ class _PolicyCardState extends State<PolicyCard>
                     Expanded(
                       flex: 3, // Aumentar el flex para darle más espacio
                       child: SizedBox(
-                        height:
-                            38, // Altura ligeramente mayor que los otros botones
                         child: AnimatedBuilder(
                           animation: _shimmerAnimation,
                           builder: (context, child) {
@@ -392,23 +389,24 @@ class _PolicyCardState extends State<PolicyCard>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     // Añadir un icono para hacerlo más llamativo
-                                    const Icon(
+                                    Icon(
                                       Icons.payment_rounded,
                                       color: AppTheme.white,
-                                      size: 14,
+                                      size: screenWidth * 0.05,
                                     ),
                                     const SizedBox(width: 4),
-                                    FittedBox(
-                                      fit: BoxFit.scaleDown,
+                                    Flexible(
                                       child: Text(
                                         context.translate(
                                           'home.policyCard.payNow',
                                         ),
                                         textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontFamily: 'Open Sans',
                                           fontSize: responsiveFontSizes
-                                              .policyCardButton(context),
+                                              .policyCardButtonBig(context),
                                           fontWeight: FontWeight.w700,
                                           color: AppTheme.white,
                                         ),

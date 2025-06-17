@@ -41,7 +41,7 @@ class _HeaderSectionState extends State<HeaderSection> {
           initials,
           style: TextStyle(
             color: Colors.white,
-            fontSize: responsiveFontSizes.labelLarge(context),
+            fontSize: responsiveFontSizes.avatarIcon(context),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -214,7 +214,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppTheme.white,
-                            fontSize: responsiveFontSizes.label(context),
+                            fontSize: responsiveFontSizes.avatarIcon(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),

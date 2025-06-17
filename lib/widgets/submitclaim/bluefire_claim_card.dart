@@ -16,8 +16,9 @@ class BluefireClaimCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      width: 350,
+      width: width * 0.8,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.getCardColor(context),
@@ -34,17 +35,18 @@ class BluefireClaimCard extends StatelessWidget {
         children: [
           Image.asset(
             'assets/products/vehiclepng/4.0x/Bluefire.png',
-            height: 40,
+            height: width * 0.1,
           ),
           const SizedBox(height: 16),
           Text(
             context.translate('submitClaim.bluefireClaim.title'),
             style: TextStyle(
               color: AppTheme.getPrimaryColor(context),
-              fontSize: responsiveFontSizes.titleMedium(context),
+              fontSize: responsiveFontSizes.titleSmall(context),
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w700,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           Text(
@@ -53,8 +55,6 @@ class BluefireClaimCard extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
               fontSize: responsiveFontSizes.bodyMedium(context),
-              height:
-                  1.43, // This gives us the 20px line height (14 * 1.43 ≈ 20)
               fontFamily: 'Open Sans',
               fontWeight: FontWeight.w600,
               letterSpacing: 0,
@@ -81,7 +81,7 @@ class BluefireClaimCard extends StatelessWidget {
                       '(833) 286-3057',
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
-                        fontSize: responsiveFontSizes.bodyMedium(context),
+                        fontSize: responsiveFontSizes.bodySmall(context),
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       ),
@@ -113,7 +113,7 @@ class BluefireClaimCard extends StatelessWidget {
                       '(800) 468-3466',
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
-                        fontSize: responsiveFontSizes.bodyMedium(context),
+                        fontSize: responsiveFontSizes.bodySmall(context),
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
                       ),
@@ -125,8 +125,7 @@ class BluefireClaimCard extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 25),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
             children: [
               SizedBox(
                 width: 18,

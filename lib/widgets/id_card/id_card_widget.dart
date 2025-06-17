@@ -13,12 +13,10 @@ class IdCardWidget extends StatelessWidget {
   final DateTime? effectiveDate;
   final DateTime? expirationDate;
   final double width;
-  final double height;
 
   const IdCardWidget({
     required this.user,
     required this.width,
-    required this.height,
     super.key,
     this.policyNumber,
     this.carrier,
@@ -40,10 +38,10 @@ class IdCardWidget extends StatelessWidget {
     final expirationDateStr = expirationDate != null
         ? dateFormat.format(expirationDate!)
         : '--/--/----';
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      width: width,
-      height: height,
+      width: screenWidth,
       decoration: BoxDecoration(
         color: AppTheme.getCardColor(context),
         borderRadius: BorderRadius.circular(14),
@@ -59,7 +57,6 @@ class IdCardWidget extends StatelessWidget {
         children: [
           // Header azul con logo
           Container(
-            height: 80,
             decoration: BoxDecoration(
               color: AppTheme.getPrimaryColor(context), // Color azul de Freeway
               borderRadius: const BorderRadius.only(
@@ -67,23 +64,27 @@ class IdCardWidget extends StatelessWidget {
                 topRight: Radius.circular(14),
               ),
             ),
-            child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
                     'assets/home/idcardicons/freeway_logo_white.png',
-                    width: 40,
-                    height: 40,
+                    width: screenWidth * 0.1,
+                    height: screenWidth * 0.1,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    'Freeway Insurance',
-                    style: TextStyle(
-                      color: AppTheme.white,
-                      fontSize: responsiveFontSizes.titleMedium(context),
-                      fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: Text(
+                      'Freeway Insurance',
+                      style: TextStyle(
+                        color: AppTheme.white,
+                        fontSize: responsiveFontSizes.titleMedium(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
                     ),
                   ),
                 ],
@@ -92,230 +93,227 @@ class IdCardWidget extends StatelessWidget {
           ),
 
           // Contenido de la tarjeta
-          Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Sección de información del asegurado
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Named Insured
-                        Text(
-                          context.translate('idCard.namedInsured'),
-                          style: TextStyle(
-                            fontSize: responsiveFontSizes.labelLarge(context),
-                            color: AppTheme.getTextGreyColor(context),
-                            fontWeight: FontWeight.w500,
-                          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Sección de información del asegurado
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Named Insured
+                      Text(
+                        context.translate('idCard.namedInsured'),
+                        style: TextStyle(
+                          fontSize: responsiveFontSizes.labelLarge(context),
+                          color: AppTheme.getTextGreyColor(context),
+                          fontWeight: FontWeight.w500,
                         ),
-                        const SizedBox(height: 4),
-                        // Nombre del asegurado
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            user.fullName,
-                            style: TextStyle(
-                              fontSize:
-                                  responsiveFontSizes.titleMedium(context),
-                              color: AppTheme.getPrimaryColor(context),
-                              fontWeight: FontWeight.bold,
+                      ),
+                      const SizedBox(height: 4),
+                      // Nombre del asegurado
+                      Text(
+                        user.fullName,
+                        style: TextStyle(
+                          fontSize: responsiveFontSizes.titleMedium(context),
+                          color: AppTheme.getPrimaryColor(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Fila con la información de la aseguradora y número de póliza
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Carrier
+                      SizedBox(
+                        width: screenWidth * 0.35,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.translate('idCard.carrier'),
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getTextGreyColor(context),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            // Usar FittedBox para adaptar el texto al espacio disponible
+                            Text(
+                              carrier ?? 'Infinity',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 4,
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
+                                color: AppTheme.getPrimaryColor(context),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      // Policy Number
+                      SizedBox(
+                        width: screenWidth * 0.3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.translate('idCard.policyNumberLabel'),
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getTextGreyColor(context),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            // Usar FittedBox para adaptar el número de póliza al espacio disponible
+                            Text(
+                              displayPolicyNumber,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
+                                color: AppTheme.getPrimaryColor(context),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                ),
 
-                  const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                  // Fila con la información de la aseguradora y número de póliza
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Carrier
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate('idCard.carrier'),
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodyMedium(context),
-                                  color: AppTheme.getTextGreyColor(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                // State, Effective Date, Expiration Date
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // State
+                      SizedBox(
+                        width: screenWidth * 0.2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.translate('idCard.state'),
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getTextGreyColor(context),
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(height: 4),
-                              // Usar FittedBox para adaptar el texto al espacio disponible
-                              Text(
-                                carrier ?? 'Infinity',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodyMedium(context),
-                                  color: AppTheme.getPrimaryColor(context),
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              state ?? 'FL',
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodyMedium(context),
+                                color: AppTheme.getPrimaryColor(context),
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
 
-                        // Policy Number
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate('idCard.policyNumberLabel'),
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodyMedium(context),
-                                  color: AppTheme.getTextGreyColor(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                      // Effective Date
+                      SizedBox(
+                        width: screenWidth * 0.2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.translate('idCard.effectiveDate'),
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getTextGreyColor(context),
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(height: 4),
-                              // Usar FittedBox para adaptar el número de póliza al espacio disponible
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  displayPolicyNumber,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize:
-                                        responsiveFontSizes.bodyMedium(context),
-                                    color: AppTheme.getPrimaryColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              effectiveDateStr,
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getPrimaryColor(context),
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      // Expiration Date
+                      SizedBox(
+                        width: screenWidth * 0.2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              context.translate('idCard.expirationDate'),
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getTextGreyColor(context),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              expirationDateStr,
+                              style: TextStyle(
+                                fontSize:
+                                    responsiveFontSizes.bodySmall(context),
+                                color: AppTheme.getPrimaryColor(context),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-
-                  const SizedBox(height: 20),
-
-                  // State, Effective Date, Expiration Date
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      children: [
-                        // State
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate('idCard.state'),
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodyMedium(context),
-                                  color: AppTheme.getTextGreyColor(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                state ?? 'FL',
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodyLarge(context),
-                                  color: AppTheme.getPrimaryColor(context),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Effective Date
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate('idCard.effectiveDate'),
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodySmall(context),
-                                  color: AppTheme.getTextGreyColor(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                effectiveDateStr,
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodySmall(context),
-                                  color: AppTheme.getPrimaryColor(context),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Expiration Date
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                context.translate('idCard.expirationDate'),
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodySmall(context),
-                                  color: AppTheme.getTextGreyColor(context),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                expirationDateStr,
-                                style: TextStyle(
-                                  fontSize:
-                                      responsiveFontSizes.bodySmall(context),
-                                  color: AppTheme.getPrimaryColor(context),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
           // Footer con código de barras
           Container(
-            height: 80,
+            height: screenWidth * 0.2,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Center(
               child: Image.asset(
                 'assets/home/idcardicons/barcode.png',
-                width: 280,
+                width: screenWidth,
                 fit: BoxFit.contain,
               ),
             ),
