@@ -103,8 +103,8 @@ class ResponsiveFontSizes {
   double titleLarge(BuildContext context) {
     return getResponsiveFontSize(
       context,
-      minSize: 18.0,
-      maxSize: 26.0,
+      minSize: 20.0,
+      maxSize: 22.0,
     );
   }
 
@@ -113,7 +113,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 18.0,
-      maxSize: 22.0,
+      maxSize: 20.0,
     );
   }
 
@@ -122,7 +122,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 14.0,
-      maxSize: 20.0,
+      maxSize: 16.0,
     );
   }
 
@@ -131,7 +131,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 14.0,
-      maxSize: 18.0,
+      maxSize: 16.0,
     );
   }
 
@@ -140,7 +140,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 12.0,
-      maxSize: 16.0,
+      maxSize: 14.0,
     );
   }
 
@@ -149,7 +149,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 10.0,
-      maxSize: 14.0,
+      maxSize: 12.0,
     );
   }
 
@@ -158,7 +158,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 12.0,
-      maxSize: 16.0,
+      maxSize: 14.0,
     );
   }
 
@@ -167,7 +167,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 10.0,
-      maxSize: 14.0,
+      maxSize: 12.0,
     );
   }
 
@@ -176,7 +176,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 10.0,
-      maxSize: 11.0,
+      maxSize: 12.0,
     );
   }
 
@@ -185,7 +185,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 11.0,
-      maxSize: 12.0,
+      maxSize: 13.0,
     );
   }
 
@@ -194,7 +194,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 12.0,
-      maxSize: 13.0,
+      maxSize: 14.0,
     );
   }
 
@@ -203,7 +203,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSizeHold(
       context,
       minSize: 9.0,
-      maxSize: 14.0,
+      maxSize: 11.0,
     );
   }
 
@@ -212,7 +212,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 13.0,
-      maxSize: 18.0,
+      maxSize: 15.0,
     );
   }
 
@@ -221,7 +221,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 11.0,
-      maxSize: 16.0,
+      maxSize: 13.0,
     );
   }
 
@@ -247,7 +247,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 12.0,
-      maxSize: 13.0,
+      maxSize: 14.0,
     );
   }
 
@@ -279,7 +279,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 11.0,
-      maxSize: 12.0,
+      maxSize: 13.0,
     );
   }
 
@@ -287,7 +287,7 @@ class ResponsiveFontSizes {
     return getResponsiveFontSize(
       context,
       minSize: 11.0,
-      maxSize: 12.0,
+      maxSize: 13.0,
     );
   }
 }

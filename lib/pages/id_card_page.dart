@@ -128,22 +128,23 @@ class _IdCardPageState extends State<IdCardPage> {
             ),
           ],
         ),
-        child: Column(
-          children: [
-            SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Calcular el ancho disponible para la tarjeta
+            final availableWidth = constraints.maxWidth;
+            final availableHeight = constraints.maxHeight;
+
+            // Determinar el ancho de la tarjeta basado en el espacio disponible
+            final cardWidth = availableWidth * 0.85;
+
+            return SingleChildScrollView(
               controller: ScrollController(),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  // Calcular el ancho disponible para la tarjeta
-                  final availableWidth = constraints.maxWidth;
-
-                  // Determinar el ancho de la tarjeta basado en el espacio disponible
-                  final cardWidth = availableWidth * 0.85;
-
-                  // Ya no necesitamos calcular el espacio superior
-                  // porque estamos usando un Column con Expanded para centrar
-
-                  return Column(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: availableHeight,
+                ),
+                child: Center(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Fila superior con botones de acción y Apple Wallet
@@ -264,11 +265,11 @@ class _IdCardPageState extends State<IdCardPage> {
                         ),
                       ),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: Transform.translate(
