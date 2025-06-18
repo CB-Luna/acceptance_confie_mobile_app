@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freeway_app/data/models/auth/register_request.dart';
-import 'package:freeway_app/data/models/auth/user_info.dart';
-import 'package:http/http.dart' as http;
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -113,81 +109,80 @@ class AuthProvider with ChangeNotifier {
       _authToken = response.token;
       await _secureStorage.write(key: _tokenKey, value: _authToken);
 
-      UserInfo userInfo;
       DateTime? expirationDate;
+      String policyType = 'Auto'; // Valor por defecto
+      String policyNumber = '';
+      String fullName = 'Freeway User';
+      String email = _lastUsername ?? 'user@example.com';
+      String phone = '+1 (555) 123-4567';
+      String customerId = '1001';
+      String street = '123 Main St';
+      String zipCode = '12345';
+      String city = 'City';
+      String state = 'State';
+      String carrierName = '';
+      String policyUsaState = 'LA';
 
-      try {
-        // Intentar obtener la información del usuario desde la API
-        final apiResponse = await _fetchUserDataFromAPI();
+      // Usar la información del customer que viene directamente en la respuesta
+      if (response.customer != null) {
+        final customer = response.customer!;
+        final primaryPhone = customer.primaryPhone;
+        final primaryAddress = customer.primaryAddress;
 
-        if (apiResponse != null) {
-          // Si la API devuelve datos válidos, crear un objeto UserInfo con esos datos
-          userInfo = UserInfo(
-            fullName: "${apiResponse['FirstName']} ${apiResponse['LastName']}",
-            policyNumber: apiResponse['PolicyNumber'] ?? '',
-            policyType:
-                'Auto', // Valor por defecto o se podría extraer de la respuesta
-            customerId: apiResponse['PolicyNumber'] ?? '1001',
-            email: apiResponse['Email'] ?? _lastUsername ?? 'user@example.com',
-            phone: _formatPhoneNumber(apiResponse['Phone']?.toString() ?? ''),
-            avatar: null, // No disponible en la API
-            languageCode: 'en_US', // Por defecto o basado en preferencias
-            street: apiResponse['Street'] ?? '',
-            zipCode: apiResponse['Zip'].toString(),
-            city: apiResponse['City'] ?? '',
-            state: apiResponse['State'] ?? '',
-            carrierName: apiResponse['CarrierName'] ?? '',
-            policyUsaState: apiResponse['PolicyUsaState'] ?? '',
-          );
+        fullName = customer.fullName;
+        email = customer.email;
+        phone = _formatPhoneNumber(primaryPhone.phoneNumber);
+        customerId = customer.customerId;
+        street = primaryAddress.street;
+        zipCode = primaryAddress.zip;
+        city = primaryAddress.city;
+        state = primaryAddress.state;
+        policyUsaState = primaryAddress.state;
+
+        // Si hay pólizas disponibles, usar la información de la primera
+        if (response.policies.isNotEmpty) {
+          final policy = response.policies.first;
+          policyType = policy.lineOfBusiness;
+          policyNumber = policy.policyNumber;
+          carrierName = policy.carrierName;
 
           // Parsear la fecha de expiración para usarla como próximo pago
-          if (apiResponse['ExpirationDate'] != null) {
-            expirationDate =
-                _parseDate(apiResponse['ExpirationDate'].toString());
+          if (policy.expirationDate.isNotEmpty) {
+            expirationDate = _parseDate(policy.expirationDate);
           }
-
-          debugPrint('AuthProvider - Usuario obtenido desde la API');
-        } else {
-          // Si la API no devuelve datos, usar valores por defecto
-          userInfo = UserInfo.defaultInfo(
-            email: _lastUsername ?? 'user@example.com',
-            customerId: '1001', // ID por defecto
-          );
-          debugPrint(
-            'AuthProvider - API no devolvió datos, usando valores por defecto',
-          );
         }
-      } catch (e) {
-        // En caso de error al llamar a la API, usar valores por defecto
+
         debugPrint(
-          'AuthProvider - Error al obtener datos de usuario desde API: $e',
+          'AuthProvider - Usuario obtenido directamente de la respuesta de login',
         );
-        userInfo = UserInfo.defaultInfo(
-          email: _lastUsername ?? 'user@example.com',
-          customerId: '1001', // ID por defecto
-        );
+      } else {
+        // Devolver false en caso de que no se pueda obtener la información del usuario y un mensaje de error
+        _errorMessage = 'No se pudo obtener la información del usuario';
+        notifyListeners();
+        return false;
       }
 
       // Crear el objeto de usuario con la información obtenida
       _currentUser = User(
         username: _lastUsername ?? 'user',
-        fullName: userInfo.fullName,
-        policyNumber: userInfo.policyNumber,
+        fullName: fullName,
+        policyNumber: policyNumber,
         nextPayment:
             expirationDate ?? DateTime.now().add(const Duration(days: 30)),
-        policyType: userInfo.policyType,
-        customerId:
-            int.parse(userInfo.customerId.replaceAll(RegExp(r'[^0-9]'), '0')),
-        email: userInfo.email,
-        phone: userInfo.phone,
-        avatar: userInfo.avatar,
-        languageCode: userInfo.languageCode,
-        street: userInfo.street,
-        zipCode: userInfo.zipCode,
-        city: userInfo.city,
-        state: userInfo.state,
-        carrierName: userInfo.carrierName,
-        policyUsaState: userInfo.policyUsaState,
+        policyType: policyType,
+        customerId: 1001,
+        email: email,
+        phone: phone,
+        avatar: null, // No disponible en la API
+        languageCode: response.customer?.documentLanguage == 'Spanish'
+            ? 'es_US'
+            : 'en_US',
+        street: street,
+        zipCode: zipCode,
+        city: city,
+        state: state,
+        carrierName: carrierName,
+        policyUsaState: policyUsaState,
       );
 
       _isAuthenticated = true;
@@ -204,62 +199,6 @@ class AuthProvider with ChangeNotifier {
       _errorMessage = 'Error al completar el login: $e';
       notifyListeners();
       return false;
-    }
-  }
-
-  /// Método para obtener los datos del usuario desde la API
-  Future<Map<String, dynamic>?> _fetchUserDataFromAPI() async {
-    try {
-      final url = Uri.parse(
-        'https://u-n8n.virtalus.cbluna-dev.com/webhook/confie_user_data',
-      );
-
-      // Crear el cuerpo de la solicitud con el email del usuario
-      final requestBody = json.encode({
-        'email': _lastUsername,
-      });
-
-      debugPrint('AuthProvider - Llamando a API con email: $_lastUsername');
-
-      // Realizar la solicitud POST
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: requestBody,
-      );
-
-      // Verificar si la solicitud fue exitosa (código 200)
-      if (response.statusCode == 200) {
-        // Decodificar la respuesta JSON
-        final dynamic decodedData = json.decode(response.body);
-        debugPrint('AuthProvider - Respuesta exitosa de API: ${response.body}');
-
-        // Manejar el caso en que la respuesta sea una lista
-        if (decodedData is List && decodedData.isNotEmpty) {
-          // Tomar el primer elemento de la lista
-          return decodedData.first as Map<String, dynamic>;
-        } else if (decodedData is Map<String, dynamic>) {
-          // Si ya es un mapa, devolverlo directamente
-          return decodedData;
-        } else {
-          debugPrint(
-            'AuthProvider - Formato de respuesta inesperado: ${decodedData.runtimeType}',
-          );
-          return null;
-        }
-      } else {
-        // Si la solicitud no fue exitosa, registrar el error y devolver null
-        debugPrint(
-          'AuthProvider - API Error: ${response.statusCode} - ${response.body}',
-        );
-        return null;
-      }
-    } catch (e) {
-      // En caso de error en la solicitud, registrar el error y devolver null
-      debugPrint('AuthProvider - Error al llamar a la API: $e');
-      return null;
     }
   }
 

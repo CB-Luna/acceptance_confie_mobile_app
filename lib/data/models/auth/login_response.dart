@@ -1,11 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'error_model.dart';
+import 'customer_model.dart';
+import 'policy_model.dart';
 
 part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {
   final String? token;
+  final CustomerModel? customer;
+  final List<PolicyModel> policies;
   // Campo mantenido para compatibilidad con el código existente
   // pero ya no se usa activamente ya que el 2FA está temporalmente desactivado
   @Deprecated('Campo obsoleto, no se utiliza activamente')
@@ -14,6 +18,8 @@ class LoginResponse {
 
   LoginResponse({
     this.token,
+    this.customer,
+    this.policies = const [],
     this.requiresTwoFactor = false,
     this.errors = const [],
   });
@@ -23,13 +29,26 @@ class LoginResponse {
     if (json['errors'] != null) {
       if (json['errors'] is List) {
         errorsList = (json['errors'] as List)
-            .map((e) => ErrorModel.fromJson(e))
+            .map((e) => ErrorModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+      }
+    }
+
+    List<PolicyModel> policiesList = [];
+    if (json['policies'] != null) {
+      if (json['policies'] is List) {
+        policiesList = (json['policies'] as List)
+            .map((e) => PolicyModel.fromJson(e as Map<String, dynamic>))
             .toList();
       }
     }
 
     return LoginResponse(
       token: json['token'],
+      customer: json['customer'] != null
+          ? CustomerModel.fromJson(json['customer'] as Map<String, dynamic>)
+          : null,
+      policies: policiesList,
       // El campo requiresTwoFactor ya no viene en la respuesta de la API
       // siempre será false mientras el 2FA esté desactivado
       requiresTwoFactor: false,
