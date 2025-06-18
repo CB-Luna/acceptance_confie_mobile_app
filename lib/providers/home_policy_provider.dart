@@ -1,114 +1,137 @@
 import 'package:flutter/material.dart';
-import '../data/models/home_policy/vehicle.dart';
-import '../data/services/home_policy_service.dart';
+
+import '../data/models/auth/policy_model.dart';
 
 class HomePolicyProvider with ChangeNotifier {
-  final HomePolicyService _homePolicyService = HomePolicyService();
-  List<Vehicle> _vehicles = [];
+  List<PolicyModel> _policies = [];
   bool _isLoading = false;
   String? _errorMessage;
 
-  List<Vehicle> get vehicles => _vehicles;
+  List<PolicyModel> get policies => _policies;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  // Obtener el vehículo con provider_id = 1 (BlueFire Insurance)
-  Vehicle? get blueFireVehicle => _vehicles.isNotEmpty
-      ? _vehicles.firstWhere((vehicle) => vehicle.providerId == 1,
-          orElse: () => _vehicles.first,)
+  // Obtener la póliza con carrier BlueFire Insurance
+  PolicyModel? get blueFirePolicy => _policies.isNotEmpty
+      ? _policies.firstWhere(
+          (policy) => policy.carrierName.toLowerCase().contains('bluefire'),
+          orElse: () => _policies.first,
+        )
       : null;
 
-  // Obtener el vehículo con provider_id = 2 (Freeway Insurance)
-  Vehicle? get freewayVehicle => _vehicles.isNotEmpty
-      ? _vehicles.firstWhere((vehicle) => vehicle.providerId == 2,
-          orElse: () => _vehicles.first,)
+  // Obtener la póliza con carrier Freeway Insurance
+  PolicyModel? get freewayPolicy => _policies.isNotEmpty
+      ? _policies.firstWhere(
+          (policy) => policy.carrierName.toLowerCase().contains('freeway'),
+          orElse: () => _policies.first,
+        )
       : null;
 
-  // Obtener vehículos por policy_type_id
-  List<Vehicle> getVehiclesByPolicyTypeId(int policyTypeId) {
-    return _vehicles
-        .where((vehicle) => vehicle.policyTypeId == policyTypeId)
-        .toList();
+  // Obtener pólizas por tipo (Auto, Roadside Assistance, etc.)
+  List<PolicyModel> getPoliciesByType(String policyType) {
+    // 1: Roadside Assistance, 2: Auto, 3: Inactive (simulado)
+    switch (policyType) {
+      case 'Roadside Assistance': // Roadside Assistance
+        return _policies
+            .where(
+              (policy) =>
+                  policy.lineOfBusiness.toLowerCase().contains('roadside') ||
+                  policy.lineOfBusiness.toLowerCase().contains('assistance'),
+            )
+            .toList();
+      case 'Auto': // Auto
+        return _policies
+            .where(
+              (policy) => policy.lineOfBusiness.toLowerCase().contains('auto'),
+            )
+            .toList();
+      case 'Inactive': // Inactive - Simulamos pólizas inactivas basadas en la fecha de expiración
+        final now = DateTime.now();
+        return _policies.where((policy) {
+          try {
+            final expirationDate = DateTime.parse(policy.expirationDate);
+            return expirationDate
+                .isBefore(now); // Consideramos inactiva si ya expiró
+          } catch (e) {
+            return false;
+          }
+        }).toList();
+      default:
+        return [];
+    }
   }
 
-  // Verificar si hay vehículos de un tipo específico
-  bool hasPolicyTypeId(int policyTypeId) {
-    return _vehicles.any((vehicle) => vehicle.policyTypeId == policyTypeId);
+  // Verificar si hay pólizas de un tipo específico
+  bool hasPolicyType(String policyType) {
+    return getPoliciesByType(policyType).isNotEmpty;
   }
 
-  // Método para simular un vehículo inactivo para pruebas
-  Vehicle? get inactiveVehicle {
-    if (_vehicles.isEmpty) {
-      final vehicle = Vehicle(
-        vehicleId: 999,
-        plate: 'CAAAPO000380829',
-        brand: 'Toyota',
-        model: 'Corolla',
-        vehicleTypeId: 1,
-        vehicleType: 'Car',
-        providerId: 1,
-        providerImage: 'assets/home/icons/Bluefire.svg',
-        policyTypeId: 3, // Tipo de póliza inactiva
-        policyType: 'My Auto Policy',
-        transactionType: 'Monthly Plan',
-        memberSince: 'Jan 2025',
-        nextPaymentDate: '2025-05-15',
-        customerId: 1,
+  // Método para simular una póliza inactiva para pruebas
+  PolicyModel? get inactivePolicy {
+    // Primero buscar si ya hay una póliza inactiva
+    final inactivePolicies = getPoliciesByType('Inactive');
+    if (inactivePolicies.isNotEmpty) {
+      return inactivePolicies.first;
+    }
+
+    // Si no hay pólizas o no hay inactivas, crear una simulada
+    if (_policies.isEmpty) {
+      return PolicyModel(
+        policyId: '999',
+        policyNumber: 'CAAAPO000380829',
+        carrierName: 'BlueFire Insurance',
+        lineOfBusiness: 'Auto',
+        effectiveDate: '2023-01-01',
+        expirationDate: '2022-05-15', // Fecha expirada para simular inactividad
+        createdDate: '2022-01-01',
+        programName: 'Standard Auto',
+        organizationName: 'Freeway Insurance',
+        organizationCode: 'FWI',
       );
-
-      return vehicle;
     }
 
-    // Si hay vehículos, buscar uno con policy_type_id = 3 (inactivo)
-    final inactiveVehicles =
-        _vehicles.where((v) => v.policyTypeId == 3).toList();
-    if (inactiveVehicles.isNotEmpty) {
-      return inactiveVehicles.first;
-    }
-
-    // Si no hay vehículos inactivos, crear uno basado en el primero
-    final vehicle = _vehicles.first;
-    // No podemos modificar directamente el objeto Vehicle porque es inmutable,
-    // así que creamos uno nuevo con policyTypeId = 3
-    final inactiveVehicle = Vehicle(
-      vehicleId: vehicle.vehicleId,
-      plate: vehicle.plate,
-      brand: vehicle.brand,
-      model: vehicle.model,
-      vehicleTypeId: vehicle.vehicleTypeId,
-      vehicleType: vehicle.vehicleType,
-      providerId: vehicle.providerId,
-      providerImage: vehicle.providerImage,
-      policyTypeId: 3, // Tipo de póliza inactiva
-      policyType: vehicle.policyType,
-      transactionType: vehicle.transactionType,
-      memberSince: vehicle.memberSince,
-      serviceId: vehicle.serviceId,
-      serviceName: vehicle.serviceName,
-      nextPaymentDate: vehicle.nextPaymentDate,
-      customerId: vehicle.customerId,
+    // Si hay pólizas pero ninguna inactiva, crear una basada en la primera
+    final policy = _policies.first;
+    return PolicyModel(
+      policyId: policy.policyId,
+      policyNumber: policy.policyNumber,
+      carrierName: policy.carrierName,
+      lineOfBusiness: policy.lineOfBusiness,
+      effectiveDate: policy.effectiveDate,
+      // Modificamos la fecha de expiración para que sea una fecha pasada
+      expirationDate: '2022-01-01',
+      createdDate: policy.createdDate,
+      programName: policy.programName,
+      organizationName: policy.organizationName,
+      organizationCode: policy.organizationCode,
     );
-
-    return inactiveVehicle;
   }
 
-  Future<void> fetchHomePolicies(int customerId) async {
+  // Método para obtener pólizas desde el AuthProvider
+  Future<void> fetchHomePolicies(List<PolicyModel> policies) async {
     // Si ya está cargando, no hacer nada
     if (_isLoading) return;
 
     try {
       _isLoading = true;
       _errorMessage = null;
-      // Notificar antes de la llamada a la API
+      // Notificar antes de obtener las pólizas
       notifyListeners();
 
       // Simular un pequeño retraso para mostrar el indicador de carga
       await Future.delayed(const Duration(milliseconds: 500));
 
-      _vehicles = await _homePolicyService.getHomePolicies(customerId);
+      // Obtener las pólizas desde el AuthProvider
+      if (policies.isNotEmpty) {
+        _policies = policies;
+      } else {
+        // Si no hay pólizas, establecer una lista vacía
+        _policies = [];
+        _errorMessage = 'No policies found for customer';
+      }
 
       _isLoading = false;
-      // Notificar después de recibir la respuesta
+      // Notificar después de obtener las pólizas
       notifyListeners();
     } catch (e) {
       _isLoading = false;

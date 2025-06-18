@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/data/models/auth/policy_model.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
-
-import '../../data/models/home_policy/vehicle.dart';
 import '../../widgets/theme/app_theme.dart';
 
 class PolicyInactiveCard extends StatelessWidget {
   final dynamic user;
   final String policyNumber;
-  final Vehicle? vehicle;
+  final PolicyModel? policy;
 
   const PolicyInactiveCard({
     required this.user,
     required this.policyNumber,
     super.key,
-    this.vehicle,
+    this.policy,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Imprimir el policyNumber para depuración
-
-    // Usar policyNumber como plateNumber
-    final String plateNumber = vehicle?.plate ?? policyNumber;
-    final String policyType = vehicle?.policyType ?? 'My Auto Policy';
+    // Usar policyNumber como número de póliza a mostrar
+    final String displayNumber = policy?.policyNumber ?? policyNumber;
+    
+    // Determinar el tipo de póliza basado en lineOfBusiness
+    final String policyType = policy?.lineOfBusiness != null ?
+        _getPolicyTypeFromLineOfBusiness(policy?.lineOfBusiness ?? '') : 'My Auto Policy';
 
     return Card(
       margin: EdgeInsets.zero,
@@ -59,7 +59,7 @@ class PolicyInactiveCard extends StatelessWidget {
                     Container(
                       constraints: const BoxConstraints(maxWidth: 200),
                       child: Text(
-                        plateNumber,
+                        displayNumber,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -132,5 +132,19 @@ class PolicyInactiveCard extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  // Método para obtener el tipo de póliza basado en lineOfBusiness
+  String _getPolicyTypeFromLineOfBusiness(String lineOfBusiness) {
+    switch (lineOfBusiness.toLowerCase()) {
+      case 'auto':
+        return 'My Auto Policy';
+      case 'home':
+        return 'My Home Policy';
+      case 'roadside':
+        return 'Roadside Assistance';
+      default:
+        return 'My Policy';
+    }
   }
 }

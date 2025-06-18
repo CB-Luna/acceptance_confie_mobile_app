@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/data/models/auth/policy_model.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
 
-import '../../data/models/home_policy/vehicle.dart';
 import '../../widgets/theme/app_theme.dart';
 
 class RoadsideAssist extends StatelessWidget {
   final String policyNumber;
-  final Vehicle? vehicle;
+  final PolicyModel? policy;
 
   const RoadsideAssist({
     required this.policyNumber,
     super.key,
-    this.vehicle,
+    this.policy,
   });
 
   @override
   Widget build(BuildContext context) {
-    final String plateNumber = vehicle?.plate ?? policyNumber;
+    final String displayNumber = policy?.policyNumber ?? policyNumber;
 
-    // Usar el valor member_since del vehículo o un valor predeterminado
-    final String memberSince = vehicle?.memberSince ?? 'May 2024';
+    // Usar la fecha de creación como fecha de membresía o un valor predeterminado
+    final String memberSince = policy?.createdDate != null
+        ? _formatMemberSince(policy?.createdDate ?? '')
+        : 'May 2024';
 
     return Card(
       margin: EdgeInsets.zero,
@@ -60,7 +62,7 @@ class RoadsideAssist extends StatelessWidget {
                       Container(
                         constraints: const BoxConstraints(maxWidth: 200),
                         child: Text(
-                          plateNumber,
+                          displayNumber,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -260,5 +262,35 @@ class RoadsideAssist extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Método para formatear la fecha de creación como mes y año
+  String _formatMemberSince(String dateStr) {
+    try {
+      final date = DateTime.parse(dateStr);
+      final month = _getMonthName(date.month);
+      return '$month ${date.year}';
+    } catch (e) {
+      return 'May 2024'; // Valor predeterminado
+    }
+  }
+
+  // Método auxiliar para obtener el nombre del mes
+  String _getMonthName(int month) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return months[month - 1];
   }
 }

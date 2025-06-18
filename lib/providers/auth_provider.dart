@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:freeway_app/data/models/auth/customer_model.dart';
 import 'package:freeway_app/data/models/auth/login_response.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
 import 'package:freeway_app/data/models/auth/register_request.dart';
 
 import '../core/errors/api_error.dart';

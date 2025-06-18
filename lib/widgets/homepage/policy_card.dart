@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/data/models/auth/policy_model.dart';
 import 'package:freeway_app/models/user_model.dart';
 import 'package:freeway_app/pages/id_card_page.dart';
 import 'package:freeway_app/pages/webview_page.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
+import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:intl/intl.dart';
-
-import '../../data/models/home_policy/vehicle.dart';
-import '../../widgets/theme/app_theme.dart';
 
 class PolicyCard extends StatefulWidget {
   final User user;
-  final Vehicle? vehicle;
+  final PolicyModel? policy;
 
   const PolicyCard({
     required this.user,
     super.key,
-    this.vehicle,
+    this.policy,
   });
 
   @override
@@ -53,14 +52,29 @@ class _PolicyCardState extends State<PolicyCard>
 
   @override
   Widget build(BuildContext context) {
-    final String plateNumber = widget.vehicle?.plate ?? 'POLICY-1';
-    final bool isActive = widget.vehicle?.status ?? true;
+    final String policyNumber = widget.policy?.policyNumber ?? 'POLICY-1';
+    // Determinar si la póliza está activa basándose en la fecha de expiración
+    bool isActive = true;
+    if (widget.policy != null) {
+      final expDate = widget.policy?.expirationDate;
+      if (expDate != null && expDate.isNotEmpty) {
+        final expirationDate = DateTime.tryParse(expDate);
+        isActive = expirationDate?.isAfter(DateTime.now()) ?? true;
+      }
+    }
+
+    // Usar la fecha de expiración como fecha del próximo pago si está disponible
     final String rawNextPaymentDate =
-        widget.vehicle?.nextPaymentDate ?? '11-15-2024';
+        widget.policy?.expirationDate ?? '11-15-2024';
     final String nextPaymentDate = _formatDate(rawNextPaymentDate);
-    final String policyType = widget.vehicle?.policyType ?? 'My Auto Policy';
-    widget.vehicle?.providerImage ?? 'assets/home/icons/Bluefire.png';
-    final bool isBluefire = widget.vehicle?.providerId == 1;
+
+    // Usar lineOfBusiness o un valor predeterminado para el tipo de póliza
+    final String policyType = widget.policy?.lineOfBusiness ?? 'My Auto Policy';
+
+    // Determinar si es Bluefire basado en el nombre del carrier
+    final bool isBluefire = widget.policy?.carrierName != null
+        ? widget.policy!.carrierName.toLowerCase().contains('bluefire')
+        : false;
 
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
@@ -109,7 +123,7 @@ class _PolicyCardState extends State<PolicyCard>
                         maxLines: 3,
                       ),
                       Text(
-                        plateNumber,
+                        policyNumber,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'Open Sans',

@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../locatordevice/locator_device_module.dart';
 import '../pages/add_insurance.dart';
 import '../providers/auth_provider.dart';
-import '../providers/home_policy_provider.dart';
 import '../providers/notification_provider.dart';
 import '../utils/menu/circle_nav_bar.dart';
 import '../widgets/homepage/header_section.dart';
@@ -64,13 +63,10 @@ class _HomePageState extends State<HomePage> {
           return;
         }
 
-        // Cargar políticas
-        final policyProvider =
-            Provider.of<HomePolicyProvider>(context, listen: false);
+        // Ya no necesitamos cargar políticas porque las tenemos en authProvider.currentUser.policies
         debugPrint(
-          'HomePage - Cargando políticas para customerId: $customerId',
+          'HomePage - Usando políticas del usuario actual: ${authProvider.currentUser!.policies.length} pólizas disponibles',
         );
-        policyProvider.fetchHomePolicies(customerId);
 
         // Cargar notificaciones
         final notificationProvider =

@@ -38,8 +38,11 @@ class MapButtons extends StatelessWidget {
               backgroundColor: AppTheme.getBackgroundColor(context),
               onPressed: onLocationPressed,
               tooltip: context.translate('office.findNearby'),
-              child: Icon(Icons.my_location,
-                  color: AppTheme.getPrimaryColor(context), size: iconSize),
+              child: Icon(
+                Icons.my_location,
+                color: AppTheme.getPrimaryColor(context),
+                size: iconSize,
+              ),
             ),
           ),
         ],

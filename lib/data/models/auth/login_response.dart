@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'error_model.dart';
+
 import 'customer_model.dart';
+import 'error_model.dart';
 import 'policy_model.dart';
 
 part 'login_response.g.dart';

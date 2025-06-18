@@ -45,7 +45,7 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
       final policyProvider =
           Provider.of<HomePolicyProvider>(context, listen: false);
       await policyProvider
-          .fetchHomePolicies(authProvider.currentUser!.customerId);
+          .fetchHomePolicies(authProvider.currentUser!.policies);
       if (!_isDisposed) {
         setState(() {
           // Actualizar el estado después de cargar las políticas
@@ -77,10 +77,10 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         }
 
         // Añadir logs para depuración
-        debugPrint('Total vehicles: ${policyProvider.vehicles.length}');
-        for (var vehicle in policyProvider.vehicles) {
+        debugPrint('Total policies: ${policyProvider.policies.length}');
+        for (var policy in policyProvider.policies) {
           debugPrint(
-            'Vehicle: ${vehicle.plate}, policy_type_id: ${vehicle.policyTypeId}, provider_id: ${vehicle.providerId}',
+            'Policy: ${policy.policyNumber}, line_of_business: ${policy.lineOfBusiness}, carrier: ${policy.carrierName}',
           );
         }
 
@@ -94,43 +94,44 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
         final List<Widget> cards = [];
 
         // Pólizas tipo 2 (Auto Policy)
-        final autoPolicies = policyProvider.getVehiclesByPolicyTypeId(2);
+        final autoPolicies = policyProvider.getPoliciesByType('Auto');
         debugPrint('Auto Policies (type 2): ${autoPolicies.length}');
         if (autoPolicies.isNotEmpty) {
-          for (final vehicle in autoPolicies) {
+          for (final policy in autoPolicies) {
             cards.add(
               PolicyCard(
                 user: widget.user,
-                vehicle: vehicle,
+                policy: policy,
               ),
             );
           }
         }
 
         // Pólizas tipo 1 (Roadside Assistance)
-        final roadsidePolicies = policyProvider.getVehiclesByPolicyTypeId(1);
+        final roadsidePolicies =
+            policyProvider.getPoliciesByType('Roadside Assistance');
         debugPrint('Roadside Policies (type 1): ${roadsidePolicies.length}');
         if (roadsidePolicies.isNotEmpty) {
-          for (final vehicle in roadsidePolicies) {
+          for (final policy in roadsidePolicies) {
             cards.add(
               RoadsideAssist(
-                policyNumber: vehicle.plate,
-                vehicle: vehicle,
+                policyNumber: policy.policyNumber,
+                policy: policy,
               ),
             );
           }
         }
 
         // Pólizas tipo 3 (Inactive)
-        final inactivePolicies = policyProvider.getVehiclesByPolicyTypeId(3);
+        final inactivePolicies = policyProvider.getPoliciesByType('Inactive');
         debugPrint('Inactive Policies (type 3): ${inactivePolicies.length}');
         if (inactivePolicies.isNotEmpty) {
-          for (final vehicle in inactivePolicies) {
+          for (final policy in inactivePolicies) {
             cards.add(
               PolicyInactiveCard(
                 user: widget.user,
-                policyNumber: vehicle.plate,
-                vehicle: vehicle,
+                policyNumber: policy.policyNumber,
+                policy: policy,
               ),
             );
           }
