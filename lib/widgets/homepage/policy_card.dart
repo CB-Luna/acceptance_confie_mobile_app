@@ -10,12 +10,12 @@ import 'package:intl/intl.dart';
 
 class PolicyCard extends StatefulWidget {
   final User user;
-  final PolicyModel? policy;
+  final PolicyModel policy;
 
   const PolicyCard({
     required this.user,
+    required this.policy,
     super.key,
-    this.policy,
   });
 
   @override
@@ -52,29 +52,24 @@ class _PolicyCardState extends State<PolicyCard>
 
   @override
   Widget build(BuildContext context) {
-    final String policyNumber = widget.policy?.policyNumber ?? 'POLICY-1';
+    final String policyNumber = widget.policy.policyNumber;
     // Determinar si la póliza está activa basándose en la fecha de expiración
     bool isActive = true;
-    if (widget.policy != null) {
-      final expDate = widget.policy?.expirationDate;
-      if (expDate != null && expDate.isNotEmpty) {
-        final expirationDate = DateTime.tryParse(expDate);
-        isActive = expirationDate?.isAfter(DateTime.now()) ?? true;
-      }
+    if (widget.policy.expirationDate.isNotEmpty) {
+      final expirationDate = DateTime.tryParse(widget.policy.expirationDate);
+      isActive = expirationDate?.isAfter(DateTime.now()) ?? true;
     }
 
     // Usar la fecha de expiración como fecha del próximo pago si está disponible
-    final String rawNextPaymentDate =
-        widget.policy?.expirationDate ?? '11-15-2024';
+    final String rawNextPaymentDate = widget.policy.expirationDate;
     final String nextPaymentDate = _formatDate(rawNextPaymentDate);
 
     // Usar lineOfBusiness o un valor predeterminado para el tipo de póliza
-    final String policyType = widget.policy?.lineOfBusiness ?? 'My Auto Policy';
+    final String policyType = widget.policy.lineOfBusiness;
 
     // Determinar si es Bluefire basado en el nombre del carrier
-    final bool isBluefire = widget.policy?.carrierName != null
-        ? widget.policy!.carrierName.toLowerCase().contains('bluefire')
-        : false;
+    final bool isBluefire =
+        widget.policy.carrierName.toLowerCase().contains('bluefire');
 
     // Obtener el ancho de la pantalla para cálculos responsive
     final screenWidth = MediaQuery.of(context).size.width;
@@ -263,7 +258,9 @@ class _PolicyCardState extends State<PolicyCard>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const IdCardPage(),
+                              builder: (context) => IdCardPage(
+                                policy: widget.policy,
+                              ),
                             ),
                           );
                         },

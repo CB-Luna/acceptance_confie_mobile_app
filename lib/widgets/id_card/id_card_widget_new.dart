@@ -10,12 +10,14 @@ class IdCardWidget extends StatelessWidget {
   final User user;
   final PolicyModel policy;
   final double width;
+  final String? state; // Mantenemos este campo ya que no está en PolicyModel
 
   const IdCardWidget({
     required this.user,
     required this.policy,
     required this.width,
     super.key,
+    this.state,
   });
 
   @override
@@ -27,9 +29,10 @@ class IdCardWidget extends StatelessWidget {
     final dateFormat = DateFormat('MM/dd/yyyy');
     final DateTime? effectiveDate = _parseDate(policy.effectiveDate);
     final DateTime? expirationDate = _parseDate(policy.expirationDate);
-
-    final effectiveDateStr =
-        effectiveDate != null ? dateFormat.format(effectiveDate) : '--/--/----';
+    
+    final effectiveDateStr = effectiveDate != null
+        ? dateFormat.format(effectiveDate)
+        : '--/--/----';
     final expirationDateStr = expirationDate != null
         ? dateFormat.format(expirationDate)
         : '--/--/----';
@@ -227,7 +230,7 @@ class IdCardWidget extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user.state,
+                              state ?? 'FL',
                               style: TextStyle(
                                 fontSize:
                                     responsiveFontSizes.bodyMedium(context),
@@ -319,7 +322,7 @@ class IdCardWidget extends StatelessWidget {
       ),
     );
   }
-
+  
   // Método auxiliar para parsear fechas desde strings
   DateTime? _parseDate(String dateStr) {
     try {

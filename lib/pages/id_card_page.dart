@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
+import 'package:freeway_app/data/models/auth/policy_model.dart';
 import 'package:freeway_app/data/services/google_wallet_service.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
 import 'package:freeway_app/models/user_model.dart';
@@ -15,7 +16,12 @@ import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class IdCardPage extends StatefulWidget {
-  const IdCardPage({super.key});
+  const IdCardPage({
+    required this.policy,
+    super.key,
+  });
+
+  final PolicyModel policy;
 
   @override
   State<IdCardPage> createState() => _IdCardPageState();
@@ -238,12 +244,8 @@ class _IdCardPageState extends State<IdCardPage> {
                             child: IdCardWidget(
                               user: user,
                               width: cardWidth,
-                              policyNumber: user.policyNumber,
-                              carrier: user.carrierName,
-                              state: user.policyUsaState,
-                              // Ejemplo de fechas, en una implementación real vendrían de la API
-                              effectiveDate: DateTime(2023, 6, 18),
-                              expirationDate: DateTime(2026, 12, 18),
+                              // Usar la póliza activa del usuario o crear una nueva
+                              policy: widget.policy,
                             ),
                           ),
                         ),

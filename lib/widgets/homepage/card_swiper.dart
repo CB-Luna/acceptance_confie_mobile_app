@@ -137,12 +137,6 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
           }
         }
 
-        // Si no hay tarjetas, mostrar una tarjeta predeterminada
-        if (cards.isEmpty) {
-          debugPrint('No cards found, adding default card');
-          cards.add(PolicyCard(user: widget.user));
-        }
-
         debugPrint('Total cards created: ${cards.length}');
         return _buildCardSwiper(cards);
       },
@@ -154,9 +148,6 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
 
     // Tarjeta predeterminada en caso de error
     final List<Widget> cards = [];
-
-    // Añadir una tarjeta predeterminada
-    cards.add(PolicyCard(user: widget.user));
 
     debugPrint('Created ${cards.length} default card');
     return _buildCardSwiper(cards);
