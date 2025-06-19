@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/pages/app_info_page.dart';
 import 'package:freeway_app/pages/language_selection_page.dart';
+import 'package:freeway_app/pages/user_data_page.dart';
 import 'package:freeway_app/providers/language_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
@@ -95,6 +96,19 @@ class ProfileSettingsList extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 20),
+            ProfileSettingsItem(
+              title: context.translate('profile.dataUser'),
+              icon: Icons.person_outline,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserDataPage(),
+                  ),
+                );
+              },
+            ),
+            const ProfileDivider(),
             ProfileSettingsItem(
               title: context.translate('profile.password'),
               icon: Icons.lock_outline,

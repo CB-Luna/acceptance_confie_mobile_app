@@ -225,6 +225,21 @@
   },
   "profile": {
     "settings": "Configuración",
+    "dataUser": "Información Personal",
+    "userDataPage": {
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "street": "Calle",
+      "city": "Ciudad",
+      "state": "Estado",
+      "zipCode": "Código Postal",
+      "save": "Guardar Cambios",
+      "cancel": "Cancelar",
+      "saveSuccess": "Información actualizada correctamente",
+      "saveError": "Error al actualizar la información"
+    },
     "password": "Contraseña",
     "biometric": "Autenticación biométrica",
     "languages": "Idiomas",

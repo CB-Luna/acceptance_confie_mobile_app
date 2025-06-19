@@ -225,6 +225,21 @@
   },
   "profile": {
     "settings": "Settings",
+    "dataUser": "Personal Information",
+    "userDataPage": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "street": "Street",
+      "city": "City",
+      "state": "State",
+      "zipCode": "ZIP Code",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "saveSuccess": "Information updated successfully",
+      "saveError": "Error updating information"
+    },
     "password": "Password",
     "biometric": "Biometric Authentication",
     "languages": "Languages",
