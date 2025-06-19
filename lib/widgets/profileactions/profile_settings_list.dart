@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:freeway_app/pages/app_info_page.dart';
 import 'package:freeway_app/pages/language_selection_page.dart';
 import 'package:freeway_app/providers/language_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
@@ -15,6 +16,8 @@ import 'profile_settings_switch.dart';
 
 class ProfileSettingsList extends StatelessWidget {
   const ProfileSettingsList({super.key});
+
+
 
   /// Muestra un diálogo de confirmación para habilitar la biometría
   Future<bool> _showBiometricConfirmationDialog(
@@ -188,7 +191,12 @@ class ProfileSettingsList extends StatelessWidget {
               title: context.translate('profile.appInfo'),
               icon: Icons.info_outline,
               onTap: () {
-                // TODO: Implementar navegación
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AppInfoPage(),
+                  ),
+                );
               },
             ),
             const ProfileDivider(),
