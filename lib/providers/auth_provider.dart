@@ -122,6 +122,7 @@ class AuthProvider with ChangeNotifier {
       String city = 'City';
       String state = 'State';
       String carrierName = '';
+      DateTime? birthDate;
       String policyUsaState = 'LA';
 
       // Usar la información del customer que viene directamente en la respuesta
@@ -139,6 +140,7 @@ class AuthProvider with ChangeNotifier {
         city = primaryAddress.city;
         state = primaryAddress.state;
         policyUsaState = primaryAddress.state;
+        birthDate = DateTime.parse(customer.birthDate);
 
         // Si hay pólizas disponibles, usar la información de la primera
         if (response.policies.isNotEmpty) {
@@ -178,6 +180,7 @@ class AuthProvider with ChangeNotifier {
         languageCode: response.customer?.documentLanguage == 'Spanish'
             ? 'es_US'
             : 'en_US',
+        birthDate: birthDate,
         street: street,
         zipCode: zipCode,
         city: city,

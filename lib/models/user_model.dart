@@ -12,6 +12,7 @@ class User {
   final String? email; // Añadido para información de contacto
   final String? phone; // Añadido para información de contacto
   final String? avatar; // URL de la imagen de avatar del usuario
+  final DateTime birthDate;
   final String?
       languageCode; // Código de idioma del usuario (ej: 'en_US', 'es_MX')
   final String street;
@@ -19,7 +20,7 @@ class User {
   final String city;
   final String state;
   final String? carrierName;
-  
+
   // Nuevos campos para almacenar la información completa del customer y policies
   final CustomerModel? customerData;
   final List<PolicyModel> policies;
@@ -35,6 +36,7 @@ class User {
     required this.zipCode,
     required this.city,
     required this.state,
+    required this.birthDate,
     this.policyUsaState,
     this.email,
     this.phone,
@@ -44,13 +46,13 @@ class User {
     this.customerData,
     this.policies = const [],
   });
-  
+
   // Método para obtener la póliza activa (la primera por defecto)
   PolicyModel? get activePolicy => policies.isNotEmpty ? policies.first : null;
-  
+
   // Método para verificar si el usuario tiene pólizas
   bool get hasPolicies => policies.isNotEmpty;
-  
+
   // Método para obtener el número de pólizas
   int get policyCount => policies.length;
 }

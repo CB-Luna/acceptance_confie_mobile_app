@@ -226,10 +226,23 @@
   "profile": {
     "settings": "Settings",
     "dataUser": "Personal Information",
+    "passwordPage": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "save": "Update Password",
+      "cancel": "Cancel",
+      "saveSuccess": "Password updated successfully",
+      "saveError": "Error updating password",
+      "passwordMismatch": "Passwords do not match",
+      "passwordRequirements": "Password must be at least 8 characters long and include a number"
+    },
     "userDataPage": {
       "fullName": "Full Name",
       "email": "Email",
       "phone": "Phone",
+      "birthDate": "Date of Birth",
       "address": "Address",
       "street": "Street",
       "city": "City",

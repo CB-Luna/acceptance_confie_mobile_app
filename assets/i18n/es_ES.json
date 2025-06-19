@@ -226,10 +226,23 @@
   "profile": {
     "settings": "Configuración",
     "dataUser": "Información Personal",
+    "passwordPage": {
+      "title": "Cambiar Contraseña",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Nueva Contraseña",
+      "save": "Actualizar Contraseña",
+      "cancel": "Cancelar",
+      "saveSuccess": "Contraseña actualizada correctamente",
+      "saveError": "Error al actualizar la contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "passwordRequirements": "La contraseña debe tener al menos 8 caracteres e incluir un número"
+    },
     "userDataPage": {
       "fullName": "Nombre Completo",
       "email": "Correo Electrónico",
       "phone": "Teléfono",
+      "birthDate": "Fecha de Nacimiento",
       "address": "Dirección",
       "street": "Calle",
       "city": "Ciudad",

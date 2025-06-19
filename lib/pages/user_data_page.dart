@@ -23,6 +23,7 @@ class _UserDataPageState extends State<UserDataPage> {
   final _zipCodeController = TextEditingController();
   bool _isLoading = false;
   bool _hasChanges = false;
+  DateTime _birthDate = DateTime.now();
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _UserDataPageState extends State<UserDataPage> {
       _cityController.text = user.city;
       _stateController.text = user.state;
       _zipCodeController.text = user.zipCode;
+      _birthDate = user.birthDate;
     }
 
     // Añadir listeners para detectar cambios
@@ -84,6 +86,17 @@ class _UserDataPageState extends State<UserDataPage> {
         // En una implementación real, aquí se llamaría a la API para actualizar los datos
         // Por ahora, solo simulamos un retraso y mostramos un mensaje de éxito
         await Future.delayed(const Duration(seconds: 1));
+        
+        // Aquí se actualizaría el objeto User en el AuthProvider con todos los datos
+        // incluyendo la fecha de nacimiento (_birthDate)
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        final currentUser = authProvider.currentUser;
+        
+        if (currentUser != null) {
+          // En una implementación real, se crearía un nuevo objeto User con los datos actualizados
+          // y se llamaría a un método en el AuthProvider para actualizar el usuario
+          // authProvider.updateUser(updatedUser);
+        }
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +107,6 @@ class _UserDataPageState extends State<UserDataPage> {
             ),
           );
 
-          // Aquí se actualizaría el objeto User en el AuthProvider
           // Por ahora, solo cerramos la página
           Navigator.pop(context);
         }
@@ -236,11 +248,56 @@ class _UserDataPageState extends State<UserDataPage> {
                 fontSize: responsiveFontSizes.bodyMedium(context),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese su número de teléfono';
+                // Validación básica para teléfono
+                if (value != null && value.isNotEmpty) {
+                  if (value.length < 10) {
+                    return context.translate('validation.phoneInvalid');
+                  }
                 }
                 return null;
               },
+            ),
+            const SizedBox(height: 16),
+            // Campo de fecha de nacimiento
+            InkWell(
+              onTap: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: _birthDate,
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                  builder: (context, child) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: ColorScheme.light(
+                          primary: AppTheme.getPrimaryColor(context),
+                          onPrimary: Colors.white,
+                        ),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (picked != null && picked != _birthDate) {
+                  setState(() {
+                    _birthDate = picked;
+                    _hasChanges = true;
+                  });
+                }
+              },
+              child: InputDecorator(
+                decoration: AppTheme.inputDecoration(
+                  context,
+                  labelText: context.translate('profile.userDataPage.birthDate'),
+                  suffixIcon: const Icon(Icons.calendar_today),
+                ),
+                child: Text(
+                  '${_birthDate.day}/${_birthDate.month}/${_birthDate.year}',
+                  style: TextStyle(
+                    fontSize: responsiveFontSizes.bodyMedium(context),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

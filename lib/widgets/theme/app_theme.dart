@@ -277,9 +277,10 @@ class AppTheme {
   }
 
   // Input Decoration constante para compatibilidad con código existente
-  static InputDecoration inputDecoration(BuildContext context,
-      // ignore: require_trailing_commas
-      {required String labelText}) {
+  static InputDecoration inputDecoration(
+    BuildContext context,
+    // ignore: require_trailing_commas
+    {required String labelText, Widget? suffixIcon}) {
     return InputDecoration(
       labelText: labelText,
       labelStyle: TextStyle(
@@ -312,6 +313,7 @@ class AppTheme {
         fontSize: responsiveFontSizes.helperText(context),
         height: 1.2, // Espaciado de línea más compacto
       ),
+      suffixIcon: suffixIcon,
     );
   }
 

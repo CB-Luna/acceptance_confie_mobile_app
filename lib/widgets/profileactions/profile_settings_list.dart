@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/pages/app_info_page.dart';
 import 'package:freeway_app/pages/language_selection_page.dart';
+import 'package:freeway_app/pages/password_change_page.dart';
 import 'package:freeway_app/pages/user_data_page.dart';
 import 'package:freeway_app/providers/language_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
@@ -113,7 +114,12 @@ class ProfileSettingsList extends StatelessWidget {
               title: context.translate('profile.password'),
               icon: Icons.lock_outline,
               onTap: () {
-                // TODO: Implementar navegación
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PasswordChangePage(),
+                  ),
+                );
               },
             ),
             const ProfileDivider(),
