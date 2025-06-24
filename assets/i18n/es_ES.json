@@ -239,10 +239,12 @@
       "passwordRequirements": "La contraseña debe tener al menos 8 caracteres e incluir un número"
     },
     "userDataPage": {
+      "userData": "Datos Personales",
       "fullName": "Nombre Completo",
       "email": "Correo Electrónico",
       "phone": "Teléfono",
       "birthDate": "Fecha de Nacimiento",
+      "addressData": "Datos de Dirección",
       "address": "Dirección",
       "street": "Calle",
       "city": "Ciudad",
@@ -251,7 +253,9 @@
       "save": "Guardar Cambios",
       "cancel": "Cancelar",
       "saveSuccess": "Información actualizada correctamente",
-      "saveError": "Error al actualizar la información"
+      "saveError": "Error al actualizar la información",
+      "contactAgent": "Contactar Agente",
+      "contactAgentDescription": "Para actualizar tu información de dirección, por favor contacta a tu agente"
     },
     "password": "Contraseña",
     "biometric": "Autenticación biométrica",

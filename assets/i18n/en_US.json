@@ -239,19 +239,22 @@
       "passwordRequirements": "Password must be at least 8 characters long and include a number"
     },
     "userDataPage": {
+      "userData": "Personal Data",
       "fullName": "Full Name",
       "email": "Email",
       "phone": "Phone",
-      "birthDate": "Date of Birth",
+      "birthDate": "Date Birth",
+      "addressData": "Address Data",
       "address": "Address",
       "street": "Street",
       "city": "City",
       "state": "State",
       "zipCode": "ZIP Code",
       "save": "Save Changes",
-      "cancel": "Cancel",
-      "saveSuccess": "Information updated successfully",
-      "saveError": "Error updating information"
+      "saveSuccess": "Your information has been updated successfully",
+      "saveError": "An error occurred while saving your information",
+      "contactAgent": "Contact Agent",
+      "contactAgentDescription": "To update your address information, please contact your agent"
     },
     "password": "Password",
     "biometric": "Biometric Authentication",

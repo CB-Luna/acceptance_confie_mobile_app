@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/pages/webview_page.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
@@ -83,41 +84,40 @@ class _UserDataPageState extends State<UserDataPage> {
       });
 
       try {
-        // En una implementación real, aquí se llamaría a la API para actualizar los datos
-        // Por ahora, solo simulamos un retraso y mostramos un mensaje de éxito
+        // Simulamos una llamada a la API para guardar los cambios
         await Future.delayed(const Duration(seconds: 1));
-        
-        // Aquí se actualizaría el objeto User en el AuthProvider con todos los datos
-        // incluyendo la fecha de nacimiento (_birthDate)
+
+        // Actualizamos los datos del usuario en el provider
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final currentUser = authProvider.currentUser;
-        
+
         if (currentUser != null) {
-          // En una implementación real, se crearía un nuevo objeto User con los datos actualizados
-          // y se llamaría a un método en el AuthProvider para actualizar el usuario
-          // authProvider.updateUser(updatedUser);
-        }
+          // En una implementación real, aquí se enviarían los datos actualizados a la API
+          // Por ahora, solo mostramos un mensaje de éxito
 
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content:
-                  Text(context.translate('profile.userDataPage.saveSuccess')),
-              backgroundColor: Colors.green,
-            ),
-          );
+          // Nota: No podemos actualizar directamente el objeto User porque no tiene un setter
+          // y el AuthProvider no tiene un método updateCurrentUser
+          // En una implementación real, se llamaría a un método del AuthProvider para actualizar el usuario
 
-          // Por ahora, solo cerramos la página
-          Navigator.pop(context);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  context.translate('profile.userDataPage.saveSuccess'),
+                ),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  // ignore: require_trailing_commas
-                  '${context.translate('profile.userDataPage.saveError')}: $e'),
-              backgroundColor: AppTheme.getRedColor(context),
+                context.translate('profile.userDataPage.saveError'),
+              ),
+              backgroundColor: Colors.red,
             ),
           );
         }
@@ -125,10 +125,28 @@ class _UserDataPageState extends State<UserDataPage> {
         if (mounted) {
           setState(() {
             _isLoading = false;
+            _hasChanges = false;
           });
         }
       }
     }
+  }
+
+  // Método para abrir el WebView con la página de contacto del agente
+  void _contactAgent(BuildContext context) {
+    // URL de ejemplo para contactar al agente
+    const String agentContactUrl =
+        'https://www.freewayinsurance.com/contact-us';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WebViewPage(
+          url: agentContactUrl,
+          title: context.translate('profile.userDataPage.contactAgent'),
+        ),
+      ),
+    );
   }
 
   @override
@@ -168,10 +186,11 @@ class _UserDataPageState extends State<UserDataPage> {
                   padding: const EdgeInsets.all(16.0),
                   children: [
                     _buildPersonalInfoCard(context),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
+                    _buildSaveButton(context),
+                    const SizedBox(height: 10),
                     _buildAddressCard(context),
                     const SizedBox(height: 24),
-                    _buildSaveButton(context),
                   ],
                 ),
               ),
@@ -181,19 +200,20 @@ class _UserDataPageState extends State<UserDataPage> {
 
   Widget _buildPersonalInfoCard(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(16),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.translate('profile.dataUser'),
+              context.translate('profile.userDataPage.userData'),
               style: TextStyle(
-                fontSize: responsiveFontSizes.titleMedium(context),
+                fontSize: responsiveFontSizes.titleLarge(context),
                 fontWeight: FontWeight.bold,
                 color: AppTheme.getPrimaryColor(context),
               ),
@@ -210,36 +230,15 @@ class _UserDataPageState extends State<UserDataPage> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese su nombre completo';
+                  return context.translate('validation.requiredField');
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: AppTheme.inputDecoration(
-                context,
-                labelText: context.translate('profile.userDataPage.email'),
-              ),
-              style: TextStyle(
-                fontSize: responsiveFontSizes.bodyMedium(context),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese su correo electrónico';
-                }
-                if (!value.contains('@') || !value.contains('.')) {
-                  return 'Por favor ingrese un correo electrónico válido';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 16),
+            //Campo de número de teléfono
             TextFormField(
               controller: _phoneController,
-              keyboardType: TextInputType.phone,
               decoration: AppTheme.inputDecoration(
                 context,
                 labelText: context.translate('profile.userDataPage.phone'),
@@ -248,17 +247,14 @@ class _UserDataPageState extends State<UserDataPage> {
                 fontSize: responsiveFontSizes.bodyMedium(context),
               ),
               validator: (value) {
-                // Validación básica para teléfono
-                if (value != null && value.isNotEmpty) {
-                  if (value.length < 10) {
-                    return context.translate('validation.phoneInvalid');
-                  }
+                if (value == null || value.isEmpty) {
+                  return context.translate('validation.requiredField');
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
-            // Campo de fecha de nacimiento
+            // Campo de fecha de nacimiento con formato MM/DD/YYYY
             InkWell(
               onTap: () async {
                 final DateTime? picked = await showDatePicker(
@@ -288,11 +284,13 @@ class _UserDataPageState extends State<UserDataPage> {
               child: InputDecorator(
                 decoration: AppTheme.inputDecoration(
                   context,
-                  labelText: context.translate('profile.userDataPage.birthDate'),
+                  labelText:
+                      context.translate('profile.userDataPage.birthDate'),
                   suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 child: Text(
-                  '${_birthDate.day}/${_birthDate.month}/${_birthDate.year}',
+                  // Formato MM/DD/YYYY
+                  '${_birthDate.month.toString().padLeft(2, '0')}/${_birthDate.day.toString().padLeft(2, '0')}/${_birthDate.year}',
                   style: TextStyle(
                     fontSize: responsiveFontSizes.bodyMedium(context),
                   ),
@@ -307,6 +305,7 @@ class _UserDataPageState extends State<UserDataPage> {
 
   Widget _buildAddressCard(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(16.0),
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -317,7 +316,7 @@ class _UserDataPageState extends State<UserDataPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.translate('profile.userDataPage.address'),
+              context.translate('profile.userDataPage.addressData'),
               style: TextStyle(
                 fontSize: responsiveFontSizes.titleMedium(context),
                 fontWeight: FontWeight.bold,
@@ -325,45 +324,60 @@ class _UserDataPageState extends State<UserDataPage> {
               ),
             ),
             const SizedBox(height: 16),
+            // Campo de email (solo lectura)
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              readOnly: true,
+              enabled: false,
+              decoration: AppTheme.inputDecoration(
+                context,
+                labelText: context.translate('profile.userDataPage.email'),
+              ),
+              style: TextStyle(
+                fontSize: responsiveFontSizes.bodyMedium(context),
+                color: AppTheme.getTextGreyColor(context),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Campo de dirección (solo lectura)
             TextFormField(
               controller: _streetController,
+              readOnly: true,
+              enabled: false,
               decoration: AppTheme.inputDecoration(
                 context,
                 labelText: context.translate('profile.userDataPage.street'),
               ),
               style: TextStyle(
                 fontSize: responsiveFontSizes.bodyMedium(context),
+                color: AppTheme.getTextGreyColor(context),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese su dirección';
-                }
-                return null;
-              },
             ),
             const SizedBox(height: 16),
+            // Campo de ciudad (solo lectura)
             TextFormField(
               controller: _cityController,
+              readOnly: true,
+              enabled: false,
               decoration: AppTheme.inputDecoration(
                 context,
                 labelText: context.translate('profile.userDataPage.city'),
               ),
               style: TextStyle(
                 fontSize: responsiveFontSizes.bodyMedium(context),
+                color: AppTheme.getTextGreyColor(context),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese su ciudad';
-                }
-                return null;
-              },
             ),
             const SizedBox(height: 16),
             Row(
               children: [
+                // Campo de estado (solo lectura)
                 Expanded(
                   child: TextFormField(
                     controller: _stateController,
+                    readOnly: true,
+                    enabled: false,
                     decoration: AppTheme.inputDecoration(
                       context,
                       labelText:
@@ -371,20 +385,18 @@ class _UserDataPageState extends State<UserDataPage> {
                     ),
                     style: TextStyle(
                       fontSize: responsiveFontSizes.bodyMedium(context),
+                      color: AppTheme.getTextGreyColor(context),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese su estado';
-                      }
-                      return null;
-                    },
                   ),
                 ),
                 const SizedBox(width: 16),
+                // Campo de código postal (solo lectura)
                 Expanded(
                   child: TextFormField(
                     controller: _zipCodeController,
                     keyboardType: TextInputType.number,
+                    readOnly: true,
+                    enabled: false,
                     decoration: AppTheme.inputDecoration(
                       context,
                       labelText:
@@ -392,16 +404,42 @@ class _UserDataPageState extends State<UserDataPage> {
                     ),
                     style: TextStyle(
                       fontSize: responsiveFontSizes.bodyMedium(context),
+                      color: AppTheme.getTextGreyColor(context),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese su código postal';
-                      }
-                      return null;
-                    },
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 24),
+            // Botón para contactar al agente
+            ElevatedButton(
+              onPressed: () => _contactAgent(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.getBlueColor(context),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                minimumSize: const Size(double.infinity, 45),
+              ),
+              child: Text(
+                context.translate('profile.userDataPage.contactAgent'),
+                style: TextStyle(
+                  fontSize: responsiveFontSizes.bodyMedium(context),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              context.translate('profile.userDataPage.contactAgentDescription'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: responsiveFontSizes.bodySmall(context),
+                color: AppTheme.getTextGreyColor(context),
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ],
         ),
