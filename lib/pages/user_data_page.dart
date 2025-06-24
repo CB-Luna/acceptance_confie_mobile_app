@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/models/country_phone_model.dart';
 import 'package:freeway_app/pages/webview_page.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
+import 'package:freeway_app/widgets/custom/country_phone_selector.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,9 @@ class _UserDataPageState extends State<UserDataPage> {
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  // Almacena el número completo con código de país - usado para guardar en el perfil
+  String _completePhoneNumber = '';
+  CountryPhoneModel _selectedCountry = countryPhoneList.first;
   final _streetController = TextEditingController();
   final _cityController = TextEditingController();
   final _stateController = TextEditingController();
@@ -49,14 +54,42 @@ class _UserDataPageState extends State<UserDataPage> {
     final user = authProvider.currentUser;
 
     if (user != null) {
-      _fullNameController.text = user.fullName;
-      _emailController.text = user.email ?? '';
-      _phoneController.text = user.phone ?? '';
-      _streetController.text = user.street;
-      _cityController.text = user.city;
-      _stateController.text = user.state;
-      _zipCodeController.text = user.zipCode;
-      _birthDate = user.birthDate;
+      setState(() {
+        _fullNameController.text = user.fullName ?? '';
+        _emailController.text = user.email ?? '';
+
+        // Extraer el número de teléfono sin el código de país
+        if (user.phone != null && user.phone!.isNotEmpty) {
+          // Usamos ! porque ya verificamos que no es nulo
+          // Intentar detectar el código de país del número de teléfono
+          final String phoneNumber = '1${user.phone!}';
+          var foundCountry = false;
+
+          // Buscar un país que coincida con el prefijo del número
+          for (final country in countryPhoneList) {
+            final String dialCode = country.dialCode.replaceAll('+', '');
+            if (phoneNumber.startsWith(dialCode)) {
+              _selectedCountry = country;
+              // Eliminar el código de país del número
+              _phoneController.text = phoneNumber.substring(dialCode.length);
+              foundCountry = true;
+              break;
+            }
+          }
+
+          // Si no se encontró un código de país, usar el número tal cual
+          if (!foundCountry) {
+            _phoneController.text = phoneNumber;
+          }
+          _completePhoneNumber = user.phone!;
+        }
+
+        _birthDate = user.birthDate;
+        _streetController.text = user.street;
+        _cityController.text = user.city;
+        _stateController.text = user.state;
+        _zipCodeController.text = user.zipCode;
+      });
     }
 
     // Añadir listeners para detectar cambios
@@ -70,11 +103,25 @@ class _UserDataPageState extends State<UserDataPage> {
   }
 
   void _onFieldChanged() {
-    if (!_hasChanges) {
-      setState(() {
-        _hasChanges = true;
-      });
-    }
+    setState(() {
+      _hasChanges = true;
+    });
+  }
+
+  // Método para actualizar el número de teléfono completo
+  void _updateCompletePhoneNumber(String number) {
+    setState(() {
+      _completePhoneNumber = number;
+      _hasChanges = true;
+    });
+    // Aquí se podría realizar alguna validación adicional del número
+    // o formateo específico si fuera necesario
+  }
+
+  // Método para actualizar el país seleccionado
+  void _updateSelectedCountry(CountryPhoneModel country) {
+    _selectedCountry = country;
+    _onFieldChanged();
   }
 
   Future<void> _saveChanges() async {
@@ -93,7 +140,21 @@ class _UserDataPageState extends State<UserDataPage> {
 
         if (currentUser != null) {
           // En una implementación real, aquí se enviarían los datos actualizados a la API
-          // Por ahora, solo mostramos un mensaje de éxito
+          // incluyendo el número de teléfono completo (_completePhoneNumber)
+
+          // En una implementación real, estos valores se enviarían a la API
+          // y se actualizaría el usuario en el backend
+          // Por ahora solo simulamos la actualización
+
+          // Usamos _completePhoneNumber para la actualización del perfil
+          final dataToUpdate = {
+            'fullName': _fullNameController.text,
+            'birthDate': _birthDate,
+            'phone': _completePhoneNumber,
+          };
+
+          // Ejemplo de cómo se usarían los valores en una actualización real:
+          // await userService.updateUserProfile(dataToUpdate);
 
           // Nota: No podemos actualizar directamente el objeto User porque no tiene un setter
           // y el AuthProvider no tiene un método updateCurrentUser
@@ -236,22 +297,13 @@ class _UserDataPageState extends State<UserDataPage> {
               },
             ),
             const SizedBox(height: 16),
-            //Campo de número de teléfono
-            TextFormField(
-              controller: _phoneController,
-              decoration: AppTheme.inputDecoration(
-                context,
-                labelText: context.translate('profile.userDataPage.phone'),
-              ),
-              style: TextStyle(
-                fontSize: responsiveFontSizes.bodyMedium(context),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.translate('validation.requiredField');
-                }
-                return null;
-              },
+            // Selector de país y número de teléfono
+            CountryPhoneSelector(
+              phoneController: _phoneController,
+              initialCountryCode: _selectedCountry.code,
+              labelText: context.translate('profile.userDataPage.phone'),
+              onPhoneChanged: _updateCompletePhoneNumber,
+              onCountryChanged: _updateSelectedCountry,
             ),
             const SizedBox(height: 16),
             // Campo de fecha de nacimiento con formato MM/DD/YYYY
