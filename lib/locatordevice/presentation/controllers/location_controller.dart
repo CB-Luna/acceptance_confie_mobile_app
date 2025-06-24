@@ -330,18 +330,18 @@ class LocationController extends ChangeNotifier {
         updatedOffices.add(office);
 
         // Filtrar oficinas dentro del radio de búsqueda
-        if (office.distance <= state.searchRadiusInMiles) {
+        if (office.distanceObj.value <= state.searchRadiusInMiles) {
           nearbyOffices.add(office);
         }
       }
 
       // Ordenar por distancia
       updatedOffices.sort(
-        (a, b) => a.distance.compareTo(b.distance),
+        (a, b) => a.distanceObj.value.compareTo(b.distanceObj.value),
       );
 
       nearbyOffices.sort(
-        (a, b) => a.distance.compareTo(b.distance),
+        (a, b) => a.distanceObj.value.compareTo(b.distanceObj.value),
       );
 
       // Si hay una oficina seleccionada, no actualizar las oficinas cercanas
@@ -621,7 +621,7 @@ class LocationController extends ChangeNotifier {
 
         // Actualizar la distancia máxima a la oficina más lejana
         if (state.nearbyOffices.isNotEmpty) {
-          _maxDistanceToOffice = state.nearbyOffices.last.distance;
+          _maxDistanceToOffice = state.nearbyOffices.last.distanceObj.value;
         }
       }
     } catch (e) {
@@ -671,7 +671,7 @@ class LocationController extends ChangeNotifier {
   }
 
   /// Busca oficinas cercanas a un código postal
-  Future<void> searchByZipCode(String zipCode) async {
+  Future<void> searchByZipCode(String zipCode, BuildContext context) async {
     try {
       _updateState(isLoading: true, errorMessage: null, selectedOfficeId: null);
 
@@ -719,10 +719,13 @@ class LocationController extends ChangeNotifier {
       updateMapPosition();
       _updateOfficeMarkers();
     } catch (e) {
+      if (!context.mounted) return;
       _updateState(
         isLoading: false,
-        errorMessage:
-            'Error al buscar oficinas por código postal: ${e.toString()}',
+        errorMessage: context.translateWithArgs(
+          'zipCode.errorSearchingByZipCode',
+          args: [e.toString()],
+        ),
       );
     }
   }

@@ -92,7 +92,7 @@ class _OfficeListState extends State<OfficeList> {
     );
 
     // Llamar al método de búsqueda por código postal
-    locationController.searchByZipCode(zipCode);
+    locationController.searchByZipCode(zipCode, context);
   }
 
   @override
@@ -442,7 +442,7 @@ class OfficeListItem extends StatelessWidget {
             ),
           ),
           Text(
-            '${office.distance.toStringAsFixed(2)} ${context.translate('office.miles')}',
+            '${office.distanceObj.value.toStringAsFixed(2)} ${office.distanceObj.unitType}',
             style: TextStyle(
               color: AppTheme.getBlueColor(context),
               fontWeight: FontWeight.bold,

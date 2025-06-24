@@ -1,5 +1,3 @@
-// ignore_for_file: always_put_required_named_parameters_first
-
 class Office {
   final String officeName;
   final String storeAddress;
@@ -15,14 +13,15 @@ class Office {
   final String officehoursCurrentStatus;
   final double latitude;
   final double longitude;
-  final double distance;
+  final DistanceObj distanceObj;
   final String legalEntity;
-  
+
   // Getters para mantener compatibilidad con el código existente
   String get name => officeName;
   String get streetAddress => storeAddress;
   String get phone => phoneNumber;
-  int get locationId => officeName.hashCode; // Usamos el hash del nombre como ID único
+  int get locationId =>
+      officeName.hashCode; // Usamos el hash del nombre como ID único
 
   Office({
     required this.officeName,
@@ -39,8 +38,8 @@ class Office {
     required this.officehoursCurrentStatus,
     required this.latitude,
     required this.longitude,
-    required this.distance,
     required this.legalEntity,
+    required this.distanceObj,
   });
 
   factory Office.fromJson(Map<String, dynamic> json) {
@@ -59,7 +58,8 @@ class Office {
       officehoursCurrentStatus: json['officehoursCurrentStatus'] ?? '',
       latitude: double.tryParse(json['latitude'] ?? '0') ?? 0.0,
       longitude: double.tryParse(json['longitude'] ?? '0') ?? 0.0,
-      distance: json['distance'] as double? ?? 0.0,
+      distanceObj:
+          DistanceObj.fromJson(json['distanceObj'] as Map<String, dynamic>),
       legalEntity: json['legalEntity'] ?? '',
     );
   }
@@ -80,8 +80,32 @@ class Office {
       'officehoursCurrentStatus': officehoursCurrentStatus,
       'latitude': latitude.toString(),
       'longitude': longitude.toString(),
-      'distance': distance,
+      'distanceObj': distanceObj.toJson(),
       'legalEntity': legalEntity,
+    };
+  }
+}
+
+class DistanceObj {
+  final double value;
+  final String unitType;
+
+  DistanceObj({
+    required this.value,
+    required this.unitType,
+  });
+
+  factory DistanceObj.fromJson(Map<String, dynamic> json) {
+    return DistanceObj(
+      value: json['value'] as double? ?? 0.0,
+      unitType: json['unitType'] as String? ?? 'miles',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'value': value,
+      'unitType': unitType,
     };
   }
 }

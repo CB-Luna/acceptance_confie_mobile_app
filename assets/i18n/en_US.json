@@ -336,6 +336,7 @@
       "invalidZipCode": "Please enter a valid 5-digit zip code",
       "searchingNear": "Searching for offices near zip code: {0}",
       "mapError": "Error loading maps",
+      "errorSearchingByZipCode": "Error searching offices by zip code: {0}",
       "searchOfficeByZipcode": "Search Office by Zipcode"
     },
     "error": "Error: Missing dependencies"

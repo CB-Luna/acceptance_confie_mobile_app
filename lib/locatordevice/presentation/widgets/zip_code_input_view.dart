@@ -232,6 +232,6 @@ class _ZipCodeInputViewState extends State<ZipCodeInputView> {
     );
 
     // Llamar al método de búsqueda por código postal
-    locationController.searchByZipCode(zipCode);
+    locationController.searchByZipCode(zipCode, context);
   }
 }

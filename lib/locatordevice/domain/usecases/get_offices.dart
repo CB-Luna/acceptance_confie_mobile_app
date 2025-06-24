@@ -34,7 +34,7 @@ class GetOffices {
 
         // Ordenar por distancia
         officesWithDistances.sort(
-          (a, b) => a.distance.compareTo(b.distance),
+          (a, b) => a.distanceObj.value.compareTo(b.distanceObj.value),
         );
 
         return officesWithDistances;
