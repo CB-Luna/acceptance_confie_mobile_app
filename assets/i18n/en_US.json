@@ -170,8 +170,14 @@
     "subtitle": "Have questions or need assistance?\nWe're here to help!",
     "customerService": "Customer Service",
     "callCustomerService": "Call (888) 443-4662",
-    "insuranceQuotes": "Insurance Quotes & Service",
-    "callInsuranceQuotes": "Call (877) 753-7823"
+    "insuranceQuotes": "Insurance Quotes & Services",
+    "callInsuranceQuotes": "Call (800) 777-5620",
+    "callError": "Could not make the call. Please try again later or dial the number manually.",
+    "contactOptions": "Contact Options",
+    "contactOptionsDescription": "Choose how you would like to contact us:",
+    "copyNumber": "Copy Number",
+    "numberCopied": "Number copied to clipboard",
+    "tryCall": "Try Call"
   },
   "payment": {
     "title": "Pay Now",
@@ -321,6 +327,7 @@
       "defaultUser": "User"
     },
     "password": "Password",
+    "languages": "Languages",
     "appInfo": "App Info",
     "appInfoPage": {
       "deviceInfo": "Device Information",

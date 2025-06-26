@@ -9,13 +9,13 @@ import 'package:uuid/uuid.dart';
 
 /// Servicio para manejar la integración con Apple Wallet
 class AppleWalletService {
-  // En una implementación real, aquí se inicializaría 
+  // En una implementación real, aquí se inicializaría
   final Uuid _uuid = const Uuid();
 
   /// Verifica si Apple Wallet está disponible en el dispositivo
   Future<bool> isAppleWalletAvailable() async {
     if (!Platform.isIOS) return false;
-    
+
     try {
       // FlutterWalletCard no tiene un método directo para verificar disponibilidad
       // Asumimos que está disponible en iOS 9.0+ (requisito del paquete)
@@ -27,7 +27,7 @@ class AppleWalletService {
   }
 
   /// Añade una tarjeta de seguro a Apple Wallet usando flutter_wallet_card
-  /// 
+  ///
   /// Este método genera un archivo .pkpass y lo añade a Apple Wallet.
   /// Utiliza el paquete flutter_wallet_card para simplificar el proceso.
   ///
@@ -47,17 +47,21 @@ class AppleWalletService {
       final bool available = await isAppleWalletAvailable();
       if (!available) {
         if (onError != null) {
-          onError(Exception(context.translate('idCard.appleWalletNotAvailable')));
+          if (context.mounted) {
+            onError(
+              Exception(context.translate('idCard.appleWalletNotAvailable')),
+            );
+          }
         }
         return false;
       }
 
       // Generar un ID único para el pase
       final String passId = _uuid.v4();
-      
+
       // Obtener la fecha de vencimiento de la póliza formateada
       final String expirationDate = user.nextPayment.toString().split(' ')[0];
-      
+
       // Crear la estructura del pase para Apple Wallet
       final Map<String, dynamic> passData = {
         'formatVersion': 1,
@@ -113,26 +117,26 @@ class AppleWalletService {
       // Convertir a JSON para registro/depuración
       final String passJsonString = jsonEncode(passData);
       debugPrint('Datos del pase: $passJsonString');
-      
+
       // Para pruebas en desarrollo, usamos una implementación simulada
       // que muestra la interfaz de Apple Wallet pero no requiere un archivo .pkpass real
-      
+
       // Simulamos un pequeño retraso para la experiencia del usuario
       await Future.delayed(const Duration(milliseconds: 800));
-      
+
       // En iOS, esto mostraría la interfaz nativa de Apple Wallet
       // Aunque no tengamos un archivo .pkpass real firmado, el usuario verá
       // la interfaz de Apple Wallet y podrá interactuar con ella
-      
+
       // NOTA: En una implementación de producción, necesitarías:
       // 1. Un servidor que genere el archivo .pkpass firmado con tu certificado
       // 2. Descargar ese archivo y usar FlutterWalletCard.addPasskit() para añadirlo
-      
+
       // Simulamos éxito para la demostración
       if (onSuccess != null) {
         onSuccess();
       }
-      
+
       return true;
     } catch (e) {
       debugPrint('Error añadiendo tarjeta a Apple Wallet: $e');
@@ -142,7 +146,7 @@ class AppleWalletService {
       return false;
     }
   }
-  
+
   /// Método para implementar cuando tengas un archivo .pkpass disponible
   Future<bool> addPasskitFromFile(File pkpassFile) async {
     try {
@@ -151,17 +155,17 @@ class AppleWalletService {
         id: 'freeway-insurance-card',
         file: pkpassFile,
       );
-      
+
       // Añadir el pase al Apple Wallet
       final completed = await FlutterWalletCard.addPasskit(passkitFile);
-      
+
       return completed;
     } catch (e) {
       debugPrint('Error al añadir archivo .pkpass a Apple Wallet: $e');
       return false;
     }
   }
-  
+
   /// Método para implementar cuando tengas un servidor que genere el archivo .pkpass
   Future<bool> addPasskitFromUrl(String userId, String policyNumber) async {
     try {
@@ -175,13 +179,15 @@ class AppleWalletService {
           'policyNumber': policyNumber,
         },
       );
-      
+
       // Añadir el pase al Apple Wallet
       final completed = await FlutterWalletCard.addPasskit(passkitFile);
-      
+
       return completed;
     } catch (e) {
-      debugPrint('Error al añadir archivo .pkpass desde URL a Apple Wallet: $e');
+      debugPrint(
+        'Error al añadir archivo .pkpass desde URL a Apple Wallet: $e',
+      );
       return false;
     }
   }

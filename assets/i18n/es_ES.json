@@ -170,8 +170,14 @@
     "subtitle": "¿Tienes preguntas o necesitas asistencia?\n¡Estamos aquí para ayudarte!",
     "customerService": "Servicio al Cliente",
     "callCustomerService": "Llamar al (888) 443-4662",
-    "insuranceQuotes": "Cotizaciones y Servicio de Seguros",
-    "callInsuranceQuotes": "Llamar al (877) 753-7823"
+    "insuranceQuotes": "Cotizaciones y Servicios de Seguros",
+    "callInsuranceQuotes": "Llamar al (800) 777-5620",
+    "callError": "No se pudo realizar la llamada. Por favor, inténtalo más tarde o marca el número manualmente.",
+    "contactOptions": "Opciones de Contacto",
+    "contactOptionsDescription": "Elige cómo te gustaría contactarnos:",
+    "copyNumber": "Copiar Número",
+    "numberCopied": "Número copiado al portapapeles",
+    "tryCall": "Intentar Llamar"
   },
   "payment": {
     "title": "Pagar Ahora",

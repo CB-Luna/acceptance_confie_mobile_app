@@ -4,6 +4,7 @@ import 'package:freeway_app/pages/add_insurance.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/menu/circle_nav_bar.dart';
 
@@ -16,6 +17,31 @@ class RequestCallPage extends StatefulWidget {
 
 class _RequestCallPageState extends State<RequestCallPage> {
   int _selectedIndex = 0;
+
+  // Números de teléfono para los diferentes servicios
+  final String _customerServicePhone = '888-443-4662';
+  final String _insuranceQuotesPhone = '800-777-5620';
+
+  // Método para abrir directamente la aplicación de llamadas del dispositivo
+  Future<void> _openPhoneDialer(String phoneNumber) async {
+    try {
+      // Eliminar cualquier carácter no numérico del número de teléfono
+      final cleanedNumber = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+
+      // Crear la URI para abrir la aplicación de llamadas sin iniciar la llamada
+      final Uri launchUri = Uri.parse('tel:$cleanedNumber');
+
+      // Abrir la aplicación de llamadas
+      await launchUrl(launchUri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      // Mostrar mensaje de error si no se puede abrir la aplicación de llamadas
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.translate('requestCall.callError'))),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +147,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () {
-                        // Aquí irá la lógica para llamar al servicio al cliente
-                      },
+                      onPressed: () => _openPhoneDialer(_customerServicePhone),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.getPrimaryColor(context),
                         minimumSize: const Size(double.infinity, 56),
@@ -171,9 +195,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
-                      onPressed: () {
-                        // Aquí irá la lógica para llamar a cotizaciones
-                      },
+                      onPressed: () => _openPhoneDialer(_insuranceQuotesPhone),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.getSecondaryColor(context),
                         minimumSize: const Size(double.infinity, 56),
