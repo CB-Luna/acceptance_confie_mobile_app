@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/data/services/auth_service.dart';
+import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 /// Página para cambiar la contraseña del usuario
 class PasswordChangePage extends StatefulWidget {
@@ -65,27 +68,63 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
       return;
     }
 
+    // Mostrar el indicador de carga
     setState(() {
       _isLoading = true;
     });
 
     try {
-      // En una implementación real, aquí se llamaría a la API para actualizar la contraseña
-      // Por ahora, solo simulamos un retraso y mostramos un mensaje de éxito
-      await Future.delayed(const Duration(seconds: 1));
+      // Obtener el AuthProvider para acceder al usuario actual
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final currentUser = authProvider.currentUser;
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text(context.translate('profile.passwordPage.saveSuccess')),
-            backgroundColor: Colors.green,
-          ),
-        );
+      if (currentUser == null) {
+        throw Exception('No hay usuario autenticado');
+      }
 
-        // Aquí se actualizaría la contraseña en el AuthProvider
-        // Por ahora, solo cerramos la página
-        Navigator.pop(context);
+      // Crear una instancia del servicio de autenticación
+      final authService = AuthService();
+      
+      // Llamar al método de cambio de contraseña
+      final success = await authService.changePassword(
+        username: currentUser.username,
+        currentPassword: _currentPasswordController.text,
+        newPassword: _newPasswordController.text,
+      );
+
+      if (success) {
+        // Actualizar las credenciales guardadas si los biométricos están activados
+        if (await authProvider.hasCredentials()) {
+          await authProvider.saveCredentials(
+            currentUser.username,
+            _newPasswordController.text,
+          );
+        }
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text(context.translate('profile.passwordPage.saveSuccess')),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          // Cerrar la página después de actualizar la contraseña
+          Navigator.pop(context);
+        }
+      } else {
+        // Manejar errores de la API
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                context.translate('profile.passwordPage.saveError'),
+              ),
+              backgroundColor: AppTheme.getRedColor(context),
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -107,10 +146,8 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
     }
   }
 
-  bool _isPasswordValid(String password) {
-    // Validación básica: al menos 8 caracteres y contiene un número
-    return password.length >= 8 && password.contains(RegExp(r'[0-9]'));
-  }
+  // El método _isPasswordValid ya no es necesario porque las validaciones
+  // se realizan directamente en el validator de cada campo TextFormField
 
   @override
   Widget build(BuildContext context) {
@@ -187,11 +224,12 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                   context,
                   labelText:
                       context.translate('profile.passwordPage.currentPassword'),
+                ).copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureCurrentPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                     ),
                     onPressed: () {
                       setState(() {
@@ -219,11 +257,12 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                   context,
                   labelText:
                       context.translate('profile.passwordPage.newPassword'),
+                ).copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureNewPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                     ),
                     onPressed: () {
                       setState(() {
@@ -231,17 +270,31 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       });
                     },
                   ),
+                  // Añadir texto de ayuda para explicar los requisitos de la contraseña
+                  helperText: context.translate('auth.passwordRequirements'),
+                  helperMaxLines: 3,
                 ),
                 style: TextStyle(
                   fontSize: responsiveFontSizes.bodyMedium(context),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return context.translate('validation.required');
+                    return context.translate('auth.pleaseEnterPassword');
                   }
-                  if (!_isPasswordValid(value)) {
-                    return context
-                        .translate('profile.passwordPage.passwordRequirements');
+                  if (value.length < 6) {
+                    return context.translate('auth.passwordMinLength');
+                  }
+                  // Verificar si la contraseña tiene al menos una letra mayúscula
+                  if (!value.contains(RegExp(r'[A-Z]'))) {
+                    return context.translate('auth.passwordUppercase');
+                  }
+                  // Verificar si la contraseña tiene al menos un número
+                  if (!value.contains(RegExp(r'[0-9]'))) {
+                    return context.translate('auth.passwordNumber');
+                  }
+                  // Verificar si la contraseña tiene al menos un carácter especial
+                  if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+                    return context.translate('auth.passwordSpecial');
                   }
                   return null;
                 },
@@ -255,11 +308,12 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                   context,
                   labelText:
                       context.translate('profile.passwordPage.confirmPassword'),
+                ).copyWith(
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureConfirmPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                     ),
                     onPressed: () {
                       setState(() {
@@ -290,29 +344,51 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   }
 
   Widget _buildSaveButton(BuildContext context) {
-    final primaryColor = AppTheme.getGreenColor(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ElevatedButton(
-        onPressed: _hasChanges && !_isLoading ? _saveChanges : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: _isLoading ? null : _saveChanges,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppTheme.getPrimaryColor(context),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          disabledBackgroundColor: primaryColor.withAlpha(128),
-          disabledForegroundColor: Colors.white70,
-          minimumSize: const Size(double.infinity, 50),
-        ),
-        child: Text(
-          context.translate('profile.passwordPage.save'),
-          style: TextStyle(
-            fontSize: responsiveFontSizes.bodyLarge(context),
-            fontWeight: FontWeight.bold,
-          ),
+          child: _isLoading
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 20),
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      context.translate('common.loading'),
+                      style: TextStyle(
+                        fontSize: responsiveFontSizes.bodyLarge(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                )
+              : Text(
+                  context.translate('profile.passwordPage.save'),
+                  style: TextStyle(
+                    fontSize: responsiveFontSizes.bodyLarge(context),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ),
     );

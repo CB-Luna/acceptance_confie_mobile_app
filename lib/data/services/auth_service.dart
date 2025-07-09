@@ -84,4 +84,34 @@ class AuthService {
       throw ApiError(message: e.toString());
     }
   }
+
+  // Método para cambiar la contraseña del usuario
+  Future<bool> changePassword({
+    required String username,
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/api/Mobile/ChangePassword',
+        data: {
+          'userName': username,
+          'currentPassword': currentPassword,
+          'newPassword': newPassword,
+        },
+        options: Options(
+          headers: {
+            'X-API-KEY': _apiKey,
+          },
+        ),
+      );
+
+      // Si el código de estado es 200, la contraseña se cambió correctamente
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      throw ApiError.fromDioError(e);
+    } catch (e) {
+      throw ApiError(message: e.toString());
+    }
+  }
 }
