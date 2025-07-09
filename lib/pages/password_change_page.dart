@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freeway_app/data/services/auth_service.dart';
+import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
@@ -84,13 +85,25 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
 
       // Crear una instancia del servicio de autenticación
       final authService = AuthService();
-      
+
+      // Mostrar LoadingView durante el proceso
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const LoadingView(),
+      );
+
       // Llamar al método de cambio de contraseña
       final success = await authService.changePassword(
         username: currentUser.username,
         currentPassword: _currentPasswordController.text,
         newPassword: _newPasswordController.text,
       );
+
+      // Cerrar el LoadingView
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
 
       if (success) {
         // Actualizar las credenciales guardadas si los biométricos están activados
@@ -127,6 +140,11 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
         }
       }
     } catch (e) {
+      // Cerrar el LoadingView si sigue abierto
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -357,38 +375,17 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
+            disabledBackgroundColor:
+                AppTheme.getPrimaryColor(context).withAlpha(179),
+            disabledForegroundColor: Colors.white70,
           ),
-          child: _isLoading
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 20),
-                    const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      context.translate('common.loading'),
-                      style: TextStyle(
-                        fontSize: responsiveFontSizes.bodyLarge(context),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                  ],
-                )
-              : Text(
-                  context.translate('profile.passwordPage.save'),
-                  style: TextStyle(
-                    fontSize: responsiveFontSizes.bodyLarge(context),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          child: Text(
+            context.translate('profile.passwordPage.save'),
+            style: TextStyle(
+              fontSize: responsiveFontSizes.bodyLarge(context),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
