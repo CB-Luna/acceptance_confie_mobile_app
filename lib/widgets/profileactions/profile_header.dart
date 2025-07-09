@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freeway_app/pages/home_page.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/widgets/theme/app_theme.dart';
 
@@ -20,8 +21,13 @@ class ProfileHeader extends StatelessWidget {
       leadingWidth: 160,
       automaticallyImplyLeading: false,
       leading: InkWell(
-        onTap: () {
-          Navigator.of(context).pop();
+        onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
         },
         child: Row(
           children: [

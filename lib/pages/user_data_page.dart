@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freeway_app/data/services/auth_service.dart';
 import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:freeway_app/models/country_phone_model.dart';
+import 'package:freeway_app/pages/profile_page.dart';
 import 'package:freeway_app/providers/auth_provider.dart';
 import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:freeway_app/utils/responsive_font_sizes.dart';
@@ -297,12 +298,17 @@ class _UserDataPageState extends State<UserDataPage> {
               state: _stateController.text,
               zipCode: _zipCodeController.text,
             );
-            
+
             // Nota: El método updateUserData ya maneja la actualización del fullName y la notificación a los listeners
 
             // Cerrar el LoadingView
             if (mounted && Navigator.canPop(context)) {
-              Navigator.pop(context);
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
             }
 
             if (!mounted) return;
