@@ -570,10 +570,9 @@ class _IdCardPageState extends State<IdCardPage> {
       // 2. Usar el archivo estático como fallback
 
       try {
-        // Intentar conectar con el servidor local
-        final String serverIp = Platform.isAndroid ? '10.0.2.2' : '192.168.1.71';
+        // Intentar conectar con el servidor de producción
         debugPrint(
-          'Intentando conectar con el servidor local en http://$serverIp:3000/generate-pass',
+          'Intentando conectar con el servidor en https://cbl.virtalus.cbluna-dev.com/generate-pass',
         );
 
         // Crear los datos para el pase dinámico según la estructura que espera el servidor
@@ -617,8 +616,8 @@ class _IdCardPageState extends State<IdCardPage> {
               {
                 'key': 'effectiveDate',
                 'label': 'EFFECTIVE DATE',
-                'value': widget.policy.effectiveDate.isNotEmpty 
-                    ? widget.policy.effectiveDate 
+                'value': widget.policy.effectiveDate.isNotEmpty
+                    ? widget.policy.effectiveDate
                     : DateTime.now().toString().split(' ')[0],
               },
               {
@@ -645,13 +644,11 @@ class _IdCardPageState extends State<IdCardPage> {
         Uint8List pkPassData;
 
         try {
-          // Usar la dirección IP de la máquina local en lugar de localhost
-          // Esto ayuda a resolver problemas de conexión entre el simulador y la máquina host
-          final String serverUrl = Platform.isAndroid
-              ? 'http://10.0.2.2:3000/generate-pass' // IP especial para emulador Android
-              : 'http://192.168.1.71:3000/generate-pass'; // Usar la IP real de la máquina
+          // Usar el endpoint de producción en lugar del servidor local
+          const String serverUrl = 'https://cbl.virtalus.cbluna-dev.com/generate-pass';
 
           debugPrint('Conectando con el servidor en: $serverUrl');
+          debugPrint('Datos del pase: ${jsonEncode(passData)}');
 
           // Hacer la llamada POST al servidor local
           final response = await http.post(
