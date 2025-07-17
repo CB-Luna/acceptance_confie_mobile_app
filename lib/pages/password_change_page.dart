@@ -290,7 +290,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                   ),
                   // Añadir texto de ayuda para explicar los requisitos de la contraseña
                   helperText: context.translate('auth.passwordRequirements'),
-                  helperMaxLines: 3,
+                  helperMaxLines: 4,
                 ),
                 style: TextStyle(
                   fontSize: responsiveFontSizes.bodyMedium(context),

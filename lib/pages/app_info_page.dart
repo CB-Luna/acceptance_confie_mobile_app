@@ -123,7 +123,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
                 Text(
                   'Freeway Insurance',
                   style: TextStyle(
-                    fontSize: responsiveFontSizes.titleLarge(context),
+                    fontSize: responsiveFontSizes.titleSmall(context),
                     fontWeight: FontWeight.bold,
                     color: AppTheme.getPrimaryColor(context),
                   ),
@@ -166,7 +166,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
             Text(
               context.translate('profile.appInfoPage.deviceInfo'),
               style: TextStyle(
-                fontSize: responsiveFontSizes.titleMedium(context),
+                fontSize: responsiveFontSizes.titleSmall(context),
                 fontWeight: FontWeight.bold,
                 color: AppTheme.getPrimaryColor(context),
               ),
@@ -202,7 +202,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
             Text(
               context.translate('profile.appInfoPage.legalInfo'),
               style: TextStyle(
-                fontSize: responsiveFontSizes.titleMedium(context),
+                fontSize: responsiveFontSizes.titleSmall(context),
                 fontWeight: FontWeight.bold,
                 color: AppTheme.getPrimaryColor(context),
               ),
@@ -253,22 +253,34 @@ class _AppInfoPageState extends State<AppInfoPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '$label:',
-            style: TextStyle(
-              fontSize: responsiveFontSizes.bodyMedium(context),
-              fontWeight: FontWeight.w500,
-              color: AppTheme.getTextGreyColor(context),
+          // Label (izquierda)
+          Expanded(
+            flex: 2,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                fontSize: responsiveFontSizes.bodyMedium(context),
+                fontWeight: FontWeight.w500,
+                color: AppTheme.getTextGreyColor(context),
+              ),
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: responsiveFontSizes.bodyMedium(context),
-              fontWeight: FontWeight.w600,
-              color: AppTheme.getPrimaryColor(context),
+          const SizedBox(width: 8), // Espacio entre label y valor
+          // Value (derecha) - Flexible para permitir wrapping
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: responsiveFontSizes.bodyMedium(context),
+                fontWeight: FontWeight.w600,
+                color: AppTheme.getPrimaryColor(context),
+              ),
+              softWrap: true,
+              overflow: TextOverflow.visible,
             ),
           ),
         ],
