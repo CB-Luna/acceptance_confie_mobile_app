@@ -10,6 +10,7 @@ import '../providers/auth_provider.dart';
 import '../providers/biometric_provider.dart';
 import '../widgets/theme/app_theme.dart';
 import 'signup_page.dart';
+import 'forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -355,7 +356,12 @@ class LoginPageState extends State<LoginPage> {
                         Center(
                           child: TextButton(
                             onPressed: () {
-                              // TODO: Implement forgot password
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ForgotPasswordPage(),
+                                ),
+                              );
                             },
                             style: TextButton.styleFrom(
                               foregroundColor:
