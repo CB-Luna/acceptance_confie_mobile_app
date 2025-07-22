@@ -48,8 +48,8 @@ class PhoneModel {
   final String phoneNumber;
 
   PhoneModel({
-    this.phoneType,
     required this.phoneNumber,
+    this.phoneType,
   });
 
   factory PhoneModel.fromJson(Map<String, dynamic> json) =>
@@ -68,11 +68,11 @@ class AddressModel {
   final String? zip4;
 
   AddressModel({
-    this.addressType,
     required this.street,
     required this.city,
     required this.state,
     required this.zip,
+    this.addressType,
     this.zip4,
   });
 

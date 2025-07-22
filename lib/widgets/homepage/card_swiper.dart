@@ -41,8 +41,11 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
     if (authProvider.currentUser != null) {
       final policyProvider =
           Provider.of<HomePolicyProvider>(context, listen: false);
-      await policyProvider
-          .fetchHomePolicies(authProvider.currentUser!.policies);
+      await policyProvider.fetchHomePolicies(
+        authProvider.currentUser!.hasPolicies
+            ? authProvider.currentUser!.policies
+            : [],
+      );
       if (!_isDisposed) {
         setState(() {
           // Actualizar el estado después de cargar las políticas

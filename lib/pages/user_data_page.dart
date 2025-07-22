@@ -74,7 +74,8 @@ class _UserDataPageState extends State<UserDataPage> {
         _lastNameController.text = user.lastName;
         _emailController.text = user.email ?? '';
         // Usar el número de póliza guardado si existe, de lo contrario usar el del objeto User
-        _policyNumberController.text = user.policies.first.policyNumber;
+        _policyNumberController.text =
+            user.hasPolicies ? user.policies.first.policyNumber : '';
 
         // Extraer el número de teléfono sin el código de país
         if (user.phone != null && user.phone!.isNotEmpty) {
