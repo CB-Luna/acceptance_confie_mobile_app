@@ -74,6 +74,7 @@ flutter:
 
   assets:
     - assets/prefix.png
+    - assets/footer_image.png
     - assets/auth/freeway_logo.png
     - assets/auth/
     - assets/home/icons/
