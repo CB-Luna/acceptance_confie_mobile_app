@@ -166,4 +166,72 @@ class AuthService {
       throw ApiError(message: e.toString());
     }
   }
+
+  // Método para enviar el código de recuperación de contraseña
+  Future<bool> sendForgotPasswordMessage({
+    required String userName,
+    required String verificationType, // "SmsCode" o "EmailCode"
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/api/Mobile/SendForgotPasswordMessage',
+        data: {
+          'userName': userName,
+          'verificationType': verificationType,
+        },
+        options: Options(
+          headers: {
+            'X-API-KEY': _apiKey,
+          },
+        ),
+      );
+
+      // Imprimir la respuesta para depuración
+      debugPrint('API Response SendForgotPasswordMessage: ${response.statusCode}');
+      
+      // Si el código de estado es 200, el mensaje se envió correctamente
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      debugPrint('Error en sendForgotPasswordMessage: ${e.response?.data}');
+      throw ApiError.fromDioError(e);
+    } catch (e) {
+      debugPrint('Error general en sendForgotPasswordMessage: $e');
+      throw ApiError(message: 'Error al enviar código de recuperación: ${e.toString()}');
+    }
+  }
+
+  // Método para restablecer la contraseña con el código recibido
+  Future<bool> resetPassword({
+    required String userName,
+    required String code,
+    required String newPassword,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/api/Mobile/ResetPassword',
+        data: {
+          'userName': userName,
+          'code': code,
+          'newPassword': newPassword,
+        },
+        options: Options(
+          headers: {
+            'X-API-KEY': _apiKey,
+          },
+        ),
+      );
+
+      // Imprimir la respuesta para depuración
+      debugPrint('API Response ResetPassword: ${response.statusCode}');
+      
+      // Si el código de estado es 200, la contraseña se restableció correctamente
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      debugPrint('Error en resetPassword: ${e.response?.data}');
+      throw ApiError.fromDioError(e);
+    } catch (e) {
+      debugPrint('Error general en resetPassword: $e');
+      throw ApiError(message: 'Error al restablecer contraseña: ${e.toString()}');
+    }
+  }
 }
