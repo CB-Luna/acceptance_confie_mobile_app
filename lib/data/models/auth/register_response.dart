@@ -25,25 +25,22 @@ class RegisterResponse {
   }
 
   bool get hasErrors => errors.isNotEmpty;
-  
+
   String get errorMessage {
     if (errors.isEmpty) return '';
-    return errors.map((e) => '${e.field}: ${e.message}').join(', ');
+    return errors.map((e) => e.message).join(', ');
   }
 }
 
 class RegisterError {
-  final String field;
   final String message;
 
   RegisterError({
-    required this.field,
     required this.message,
   });
 
   factory RegisterError.fromJson(Map<String, dynamic> json) {
     return RegisterError(
-      field: json['field'] ?? '',
       message: json['message'] ?? '',
     );
   }

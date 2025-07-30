@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import '../../core/errors/api_error.dart';
 import '../../core/network/api_client.dart';
@@ -12,6 +15,7 @@ class AuthService {
   final Dio _dio;
   static const String _apiKey =
       'jEk40pLbflj4vQ6RyhQmI3JxDAXjUhdWrEjYBgQRAuSs8X6ged161peEtM4mM8sT';
+  static const String _baseUrl = 'https://confie-customer-np.azurewebsites.net';
 
   AuthService() : _dio = ApiClient.createDio();
 
@@ -33,7 +37,7 @@ class AuthService {
 
       // Imprimir la respuesta para depuración
       debugPrint('API Response: ${response.data}');
-      
+
       // Ahora la API devuelve directamente un token en lugar de requerir 2FA
       try {
         return LoginResponse.fromJson(response.data);
@@ -42,7 +46,7 @@ class AuthService {
         // Intentar identificar qué campo está causando el problema
         final Map<String, dynamic> data = response.data;
         debugPrint('Campos en la respuesta: ${data.keys.join(', ')}');
-        
+
         // Relanzar el error con más información
         throw ApiError(message: 'Error al procesar la respuesta: $parseError');
       }
@@ -81,21 +85,49 @@ class AuthService {
 
   Future<RegisterResponse> register(RegisterRequest request) async {
     try {
-      final response = await _dio.post(
-        '/api/Mobile/Register',
-        data: request.toJson(),
-        options: Options(
-          headers: {
-            'X-API-KEY': _apiKey,
-          },
-        ),
+      final url = Uri.parse('$_baseUrl/api/Mobile/Register');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': _apiKey,
+        },
+        body: jsonEncode(request.toJson()),
       );
 
-      return RegisterResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      throw ApiError.fromDioError(e);
+      final responseData = json.decode(utf8.decode(response.bodyBytes));
+
+      // Verificar si hubo un error HTTP
+      if (response.statusCode != 200) {
+        debugPrint(
+          'Error HTTP ${response.statusCode} en registro: ${response.body}',
+        );
+        // Intentar parsear la respuesta de error como un RegisterResponse
+        try {
+          return RegisterResponse.fromJson(responseData);
+        } catch (parseError) {
+          debugPrint('Error al parsear respuesta de error: $parseError');
+          throw ApiError(
+            statusCode: response.statusCode,
+            message: 'Error: ${response.statusCode} ${response.reasonPhrase}',
+            responseData: responseData,
+          );
+        }
+      }
+
+      // Si todo salió bien, parsear la respuesta exitosa
+      return RegisterResponse.fromJson(responseData);
     } catch (e) {
-      throw ApiError(message: e.toString());
+      debugPrint('Error en registro: $e');
+      if (e is http.ClientException) {
+        throw ApiError(message: 'Error de conexión: ${e.message}');
+      } else if (e is FormatException) {
+        throw ApiError(message: 'Error al procesar la respuesta del servidor');
+      } else if (e is ApiError) {
+        rethrow;
+      } else {
+        throw ApiError(message: 'Error inesperado: $e');
+      }
     }
   }
 
@@ -162,7 +194,9 @@ class AuthService {
       if (response.statusCode == 200) {
         return response.data as Map<String, dynamic>;
       } else {
-        throw ApiError(message: 'Error updating user data: ${response.statusCode}');
+        throw ApiError(
+          message: 'Error updating user data: ${response.statusCode}',
+        );
       }
     } on DioException catch (e) {
       throw ApiError.fromDioError(e);
@@ -191,8 +225,10 @@ class AuthService {
       );
 
       // Imprimir la respuesta para depuración
-      debugPrint('API Response SendForgotPasswordMessage: ${response.statusCode}');
-      
+      debugPrint(
+        'API Response SendForgotPasswordMessage: ${response.statusCode}',
+      );
+
       // Si el código de estado es 200, el mensaje se envió correctamente
       return response.statusCode == 200;
     } on DioException catch (e) {
@@ -200,7 +236,9 @@ class AuthService {
       throw ApiError.fromDioError(e);
     } catch (e) {
       debugPrint('Error general en sendForgotPasswordMessage: $e');
-      throw ApiError(message: 'Error al enviar código de recuperación: ${e.toString()}');
+      throw ApiError(
+        message: 'Error al enviar código de recuperación: ${e.toString()}',
+      );
     }
   }
 
@@ -227,7 +265,7 @@ class AuthService {
 
       // Imprimir la respuesta para depuración
       debugPrint('API Response ResetPassword: ${response.statusCode}');
-      
+
       // Si el código de estado es 200, la contraseña se restableció correctamente
       return response.statusCode == 200;
     } on DioException catch (e) {
@@ -235,7 +273,9 @@ class AuthService {
       throw ApiError.fromDioError(e);
     } catch (e) {
       debugPrint('Error general en resetPassword: $e');
-      throw ApiError(message: 'Error al restablecer contraseña: ${e.toString()}');
+      throw ApiError(
+        message: 'Error al restablecer contraseña: ${e.toString()}',
+      );
     }
   }
 }

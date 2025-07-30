@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freeway_app/data/models/auth/login_response.dart';
 import 'package:freeway_app/data/models/auth/register_request.dart';
+import 'package:freeway_app/utils/app_localizations_extension.dart';
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -135,9 +136,11 @@ class AuthProvider with ChangeNotifier {
         firstName = customer.firstName;
         lastName = customer.lastName;
         email = customer.email;
-        phone = primaryPhone != null ? _formatPhoneNumber(primaryPhone.phoneNumber) : '';
+        phone = primaryPhone != null
+            ? _formatPhoneNumber(primaryPhone.phoneNumber)
+            : '';
         customerId = customer.customerId ?? '';
-        
+
         // Manejo de dirección primaria que ahora es opcional
         if (primaryAddress != null) {
           street = primaryAddress.street;
@@ -150,7 +153,7 @@ class AuthProvider with ChangeNotifier {
           city = '';
           state = '';
         }
-        
+
         birthDate = DateTime.parse(customer.birthDate);
         gender = customer.gender ?? '';
 
@@ -249,18 +252,20 @@ class AuthProvider with ChangeNotifier {
     _lastPassword = null;
     _requiresTwoFactor = false;
     _authToken = null;
-    
+
     // Limpiar almacenamiento seguro
     await _secureStorage.delete(key: _tokenKey);
     // Eliminar el nombre completo guardado para evitar conflictos con nuevos inicios de sesión
     await _secureStorage.delete(key: _fullNameKey);
-    
+
     // Opcional: si quieres mantener las credenciales guardadas, comenta estas líneas
     // await _secureStorage.delete(key: _usernameKey);
     // await _secureStorage.delete(key: _passwordKey);
-    
+
     notifyListeners();
-    debugPrint('AuthProvider: estado de autenticación y almacenamiento seguro limpiados');
+    debugPrint(
+      'AuthProvider: estado de autenticación y almacenamiento seguro limpiados',
+    );
   }
 
   /// Método para cerrar sesión y navegar a la pantalla de login
@@ -302,9 +307,11 @@ class AuthProvider with ChangeNotifier {
     String phoneNumber,
     String policyNumber,
     String birthDate,
+    BuildContext context,
   ) async {
     try {
       _errorMessage = null;
+      debugPrint('AuthProvider - Iniciando registro para usuario: $email');
 
       // El número de teléfono ya viene formateado desde la UI
 
@@ -320,29 +327,47 @@ class AuthProvider with ChangeNotifier {
 
       final response = await _authService.register(request);
 
+      // Verificar si la respuesta contiene errores (ya sea de un 200 OK con errores o de un error HTTP)
       if (response.hasErrors) {
-        _errorMessage = response.errorMessage;
-        notifyListeners();
+        // Usar el mensaje de error proporcionado por el servidor
+        debugPrint(
+            'Error de registro desde servidor: ${response.errorMessage}');
+        if (context.mounted) {
+          // Usar el mensaje de error tal como viene del servidor
+          _errorMessage = response.errorMessage;
+          notifyListeners();
+        }
         return false;
       }
 
+      debugPrint('Registro exitoso, intentando login automático');
       // Si el registro fue exitoso, iniciar sesión automáticamente
       final loginSuccess = await login(email, password);
 
       if (!loginSuccess) {
-        _errorMessage =
-            'Registro exitoso, pero no se pudo iniciar sesión automáticamente. Por favor, inicie sesión manualmente.';
-        notifyListeners();
+        debugPrint('Login automático después del registro falló');
+        if (context.mounted) {
+          _errorMessage = context.translate('auth.signUpSuccessButNoLogin');
+          notifyListeners();
+        }
       }
 
       return loginSuccess;
     } on ApiError catch (e) {
-      _errorMessage = e.message;
-      notifyListeners();
+      debugPrint('Error de API en registro: ${e.message}');
+      if (context.mounted) {
+        _errorMessage =
+            context.translateWithArgs('auth.signUpError', args: [e.message]);
+        notifyListeners();
+      }
       return false;
     } catch (e) {
-      _errorMessage = 'Error inesperado durante el registro: $e';
-      notifyListeners();
+      debugPrint('Error general en registro: $e');
+      if (context.mounted) {
+        _errorMessage =
+            context.translateWithArgs('auth.signUpError', args: [e.toString()]);
+        notifyListeners();
+      }
       return false;
     }
   }
@@ -393,7 +418,7 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
-  
+
   /// Actualiza los datos del usuario actual con los nuevos valores proporcionados
   /// Utiliza el método copyWith del modelo User para crear una nueva instancia con los datos actualizados
   /// Retorna true si la actualización fue exitosa, false en caso contrario
@@ -415,7 +440,7 @@ class AuthProvider with ChangeNotifier {
         debugPrint('No hay usuario autenticado para actualizar datos');
         return false;
       }
-      
+
       // Crear una copia del usuario con los nuevos datos
       final updatedUser = _currentUser!.copyWith(
         firstName: firstName,
@@ -428,22 +453,22 @@ class AuthProvider with ChangeNotifier {
         city: city,
         state: state,
         // Si se proporciona firstName y lastName, actualizar también el fullName
-        fullName: (firstName != null && lastName != null) 
-            ? '$firstName $lastName' 
+        fullName: (firstName != null && lastName != null)
+            ? '$firstName $lastName'
             : null,
       );
-      
+
       // Actualizar el usuario actual
       _currentUser = updatedUser;
-      
+
       // Si se actualizó el nombre completo, guardarlo en el almacenamiento seguro
       if (firstName != null && lastName != null) {
         await saveFullName('$firstName $lastName');
       }
-      
+
       // Notificar a los listeners para que actualicen la UI
       notifyListeners();
-      
+
       debugPrint('Datos del usuario actualizados correctamente');
       return true;
     } catch (e) {

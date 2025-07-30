@@ -132,6 +132,7 @@ class SignUpPageState extends State<SignUpPage> {
           _getFormattedPhoneNumber(),
           _policyNumberController.text,
           _getFormattedBirthDate(), // Usar el método para obtener la fecha en formato ISO
+          context,
         );
 
         // Verificar si hay un mensaje de error
