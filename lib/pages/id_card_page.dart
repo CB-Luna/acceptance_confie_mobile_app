@@ -5,7 +5,6 @@ import 'package:apple_passkit/apple_passkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freeway_app/data/models/auth/policy_model.dart';
-// Importación eliminada: apple_wallet_service.dart
 import 'package:freeway_app/data/services/google_wallet_service.dart';
 import 'package:freeway_app/locatordevice/locator_device_module.dart';
 import 'package:freeway_app/models/user_model.dart';
