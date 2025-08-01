@@ -8,9 +8,9 @@ environment:
   sdk: ">=3.0.6 <4.0.0"
 
 dependencies:
-  add_to_google_wallet: ^0.0.5
   animate_do: ^4.0.1
   circular_profile_avatar: ^2.0.5
+  path_provider: ^2.1.2
   cupertino_icons: ^1.0.8
   curved_navigation_bar: ^1.0.3
   device_info_plus: ^9.1.2
