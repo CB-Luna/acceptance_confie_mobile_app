@@ -13,7 +13,6 @@ import '../providers/auth_provider.dart';
 import '../providers/notification_provider.dart';
 import '../utils/menu/circle_nav_bar.dart';
 import '../widgets/homepage/header_section.dart';
-import '../widgets/homepage/notifications.dart';
 import '../widgets/homepage/product_list.dart';
 import '../widgets/homepage/roadside_help.dart';
 
@@ -237,21 +236,21 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 8),
 
-                    // Notifications Section
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: NotificationsWidget(
-                        key: notificationsKey,
-                        isExpanded: _isNotificationsExpanded,
-                        onClose: () {
-                          setState(() {
-                            _isNotificationsExpanded = false;
-                          });
-                        },
-                      ),
-                    ),
-                    // Espacio adicional al final para asegurar que el último contenido sea visible
-                    const SizedBox(height: 20),
+                    //TODO: Notifications Section, when the API is ready
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    //   child: NotificationsWidget(
+                    //     key: notificationsKey,
+                    //     isExpanded: _isNotificationsExpanded,
+                    //     onClose: () {
+                    //       setState(() {
+                    //         _isNotificationsExpanded = false;
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
+                    // // Espacio adicional al final para asegurar que el último contenido sea visible
+                    // const SizedBox(height: 20),
                     // Widget de anclaje para el scroll de notificaciones
                     SizedBox(
                       key: notificationsAnchorKey,
