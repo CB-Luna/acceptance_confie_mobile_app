@@ -56,3 +56,15 @@ onPressed: () {
   LocatorDeviceModule.navigateToLocationView(context);
 }
 ```
+
+## Credenciales
+
+Usuario 1
+
+- user: jorge.cacho-sousa@freeway.com
+- password: Freeway!1
+
+Usuario 2
+
+- user: uzzielpalma99@gmail.com
+- password: Cbluna2025$
