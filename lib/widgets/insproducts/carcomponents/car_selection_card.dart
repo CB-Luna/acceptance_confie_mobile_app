@@ -1,5 +1,5 @@
+import 'package:acceptance_app/models/car_info.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/models/car_info.dart';
 
 class CarSelectionCard extends StatelessWidget {
   final CarInfo car;
@@ -9,7 +9,12 @@ class CarSelectionCard extends StatelessWidget {
   final VoidCallback onRemove;
 
   const CarSelectionCard({
-    required this.car, required this.isSelected, required this.onSelect, required this.onEdit, required this.onRemove, super.key,
+    required this.car,
+    required this.isSelected,
+    required this.onSelect,
+    required this.onEdit,
+    required this.onRemove,
+    super.key,
   });
 
   @override
@@ -38,7 +43,7 @@ class CarSelectionCard extends StatelessWidget {
                   car.year,
                   style: TextStyle(
                     fontSize: 20,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w700,
                     color: isSelected ? const Color(0xFF0046B9) : Colors.black,
                   ),
@@ -47,7 +52,7 @@ class CarSelectionCard extends StatelessWidget {
                   '${car.make}-${car.model}',
                   style: TextStyle(
                     fontSize: 20,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w700,
                     color: isSelected ? const Color(0xFF0046B9) : Colors.black,
                   ),
@@ -58,7 +63,7 @@ class CarSelectionCard extends StatelessWidget {
                   style: TextStyle(
                     color: isSelected ? const Color(0xFF0046B9) : Colors.black,
                     fontSize: 14,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                   ),
                 ),
               ],
@@ -87,7 +92,7 @@ class CarSelectionCard extends StatelessWidget {
                               ? const Color(0xFF0046B9)
                               : Colors.black,
                           fontSize: 14,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                         ),
                       ),
                     ),
@@ -111,7 +116,7 @@ class CarSelectionCard extends StatelessWidget {
                               ? const Color(0xFF0046B9)
                               : Colors.black,
                           fontSize: 14,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                         ),
                       ),
                     ),
@@ -167,7 +172,7 @@ class CarSelectionCard extends StatelessWidget {
                   style: TextStyle(
                     color: isSelected ? const Color(0xFF0046B9) : Colors.black,
                     fontSize: 14,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                   ),
                 ),
               ],

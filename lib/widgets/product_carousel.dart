@@ -1,6 +1,7 @@
+import 'package:acceptance_app/widgets/insproducts/motorcycle_insurance_page.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/widgets/insproducts/motorcycle_insurance_page.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/theme_provider.dart';
 
 class ProductCarousel extends StatelessWidget {

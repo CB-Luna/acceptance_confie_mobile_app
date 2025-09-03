@@ -1,13 +1,13 @@
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/pages/id_card_page.dart';
+import 'package:acceptance_app/pages/webview_page.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/policy_logo_utils.dart';
+import 'package:acceptance_app/utils/policy_type_icon_utils.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/pages/id_card_page.dart';
-import 'package:freeway_app/pages/webview_page.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/policy_logo_utils.dart';
-import 'package:freeway_app/utils/policy_type_icon_utils.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class PolicyCard extends StatefulWidget {
@@ -125,7 +125,7 @@ class _PolicyCardState extends State<PolicyCard>
                         policyNumber,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontSize:
                               responsiveFontSizes.policyCardSubtitle(context),
                           fontWeight: FontWeight.w600,
@@ -218,7 +218,7 @@ class _PolicyCardState extends State<PolicyCard>
                     Text(
                       nextPaymentDate ?? 'N/A',
                       style: TextStyle(
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontSize: responsiveFontSizes.bodyMedium(
                           context,
                         ), // Reducido para asegurar que quepa
@@ -280,7 +280,7 @@ class _PolicyCardState extends State<PolicyCard>
                           context.translate('home.policyCard.idCard'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontSize:
                                 responsiveFontSizes.policyCardButton(context),
                             fontWeight: FontWeight.w700,
@@ -315,7 +315,7 @@ class _PolicyCardState extends State<PolicyCard>
                           context.translate('home.policyCard.submitClaim'),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontSize:
                                 responsiveFontSizes.policyCardButton(context),
                             fontWeight: FontWeight.w700,
@@ -417,7 +417,7 @@ class _PolicyCardState extends State<PolicyCard>
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontFamily: 'Open Sans',
+                                        fontFamily: 'Lato',
                                         fontSize: responsiveFontSizes
                                             .policyCardButtonBig(context),
                                         fontWeight: FontWeight.w700,

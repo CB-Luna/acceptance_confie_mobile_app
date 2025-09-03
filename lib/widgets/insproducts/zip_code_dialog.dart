@@ -1,6 +1,6 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ZipCodeDialog extends StatefulWidget {
   final String? initialZipCode;
@@ -133,7 +133,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     'vehicleInsurance.location.zipCodeDialogTitle',
                   ),
                   style: TextStyle(
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.getTitleTextColor(context),
@@ -147,7 +147,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     'vehicleInsurance.location.zipCodeDialogMessage',
                   ),
                   style: TextStyle(
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontSize: 14,
                     color: AppTheme.getSubtitleTextColor(context),
                   ),
@@ -185,7 +185,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                       ),
                     ),
                     style: const TextStyle(
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontSize: 16,
                     ),
                   ),
@@ -210,7 +210,7 @@ class _ZipCodeDialogState extends State<ZipCodeDialog> {
                     context
                         .translate('vehicleInsurance.location.continueButton'),
                     style: const TextStyle(
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.white,

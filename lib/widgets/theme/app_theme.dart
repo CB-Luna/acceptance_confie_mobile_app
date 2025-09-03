@@ -1,42 +1,72 @@
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
+
+// Paleta de colores corporativa de Acceptance
 
 class AppTheme {
+  // Colores principales
+  static const Color acceptanceBlue =
+      Color(0xFF001689); // HEX: #001689, RGB: 0, 22, 137
+  static const Color acceptanceGreen =
+      Color(0xFF3C9C2E); // HEX: #3C9C2E, RGB: 76, 156, 46
+
+  // Colores secundarios
+  static const Color orange =
+      Color(0xFFFA6E1C); // HEX: #FA6E1C, RGB: 250, 110, 28
+  static const Color blackColor =
+      Color(0xFF000000); // HEX: #000000, RGB: 0, 0, 0
+  static const Color coolGray =
+      Color(0xFF616366); // HEX: #616366, RGB: 97, 99, 102
+
+  // Colores de fondo
+  static const Color backgroundGreen = Color(0xFFDBEBD6); // HEX: #DBEBD6
+  static const Color backgroundBlue = Color(0xFFB2BADB); // HEX: #B2BADB
+  static const Color backgroundOrange = Color(0xFFFFE3D1); // HEX: #FFE3D1
+  static const Color backgroundGray = Color(0xFFF2F5F5); // HEX: #F2F5F5
+
+  // Colores adicionales
+  static const Color whiteColor = Colors.white;
+  static const Color redColor = Color(0xFFE53935);
+  static const Color yellowColor = Color(0xFFFFD600);
   // Método para obtener colores según el tema
   static Color getPrimaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF3B82F6) // Azul más claro para modo oscuro
-        : const Color(0xFF0047CC); // Azul original para modo claro
+        ? acceptanceBlue.withValues(
+            alpha: 204,
+          ) // Azul de Acceptance con opacidad para modo oscuro
+        : acceptanceBlue; // Azul de Acceptance para modo claro
   }
 
   static Color getSecondaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF1E5D9B) // Azul más oscuro para modo oscuro
-        : const Color(0xFF0A557A); // Color original para modo claro
+        ? acceptanceGreen.withValues(
+            alpha: 204,
+          ) // Verde de Acceptance con opacidad para modo oscuro
+        : acceptanceGreen; // Verde de Acceptance para modo claro
   }
 
   static Color getBackgroundColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF131826) // Azul muy oscuro para modo oscuro
-        : const Color(0xFFf3f3f9); // Color original para modo claro
+        ? const Color(0xFF131826) // Color oscuro para modo oscuro
+        : backgroundGray; // Gris de fondo para modo claro
   }
 
   static Color getBackgroundHeaderColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF38455D) // Azul muy oscuro para modo oscuro
-        : const Color(0xFF0047CC); // Azul original para modo claro
+        ? const Color(0xFF38455D) // Color oscuro para modo oscuro
+        : acceptanceBlue; // Azul de Acceptance para modo claro
   }
 
   static Color getTextGreyColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color(0xFFABB2BF) // Gris más claro para modo oscuro
-        : const Color(0xFF6B7280); // Color original para modo claro
+        : coolGray; // Cool Gray para modo claro
   }
 
   static Color getDetailsGreyColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color(0xFFABB2BF) // Gris más claro para modo oscuro
-        : const Color(0xFF6B7280); // Color original para modo claro
+        : coolGray; // Cool Gray para modo claro
   }
 
   static Color getCardColor(BuildContext context) {
@@ -48,14 +78,17 @@ class AppTheme {
   static Color getIconColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : const Color(0xFF0A4DA2); // Color azul para iconos en modo claro
+        : acceptanceBlue; // Azul de Acceptance para iconos en modo claro
   }
 
   static Color getBorderColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF3B82F6)
-            .withValues(alpha: 0.5) // Azul con opacidad para modo oscuro
-        : Colors.grey; // Gris para modo claro
+        ? acceptanceBlue.withValues(
+            alpha: 128,
+          ) // Azul de Acceptance con opacidad para modo oscuro
+        : coolGray.withValues(
+            alpha: 128,
+          ); // Cool Gray con opacidad para modo claro
   }
 
   static Color getBrightnessColor(BuildContext context) {
@@ -66,44 +99,46 @@ class AppTheme {
 
   static Color getIconToogleColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? Colors.yellow[600]!
-        : Colors.blue[900]!;
+        ? orange
+        : acceptanceBlue;
   }
 
   static Color getTitleTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : Colors.black;
+        : blackColor;
   }
 
   static Color getIndicatorCurrentIndexCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF3B82F6)
-        : const Color(0xFF0047BB);
+        ? acceptanceBlue.withValues(alpha: 204)
+        : acceptanceBlue;
   }
 
   static Color getIndicatorIndexCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? Colors.white
-        : Colors.black.withAlpha(13);
+        : blackColor.withAlpha(13);
   }
 
   static Color getBlueColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF3B82F6) // Azul más claro para modo oscuro
-        : const Color(0xFF0047CC); // Azul original para modo claro
+        ? acceptanceBlue.withValues(
+            alpha: 204,
+          ) // Azul de Acceptance con opacidad para modo oscuro
+        : acceptanceBlue; // Azul de Acceptance para modo claro
   }
 
   static Color getOrangeColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFFf8A454)
-        : const Color(0xFFC84C14);
+        ? orange.withAlpha(51)
+        : backgroundOrange;
   }
 
   static Color getGreenColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF68A424)
-        : const Color(0xFF78BE00);
+        ? acceptanceGreen.withAlpha(51)
+        : backgroundGreen;
   }
 
   static Color getRedColor(BuildContext context) {
@@ -188,7 +223,8 @@ class AppTheme {
   // Text Styles dinámicos
   static TextStyle getTitleStyle(BuildContext context) {
     return TextStyle(
-      fontWeight: FontWeight.w700,
+      fontFamily: 'Lato',
+      fontWeight: FontWeight.w700, // Bold
       fontSize: 22,
       height: 1.0,
       letterSpacing: 0,
@@ -198,32 +234,37 @@ class AppTheme {
 
   static TextStyle getButtonTextStyle(BuildContext context) {
     return const TextStyle(
+      fontFamily: 'Lato',
       fontSize: 18,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w600, // SemiBold
       height: 22 / 18,
       letterSpacing: 0,
-      color: white,
+      color: whiteColor,
     );
   }
 
   static TextStyle getLinkTextStyle(BuildContext context) {
     return TextStyle(
+      fontFamily: 'Lato',
       fontSize: 14,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w600, // SemiBold
       color: getPrimaryColor(context),
     );
   }
 
   static TextStyle getGreyTextStyle(BuildContext context) {
     return TextStyle(
+      fontFamily: 'Lato',
       color: getTextGreyColor(context),
       fontSize: 14,
+      fontWeight: FontWeight.w300, // Light
     );
   }
 
   // Text Styles constantes para compatibilidad con código existente
   static const TextStyle titleStyle = TextStyle(
-    fontWeight: FontWeight.w700,
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.w700, // Bold
     fontSize: 22,
     height: 1.0,
     letterSpacing: 0,
@@ -231,22 +272,26 @@ class AppTheme {
   );
 
   static const TextStyle buttonTextStyle = TextStyle(
+    fontFamily: 'Lato',
     fontSize: 18,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w600, // SemiBold
     height: 22 / 18,
     letterSpacing: 0,
-    color: white,
+    color: whiteColor,
   );
 
   static const TextStyle linkTextStyle = TextStyle(
+    fontFamily: 'Lato',
     fontSize: 14,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w600, // SemiBold
     color: primaryColor,
   );
 
   static const TextStyle greyTextStyle = TextStyle(
+    fontFamily: 'Lato',
     color: textGreyColor,
     fontSize: 14,
+    fontWeight: FontWeight.w300, // Light
   );
 
   // Input Decoration dinámico
@@ -272,7 +317,7 @@ class AppTheme {
       filled: true,
       fillColor: Theme.of(context).brightness == Brightness.dark
           ? const Color(0xFF162544) // Color oscuro para el fondo del input
-          : white,
+          : whiteColor,
     );
   }
 
@@ -280,7 +325,10 @@ class AppTheme {
   static InputDecoration inputDecoration(
     BuildContext context,
     // ignore: require_trailing_commas
-    {required String labelText, Widget? suffixIcon}) {
+    {
+    required String labelText,
+    Widget? suffixIcon,
+  }) {
     return InputDecoration(
       labelText: labelText,
       labelStyle: TextStyle(
@@ -321,7 +369,7 @@ class AppTheme {
   static ButtonStyle getPrimaryButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
       backgroundColor: getPrimaryColor(context),
-      foregroundColor: AppTheme.white,
+      foregroundColor: whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -335,7 +383,7 @@ class AppTheme {
   static ButtonStyle primaryButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
       backgroundColor: AppTheme.getPrimaryColor(context),
-      foregroundColor: AppTheme.white,
+      foregroundColor: whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

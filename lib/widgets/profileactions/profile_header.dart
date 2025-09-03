@@ -1,7 +1,7 @@
+import 'package:acceptance_app/pages/home_page.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/pages/home_page.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});

@@ -1,10 +1,10 @@
+import 'package:acceptance_app/data/services/web_dialog_service.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/providers/auth_provider.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/services/web_dialog_service.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/providers/auth_provider.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/services/location_service.dart';
@@ -74,7 +74,7 @@ class _BusinessInsuranceGridState extends State<BusinessInsuranceGrid> {
                   style: TextStyle(
                     color: AppTheme.getTitleTextColor(context),
                     fontSize: responsiveFontSizes.titleSmall(context),
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
@@ -229,7 +229,7 @@ class _BusinessInsuranceGridState extends State<BusinessInsuranceGrid> {
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontSize: fontSize,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.getTextGreyColor(context),

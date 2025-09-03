@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/data/models/wallet/wallet_payload.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/data/models/wallet/wallet_payload.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -89,7 +89,8 @@ class GoogleWalletService {
         } else {
           if (context.mounted) {
             throw Exception(
-                '${context.translate('common.error')}: ${context.translate('idCard.cancelToGoogleWallet')}');
+              '${context.translate('common.error')}: ${context.translate('idCard.cancelToGoogleWallet')}',
+            );
           }
         }
       } else {
@@ -98,7 +99,8 @@ class GoogleWalletService {
         developer.log('Respuesta: ${response.body}');
         if (context.mounted) {
           throw Exception(
-              '${context.translate('common.error')}: ${response.statusCode} ${response.reasonPhrase}');
+            '${context.translate('common.error')}: ${response.statusCode} ${response.reasonPhrase}',
+          );
         }
       }
     } catch (e, stackTrace) {

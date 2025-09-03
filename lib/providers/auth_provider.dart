@@ -1,8 +1,8 @@
+import 'package:acceptance_app/data/models/auth/login_response.dart';
+import 'package:acceptance_app/data/models/auth/register_request.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:freeway_app/data/models/auth/login_response.dart';
-import 'package:freeway_app/data/models/auth/register_request.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 
 import '../core/errors/api_error.dart';
 import '../data/services/auth_service.dart';
@@ -331,7 +331,8 @@ class AuthProvider with ChangeNotifier {
       if (response.hasErrors) {
         // Usar el mensaje de error proporcionado por el servidor
         debugPrint(
-            'Error de registro desde servidor: ${response.errorMessage}');
+          'Error de registro desde servidor: ${response.errorMessage}',
+        );
         if (context.mounted) {
           // Usar el mensaje de error tal como viene del servidor
           _errorMessage = response.errorMessage;

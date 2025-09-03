@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class AppInfoPage extends StatefulWidget {
   const AppInfoPage({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../utils/menu/circle_nav_bar.dart';
 import 'policy_header_section.dart';
 
@@ -76,7 +77,7 @@ class _MotorcycleInsurancePageState extends State<MotorcycleInsurancePage> {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -110,7 +111,7 @@ class _MotorcycleInsurancePageState extends State<MotorcycleInsurancePage> {
                       style: TextStyle(
                         color: Color(0xFF0046B9),
                         fontSize: 20,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -141,7 +142,7 @@ class _MotorcycleInsurancePageState extends State<MotorcycleInsurancePage> {
                       'Motorcycle Details',
                       style: TextStyle(
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF0046B9),
                       ),
@@ -290,8 +291,9 @@ class _MotorcycleInsurancePageState extends State<MotorcycleInsurancePage> {
                     EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
               items: List.generate(
-                      11, (index) => (DateTime.now().year - index).toString(),)
-                  .map((String value) {
+                11,
+                (index) => (DateTime.now().year - index).toString(),
+              ).map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),

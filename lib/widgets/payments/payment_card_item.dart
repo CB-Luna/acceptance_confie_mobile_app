@@ -1,5 +1,5 @@
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class PaymentCardItem extends StatelessWidget {
   final String cardNumber;
@@ -83,7 +83,7 @@ class PaymentCardItem extends StatelessWidget {
                     style: TextStyle(
                       color: AppTheme.getTitleTextColor(context),
                       fontSize: 16,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -93,7 +93,7 @@ class PaymentCardItem extends StatelessWidget {
                     style: TextStyle(
                       color: AppTheme.getSubtitleTextColor(context),
                       fontSize: 14,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w400,
                     ),
                   ),

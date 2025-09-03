@@ -1,5 +1,5 @@
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {

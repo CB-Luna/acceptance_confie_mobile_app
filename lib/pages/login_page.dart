@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';

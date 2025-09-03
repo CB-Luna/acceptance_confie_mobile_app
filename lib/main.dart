@@ -1,6 +1,6 @@
+import 'package:acceptance_app/locatordevice/presentation/pages/location_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:freeway_app/locatordevice/presentation/pages/location_details_view.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/add_insurance.dart';

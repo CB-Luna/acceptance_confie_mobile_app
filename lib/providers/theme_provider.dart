@@ -52,11 +52,30 @@ class ThemeProvider with ChangeNotifier {
             unselectedItemColor: _darkTextGreyColor,
           ),
           textTheme: const TextTheme(
-            bodyLarge: TextStyle(color: _darkTextColor),
-            bodyMedium: TextStyle(color: _darkTextGreyColor),
-            titleLarge: TextStyle(color: _darkTextColor),
-            titleMedium: TextStyle(color: _darkTextColor),
-            titleSmall: TextStyle(color: _darkTextGreyColor),
+            // Títulos principales - Bold
+            displayLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _darkTextColor),
+            displayMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _darkTextColor),
+            displaySmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _darkTextColor),
+            
+            // Subtítulos - Semibold
+            headlineLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextColor),
+            headlineMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextColor),
+            headlineSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextColor),
+            
+            // Títulos de sección - Semibold
+            titleLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextColor),
+            titleMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextColor),
+            titleSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _darkTextGreyColor),
+            
+            // Cuerpo de texto - Regular
+            bodyLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _darkTextColor),
+            bodyMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _darkTextGreyColor),
+            bodySmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _darkTextGreyColor),
+            
+            // Elementos secundarios - Light
+            labelLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _darkTextColor),
+            labelMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _darkTextGreyColor),
+            labelSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _darkTextGreyColor),
           ),
           iconTheme: const IconThemeData(
             color: _darkIconColor,
@@ -132,11 +151,30 @@ class ThemeProvider with ChangeNotifier {
             unselectedItemColor: _lightTextGreyColor,
           ),
           textTheme: const TextTheme(
-            bodyLarge: TextStyle(color: _lightTextColor),
-            bodyMedium: TextStyle(color: _lightTextGreyColor),
-            titleLarge: TextStyle(color: _lightTextColor),
-            titleMedium: TextStyle(color: _lightTextColor),
-            titleSmall: TextStyle(color: _lightTextGreyColor),
+            // Títulos principales - Bold
+            displayLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _lightTextColor),
+            displayMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _lightTextColor),
+            displaySmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w700, color: _lightTextColor),
+            
+            // Subtítulos - Semibold
+            headlineLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextColor),
+            headlineMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextColor),
+            headlineSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextColor),
+            
+            // Títulos de sección - Semibold
+            titleLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextColor),
+            titleMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextColor),
+            titleSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w600, color: _lightTextGreyColor),
+            
+            // Cuerpo de texto - Regular
+            bodyLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _lightTextColor),
+            bodyMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _lightTextGreyColor),
+            bodySmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w400, color: _lightTextGreyColor),
+            
+            // Elementos secundarios - Light
+            labelLarge: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _lightTextColor),
+            labelMedium: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _lightTextGreyColor),
+            labelSmall: TextStyle(fontFamily: 'Lato', fontWeight: FontWeight.w300, color: _lightTextGreyColor),
           ),
           iconTheme: const IconThemeData(
             color: _lightIconColor,

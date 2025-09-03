@@ -1,8 +1,8 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/insproducts/personal_protection_grid.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/insproducts/personal_protection_grid.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import 'additional_products_grid.dart';
 import 'business_insurance_grid.dart';
@@ -87,7 +87,7 @@ class InsuranceCard extends StatelessWidget {
                     child: Text(
                       title,
                       style: TextStyle(
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontSize: responsiveFontSizes.titleSmall(context),
                         fontWeight: FontWeight.w600,
                         color: AppTheme.getTitleTextColor(context),

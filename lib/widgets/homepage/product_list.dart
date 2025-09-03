@@ -1,7 +1,7 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
@@ -248,7 +248,7 @@ class ProductCard extends StatelessWidget {
                 child: Text(
                   product.title,
                   style: TextStyle(
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontSize: responsiveFontSizes.bodyTextLocation(context),
                     fontWeight: FontWeight.w600,
                     color: AppTheme.black,

@@ -1,6 +1,6 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class BillingInfoCard extends StatelessWidget {
   final String name;
@@ -47,7 +47,7 @@ class BillingInfoCard extends StatelessWidget {
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -63,7 +63,7 @@ class BillingInfoCard extends StatelessWidget {
                           style: TextStyle(
                             color: AppTheme.getTitleTextColor(context),
                             fontSize: 16,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -73,7 +73,7 @@ class BillingInfoCard extends StatelessWidget {
                           style: TextStyle(
                             color: AppTheme.getSubtitleTextColor(context),
                             fontSize: 16,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -97,7 +97,7 @@ class BillingInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.getOrangeColor(context),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                     height: 24 / 16,
                   ),
@@ -107,7 +107,7 @@ class BillingInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.getOrangeColor(context),
                     fontSize: 20,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w700,
                     height: 18 / 20,
                   ),

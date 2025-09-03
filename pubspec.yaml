@@ -1,4 +1,4 @@
-name: freeway_app
+name: acceptance_app
 description: "Freeway Insurance Application"
 publish_to: "none"
 
@@ -66,11 +66,22 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: Open Sans
+    - family: Lato
       fonts:
-        - asset: assets/fonts/OpenSans-Regular.ttf
-        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/lato/Lato-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/lato/Lato-Light.ttf
+          weight: 300
+        - asset: assets/fonts/lato/Lato-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/lato/Lato-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/lato/Lato-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/lato/Lato-Bold.ttf
           weight: 700
+        - asset: assets/fonts/lato/Lato-Black.ttf
+          weight: 900
 
   assets:
     - assets/prefix.png
@@ -103,12 +114,12 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/Freewayfavi2.png"
+  image_path: "assets/auth/Freewayfavi2.png"
   min_sdk_android: 21
   remove_alpha_ios: true
   adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/auth/Freewayfavi2.png"
-  name: "freeway"
+  name: "acceptance"
   web:
     generate: true
     image_path: "assets/auth/Freewayfavi2.png"

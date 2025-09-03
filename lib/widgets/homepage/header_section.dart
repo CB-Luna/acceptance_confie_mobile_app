@@ -1,6 +1,6 @@
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:rive_animated_icon/rive_animated_icon.dart';
 
@@ -101,10 +101,11 @@ class _HeaderSectionState extends State<HeaderSection> {
   Future<void> _loadUserName() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final savedName = await authProvider.getFullName();
-    
+
     if (mounted) {
       setState(() {
-        _userName = savedName ?? (authProvider.currentUser?.fullName ?? 'Freeway User');
+        _userName =
+            savedName ?? (authProvider.currentUser?.fullName ?? 'Freeway User');
         _isLoading = false;
       });
     }

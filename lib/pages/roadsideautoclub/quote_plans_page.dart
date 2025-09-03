@@ -1,8 +1,8 @@
+import 'package:acceptance_app/locatordevice/locator_device_module.dart';
+import 'package:acceptance_app/pages/add_insurance.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/locator_device_module.dart';
-import 'package:freeway_app/pages/add_insurance.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../../models/quote_plan.dart';
@@ -130,7 +130,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               context.translate('quotePlans.selectPlan'),
               style: TextStyle(
                 fontSize: 18,
-                fontFamily: 'Open Sans',
+                fontFamily: 'Lato',
                 fontWeight: FontWeight.w600,
                 color: AppTheme.getPrimaryColor(context),
               ),
@@ -139,7 +139,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
               context.translate('quotePlans.selectPlanSubtitle'),
               style: TextStyle(
                 fontSize: 16,
-                fontFamily: 'Open Sans',
+                fontFamily: 'Lato',
                 fontWeight: FontWeight.w400,
                 color: AppTheme.getTextGreyColor(context),
               ),
@@ -258,7 +258,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
                   context.translate('quotePlans.monthly'),
                   style: TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.bold,
                     color: _isMonthly
                         ? AppTheme.white
@@ -280,7 +280,7 @@ class _QuotePlansPageState extends State<QuotePlansPage> {
                   context.translate('quotePlans.annually'),
                   style: TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.bold,
                     color: !_isMonthly
                         ? AppTheme.white

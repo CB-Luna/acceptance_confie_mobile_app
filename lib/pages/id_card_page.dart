@@ -1,19 +1,19 @@
 import 'dart:io' show Platform;
 
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/data/services/apple_wallet_service.dart';
+import 'package:acceptance_app/data/services/google_wallet_service.dart';
+import 'package:acceptance_app/locatordevice/locator_device_module.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/pages/add_insurance.dart';
+import 'package:acceptance_app/providers/auth_provider.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/id_card_printer.dart';
+import 'package:acceptance_app/utils/menu/circle_nav_bar.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/id_card/id_card_widget.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/data/services/apple_wallet_service.dart';
-import 'package:freeway_app/data/services/google_wallet_service.dart';
-import 'package:freeway_app/locatordevice/locator_device_module.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/pages/add_insurance.dart';
-import 'package:freeway_app/providers/auth_provider.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/id_card_printer.dart';
-import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/id_card/id_card_widget.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class IdCardPage extends StatefulWidget {

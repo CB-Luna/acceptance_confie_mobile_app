@@ -1,8 +1,8 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 // Color constants
 const colorGreen = Color(0xFF64A520);
@@ -80,7 +80,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                     style: TextStyle(
                       color: AppTheme.getPrimaryColor(context),
                       fontSize: 16,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -132,8 +132,10 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                           formKey: formKey,
                           inputConfiguration: InputConfiguration(
                             cardNumberDecoration: InputDecoration(
-                              labelText: context.translate('payment.cardForm.cardNumber'),
-                              hintText: context.translate('payment.cardForm.cardNumberHint'),
+                              labelText: context
+                                  .translate('payment.cardForm.cardNumber'),
+                              hintText: context
+                                  .translate('payment.cardForm.cardNumberHint'),
                               labelStyle: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
                               ),
@@ -148,8 +150,10 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                               ),
                             ),
                             expiryDateDecoration: InputDecoration(
-                              labelText: context.translate('payment.cardForm.expiration'),
-                              hintText: context.translate('payment.cardForm.expirationHint'),
+                              labelText: context
+                                  .translate('payment.cardForm.expiration'),
+                              hintText: context
+                                  .translate('payment.cardForm.expirationHint'),
                               labelStyle: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
                               ),
@@ -164,8 +168,10 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                               ),
                             ),
                             cvvCodeDecoration: InputDecoration(
-                              labelText: context.translate('payment.cardForm.cvv'),
-                              hintText: context.translate('payment.cardForm.cvvHint'),
+                              labelText:
+                                  context.translate('payment.cardForm.cvv'),
+                              hintText:
+                                  context.translate('payment.cardForm.cvvHint'),
                               labelStyle: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
                               ),
@@ -180,7 +186,8 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                               ),
                             ),
                             cardHolderDecoration: InputDecoration(
-                              labelText: context.translate('payment.cardForm.nameOnCard'),
+                              labelText: context
+                                  .translate('payment.cardForm.nameOnCard'),
                               labelStyle: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
                               ),
@@ -215,14 +222,18 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
-                                    fontFamily: 'Open Sans',
+                                    fontFamily: 'Lato',
                                   ),
                                   children: [
                                     TextSpan(
-                                      text: context.translate('payment.cardForm.acceptTerms'),
+                                      text: context.translate(
+                                        'payment.cardForm.acceptTerms',
+                                      ),
                                     ),
                                     TextSpan(
-                                      text: context.translate('payment.cardForm.termsAndConditions'),
+                                      text: context.translate(
+                                        'payment.cardForm.termsAndConditions',
+                                      ),
                                       style: TextStyle(
                                         color:
                                             AppTheme.getPrimaryColor(context),
@@ -274,7 +285,7 @@ class _AddPaymentFormState extends State<AddPaymentForm> {
                               style: const TextStyle(
                                 color: AppTheme.white,
                                 fontSize: 16,
-                                fontFamily: 'Open Sans',
+                                fontFamily: 'Lato',
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

@@ -1,9 +1,9 @@
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/models/country_phone_model.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/custom/country_phone_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/models/country_phone_model.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/custom/country_phone_selector.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';

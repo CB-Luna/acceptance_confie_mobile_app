@@ -1,13 +1,13 @@
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/pages/app_info_page.dart';
+import 'package:acceptance_app/pages/language_selection_page.dart';
+import 'package:acceptance_app/pages/password_change_page.dart';
+import 'package:acceptance_app/pages/user_data_page.dart';
+import 'package:acceptance_app/providers/language_provider.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/pages/app_info_page.dart';
-import 'package:freeway_app/pages/language_selection_page.dart';
-import 'package:freeway_app/pages/password_change_page.dart';
-import 'package:freeway_app/pages/user_data_page.dart';
-import 'package:freeway_app/providers/language_provider.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/biometric_provider.dart';

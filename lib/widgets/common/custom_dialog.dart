@@ -1,5 +1,5 @@
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 /// Un diálogo personalizado reutilizable que se puede usar en toda la aplicación.
 ///
@@ -34,7 +34,7 @@ class CustomDialog {
           title: Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -43,7 +43,7 @@ class CustomDialog {
           content: Text(
             message,
             style: TextStyle(
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontSize: 14,
               color: AppTheme.getTextGreyColor(context),
             ),
@@ -63,7 +63,7 @@ class CustomDialog {
                   negativeButtonText,
                   style: TextStyle(
                     color: AppTheme.getDetailsGreyColor(context),
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
@@ -80,7 +80,7 @@ class CustomDialog {
                 positiveButtonText,
                 style: TextStyle(
                   color: AppTheme.getPrimaryColor(context),
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),

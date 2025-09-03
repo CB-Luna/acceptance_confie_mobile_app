@@ -1,20 +1,20 @@
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 
 class SubmitClaimHeader extends StatelessWidget {
   const SubmitClaimHeader({super.key});
-  
+
   // Método para construir un avatar con las iniciales del usuario
   Widget _buildInitialsAvatar(String fullName, {required double size}) {
     // Obtener las iniciales del nombre completo
     final initials = _getInitials(fullName);
-    
+
     // Generar un color basado en el nombre (para que sea consistente para el mismo usuario)
     final color = _getAvatarColor(fullName);
-    
+
     return Container(
       width: size,
       height: size,
@@ -34,11 +34,11 @@ class SubmitClaimHeader extends StatelessWidget {
       ),
     );
   }
-  
+
   // Método para obtener las iniciales del nombre
   String _getInitials(String fullName) {
     if (fullName.isEmpty) return '';
-    
+
     final nameParts = fullName.trim().split(' ');
     if (nameParts.length >= 2) {
       // Si hay al menos dos partes en el nombre, tomar la primera letra de cada una
@@ -47,17 +47,18 @@ class SubmitClaimHeader extends StatelessWidget {
       // Si solo hay una parte, tomar la primera letra
       return nameParts[0][0].toUpperCase();
     }
-    
+
     return 'FW';
   }
-  
+
   // Método para generar un color basado en el nombre
   Color _getAvatarColor(String fullName) {
     if (fullName.isEmpty) return Colors.blue;
-    
+
     // Usar la suma de los códigos ASCII de los caracteres para generar un número
-    final int hashCode = fullName.codeUnits.fold(0, (prev, element) => prev + element);
-    
+    final int hashCode =
+        fullName.codeUnits.fold(0, (prev, element) => prev + element);
+
     // Lista de colores para los avatares
     final colors = [
       Colors.blue[700]!,
@@ -69,7 +70,7 @@ class SubmitClaimHeader extends StatelessWidget {
       Colors.pink[700]!,
       Colors.indigo[700]!,
     ];
-    
+
     // Seleccionar un color basado en el hash del nombre
     return colors[hashCode % colors.length];
   }
@@ -107,7 +108,7 @@ class SubmitClaimHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Color(0xFF0047BB),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -133,8 +134,9 @@ class SubmitClaimHeader extends StatelessWidget {
                 child: Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     final avatar = authProvider.currentUser?.avatar;
-                    final fullName = authProvider.currentUser?.fullName ?? 'Freeway User';
-                    
+                    final fullName =
+                        authProvider.currentUser?.fullName ?? 'Freeway User';
+
                     if (avatar != null && avatar.isNotEmpty) {
                       return CircleAvatar(
                         radius: 16,

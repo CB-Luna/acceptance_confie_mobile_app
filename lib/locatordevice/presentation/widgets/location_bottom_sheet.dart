@@ -1,6 +1,6 @@
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 
 import '../../domain/entities/office.dart';
 import '../bloc/location_state.dart';

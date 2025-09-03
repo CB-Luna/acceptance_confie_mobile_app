@@ -1,7 +1,7 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BluefireClaimCard extends StatelessWidget {
@@ -43,7 +43,7 @@ class BluefireClaimCard extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.getPrimaryColor(context),
               fontSize: responsiveFontSizes.titleSmall(context),
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontWeight: FontWeight.w700,
             ),
             textAlign: TextAlign.center,
@@ -55,7 +55,7 @@ class BluefireClaimCard extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
               fontSize: responsiveFontSizes.bodyMedium(context),
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontWeight: FontWeight.w600,
               letterSpacing: 0,
             ),
@@ -70,7 +70,7 @@ class BluefireClaimCard extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
                     fontSize: responsiveFontSizes.bodyMedium(context),
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -82,7 +82,7 @@ class BluefireClaimCard extends StatelessWidget {
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
                         fontSize: responsiveFontSizes.bodySmall(context),
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -102,7 +102,7 @@ class BluefireClaimCard extends StatelessWidget {
                   style: TextStyle(
                     color: AppTheme.getTextGreyColor(context),
                     fontSize: responsiveFontSizes.bodyMedium(context),
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -114,7 +114,7 @@ class BluefireClaimCard extends StatelessWidget {
                       style: TextStyle(
                         color: AppTheme.getPrimaryColor(context),
                         fontSize: responsiveFontSizes.bodySmall(context),
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -153,7 +153,7 @@ class BluefireClaimCard extends StatelessWidget {
                 style: TextStyle(
                   color: AppTheme.getTextGreyColor(context),
                   fontSize: responsiveFontSizes.bodyMedium(context),
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -167,7 +167,7 @@ class BluefireClaimCard extends StatelessWidget {
             style: TextStyle(
               color: AppTheme.getTitleTextColor(context),
               fontSize: responsiveFontSizes.bodySmall(context),
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.center,

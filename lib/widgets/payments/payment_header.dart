@@ -23,7 +23,7 @@ class PaymentHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -39,7 +39,7 @@ class PaymentHeader extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w700,
                   ),
                 ),

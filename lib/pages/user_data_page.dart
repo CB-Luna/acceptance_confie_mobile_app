@@ -1,14 +1,14 @@
+import 'package:acceptance_app/data/services/auth_service.dart';
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/models/country_phone_model.dart';
+import 'package:acceptance_app/pages/profile_page.dart';
+import 'package:acceptance_app/providers/auth_provider.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/contactcenter/request_call.dart';
+import 'package:acceptance_app/widgets/custom/country_phone_selector.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/services/auth_service.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/models/country_phone_model.dart';
-import 'package:freeway_app/pages/profile_page.dart';
-import 'package:freeway_app/providers/auth_provider.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/contactcenter/request_call.dart';
-import 'package:freeway_app/widgets/custom/country_phone_selector.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -172,7 +172,8 @@ class _UserDataPageState extends State<UserDataPage> {
 
         if (mounted) {
           // Verificar si se requiere verificación de teléfono
-          final bool phoneConfirmationSent = response['phoneConfirmationSent'] ?? false;
+          final bool phoneConfirmationSent =
+              response['phoneConfirmationSent'] ?? false;
 
           if (phoneConfirmationSent) {
             // Si se requiere verificación, mostrar el diálogo
@@ -360,7 +361,7 @@ class _UserDataPageState extends State<UserDataPage> {
             birthDate: formattedBirthDate,
             policyNumber: _policyNumberController.text,
           );
-          
+
           // Continuamos con el flujo normal ya que estamos guardando todos los cambios
 
           // Si no hay excepciones, consideramos que fue exitoso

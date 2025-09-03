@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../pages/roadsideautoclub/quote_plans_page.dart';
 
 class OptionsCoverCard extends StatelessWidget {
@@ -9,7 +10,11 @@ class OptionsCoverCard extends StatelessWidget {
   final bool isSelected;
 
   const OptionsCoverCard({
-    required this.logoPath, required this.price, required this.onCoverageDetails, required this.onContinue, super.key,
+    required this.logoPath,
+    required this.price,
+    required this.onCoverageDetails,
+    required this.onContinue,
+    super.key,
     this.isSelected = false,
   });
 
@@ -59,7 +64,7 @@ class OptionsCoverCard extends StatelessWidget {
                           '\$',
                           style: TextStyle(
                             fontSize: 24,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
                           ),
@@ -68,7 +73,7 @@ class OptionsCoverCard extends StatelessWidget {
                           price.toStringAsFixed(2),
                           style: const TextStyle(
                             fontSize: 24,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                           ),
@@ -78,7 +83,7 @@ class OptionsCoverCard extends StatelessWidget {
                           '/mo*',
                           style: TextStyle(
                             fontSize: 14,
-                            fontFamily: 'Open Sans',
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
@@ -89,7 +94,7 @@ class OptionsCoverCard extends StatelessWidget {
                       'Average in your state*',
                       style: TextStyle(
                         fontSize: 12,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         color: Colors.grey[800],
                       ),
                     ),
@@ -109,7 +114,7 @@ class OptionsCoverCard extends StatelessWidget {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 14,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -148,7 +153,7 @@ class OptionsCoverCard extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w700,
                 ),
               ),

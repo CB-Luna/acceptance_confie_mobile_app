@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 // Remove this import
 // import 'package:flutter_svg/flutter_svg.dart';
-import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
-import 'package:freeway_app/widgets/insproducts/policy_header_section.dart';
+import 'package:acceptance_app/utils/menu/circle_nav_bar.dart';
+import 'package:acceptance_app/widgets/insproducts/policy_header_section.dart';
+import 'package:flutter/material.dart';
 
 class AutoInsurancePage extends StatefulWidget {
   final int initialMenuIndex;
@@ -86,7 +86,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -120,7 +120,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                       style: TextStyle(
                         color: Color(0xFF0046B9),
                         fontSize: 20,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -151,7 +151,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                       'Auto Details',
                       style: TextStyle(
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF0046B9),
                       ),
@@ -178,16 +178,23 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                                   hintText: 'Select',
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 12,),
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
                                 ),
                                 items: const [
                                   DropdownMenuItem(
-                                      value: 'valid', child: Text('Valid'),),
+                                    value: 'valid',
+                                    child: Text('Valid'),
+                                  ),
                                   DropdownMenuItem(
-                                      value: 'expired', child: Text('Expired'),),
+                                    value: 'expired',
+                                    child: Text('Expired'),
+                                  ),
                                   DropdownMenuItem(
-                                      value: 'suspended',
-                                      child: Text('Suspended'),),
+                                    value: 'suspended',
+                                    child: Text('Suspended'),
+                                  ),
                                 ],
                                 onChanged: (value) {
                                   setState(() {
@@ -218,13 +225,16 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                                   hintText: 'Select',
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 12,),
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
                                 ),
                                 items: List.generate(30, (index) {
                                   return DropdownMenuItem(
                                     value: (index + 1).toString(),
                                     child: Text(
-                                        '${index + 1} ${index == 0 ? 'year' : 'years'}',),
+                                      '${index + 1} ${index == 0 ? 'year' : 'years'}',
+                                    ),
                                   );
                                 }),
                                 onChanged: (value) {
@@ -243,7 +253,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                       'Valid Auto license/endorsement?',
                       style: TextStyle(
                         fontSize: 14,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                       ),
                     ),
                     Row(
@@ -278,7 +288,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                       'Does driver require an SR-22 filing?',
                       style: TextStyle(
                         fontSize: 14,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                       ),
                     ),
                     Row(
@@ -313,7 +323,7 @@ class _AutoInsurancePageState extends State<AutoInsurancePage> {
                       'Has driver completed a driver training or improvement course in the last 3 years?',
                       style: TextStyle(
                         fontSize: 14,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                       ),
                     ),
                     Row(

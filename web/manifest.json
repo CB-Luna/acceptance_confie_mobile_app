@@ -1,6 +1,6 @@
 {
-    "name": "confieapp",
-    "short_name": "confieapp",
+    "name": "acceptanceapp",
+    "short_name": "acceptanceapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",

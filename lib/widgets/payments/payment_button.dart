@@ -1,5 +1,5 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 
 class PaymentButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -27,7 +27,7 @@ class PaymentButton extends StatelessWidget {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
-            fontFamily: 'Open Sans',
+            fontFamily: 'Lato',
             fontWeight: FontWeight.w700,
           ),
         ),

@@ -1,5 +1,6 @@
+import 'package:acceptance_app/utils/menu/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
+
 import 'options_cover_card.dart';
 
 class OptionsCoverPage extends StatefulWidget {
@@ -65,7 +66,7 @@ class _OptionsCoverPageState extends State<OptionsCoverPage> {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -101,7 +102,7 @@ class _OptionsCoverPageState extends State<OptionsCoverPage> {
                         style: TextStyle(
                           color: Color(0xFF0046B9),
                           fontSize: 20,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -114,7 +115,7 @@ class _OptionsCoverPageState extends State<OptionsCoverPage> {
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -182,7 +183,7 @@ class _OptionsCoverPageState extends State<OptionsCoverPage> {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 14,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -1,6 +1,7 @@
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
+
 import '../../widgets/theme/app_theme.dart';
 
 class PolicyInactiveCard extends StatelessWidget {
@@ -19,10 +20,11 @@ class PolicyInactiveCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Usar policyNumber como número de póliza a mostrar
     final String displayNumber = policy?.policyNumber ?? policyNumber;
-    
+
     // Determinar el tipo de póliza basado en lineOfBusiness
-    final String policyType = policy?.lineOfBusiness != null ?
-        _getPolicyTypeFromLineOfBusiness(policy?.lineOfBusiness ?? '') : 'My Auto Policy';
+    final String policyType = policy?.lineOfBusiness != null
+        ? _getPolicyTypeFromLineOfBusiness(policy?.lineOfBusiness ?? '')
+        : 'My Auto Policy';
 
     return Card(
       margin: EdgeInsets.zero,
@@ -63,7 +65,7 @@ class PolicyInactiveCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontSize:
                               responsiveFontSizes.policyCardSubtitle(context),
                           fontWeight: FontWeight.w600,
@@ -133,7 +135,7 @@ class PolicyInactiveCard extends StatelessWidget {
       ),
     );
   }
-  
+
   // Método para obtener el tipo de póliza basado en lineOfBusiness
   String _getPolicyTypeFromLineOfBusiness(String lineOfBusiness) {
     switch (lineOfBusiness.toLowerCase()) {

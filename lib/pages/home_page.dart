@@ -1,10 +1,10 @@
+import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/homepage/card_swiper.dart';
+import 'package:acceptance_app/widgets/homepage/contact_agent.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/presentation/widgets/loading_view.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/homepage/card_swiper.dart';
-import 'package:freeway_app/widgets/homepage/contact_agent.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../locatordevice/locator_device_module.dart';
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                 args: [_userName],
                               ),
                               style: TextStyle(
-                                fontFamily: 'Open Sans',
+                                fontFamily: 'Lato',
                                 fontSize:
                                     responsiveFontSizes.titleMedium(context),
                                 fontWeight: FontWeight.w700,
@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                             context.translate('home.addProducts'),
                             style: TextStyle(
                               color: AppTheme.getSubtitleTextColor(context),
-                              fontFamily: 'Open Sans',
+                              fontFamily: 'Lato',
                               fontSize: responsiveFontSizes.bodyLarge(context),
                               fontWeight: FontWeight.w600,
                               height: 22 / 14,

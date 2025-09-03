@@ -1,9 +1,9 @@
+import 'package:acceptance_app/models/country_phone_model.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:freeway_app/models/country_phone_model.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 /// Widget personalizado para seleccionar un país y número de teléfono
 /// con prioridad para México, Estados Unidos y Canadá

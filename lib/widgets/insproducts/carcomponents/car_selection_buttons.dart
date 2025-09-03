@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'auto_insurance_page.dart';
 
 class CarSelectionButtons extends StatelessWidget {
@@ -34,7 +35,7 @@ class CarSelectionButtons extends StatelessWidget {
                 'Add New Car',
                 style: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -60,7 +61,7 @@ class CarSelectionButtons extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
                 ),
               ),

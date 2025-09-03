@@ -1,7 +1,7 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../contactcenter/request_call.dart';
 
@@ -56,7 +56,7 @@ class ContactAgent extends StatelessWidget {
                                   .translate('home.contactAgent.needChanges'),
                               style: TextStyle(
                                 color: AppTheme.getOrangeColor(context),
-                                fontFamily: 'Open Sans',
+                                fontFamily: 'Lato',
                                 fontSize:
                                     responsiveFontSizes.bodyMedium(context),
                                 fontWeight: FontWeight.w600,
@@ -70,7 +70,7 @@ class ContactAgent extends StatelessWidget {
                               ),
                               style: TextStyle(
                                 color: AppTheme.getPrimaryColor(context),
-                                fontFamily: 'Open Sans',
+                                fontFamily: 'Lato',
                                 fontSize:
                                     responsiveFontSizes.bodyMedium(context),
                                 fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ class ContactAgent extends StatelessWidget {
                             context.translate('home.contactAgent.needChanges'),
                             style: TextStyle(
                               color: AppTheme.getOrangeColor(context),
-                              fontFamily: 'Open Sans',
+                              fontFamily: 'Lato',
                               fontSize: responsiveFontSizes.bodyMedium(context),
                               fontWeight: FontWeight.w600,
                               height: 1.3,
@@ -140,7 +140,7 @@ class ContactAgent extends StatelessWidget {
                                 .translate('home.contactAgent.contactMyAgent'),
                             style: TextStyle(
                               color: AppTheme.getPrimaryColor(context),
-                              fontFamily: 'Open Sans',
+                              fontFamily: 'Lato',
                               fontSize: responsiveFontSizes.bodyMedium(context),
                               fontWeight: FontWeight.bold,
                               height: 1.3,
@@ -194,7 +194,7 @@ class ContactAgent extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: AppTheme.white,
-            fontFamily: 'Open Sans',
+            fontFamily: 'Lato',
             fontSize: responsiveFontSizes.bodyMedium(context),
             fontWeight: FontWeight.w700,
             height: 1.3,

@@ -1,5 +1,5 @@
+import 'package:acceptance_app/models/car_info.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/models/car_info.dart';
 
 class CarListWidget extends StatelessWidget {
   final List<CarInfo> cars;
@@ -7,7 +7,10 @@ class CarListWidget extends StatelessWidget {
   final Function(String) onCarSelect;
 
   const CarListWidget({
-    required this.cars, required this.selectedVin, required this.onCarSelect, super.key,
+    required this.cars,
+    required this.selectedVin,
+    required this.onCarSelect,
+    super.key,
   });
 
   @override
@@ -28,7 +31,8 @@ class CarListWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: isSelected ? const Color(0xFF0046B9) : Colors.transparent,
+                color:
+                    isSelected ? const Color(0xFF0046B9) : Colors.transparent,
                 width: 2,
               ),
             ),

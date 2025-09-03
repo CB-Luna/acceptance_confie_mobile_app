@@ -1,7 +1,7 @@
+import 'package:acceptance_app/models/car_info.dart';
+import 'package:acceptance_app/pages/home_page.dart';
+import 'package:acceptance_app/utils/menu/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/models/car_info.dart';
-import 'package:freeway_app/pages/home_page.dart';
-import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
 
 import 'auto_insurance_page.dart';
 import 'car_selection_card.dart';
@@ -86,7 +86,7 @@ class _CarSelectionPageState extends State<CarSelectionPage> {
                   style: TextStyle(
                     color: Color(0xFF0046B9),
                     fontSize: 16,
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -116,7 +116,7 @@ class _CarSelectionPageState extends State<CarSelectionPage> {
                     "Let's get started",
                     style: TextStyle(
                       fontSize: 24,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF0046B9),
                     ),
@@ -214,7 +214,7 @@ class _CarSelectionPageState extends State<CarSelectionPage> {
                       style: TextStyle(
                         color: selectedVin == null ? Colors.white : Colors.grey,
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w700, // Bold
                       ),
                     ),
@@ -252,7 +252,7 @@ class _CarSelectionPageState extends State<CarSelectionPage> {
                       style: TextStyle(
                         color: selectedVin != null ? Colors.white : Colors.grey,
                         fontSize: 16,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w700, // Bold
                       ),
                     ),

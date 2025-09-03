@@ -1,5 +1,5 @@
-import 'package:freeway_app/data/models/auth/customer_model.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/data/models/auth/customer_model.dart';
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
 
 class User {
   final String username;

@@ -1,9 +1,9 @@
+import 'package:acceptance_app/locatordevice/locator_device_module.dart';
+import 'package:acceptance_app/pages/home_page.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/circle_nav_bar.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/locatordevice/locator_device_module.dart';
-import 'package:freeway_app/pages/home_page.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/menu/circle_nav_bar.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 class QuoteCallcenter extends StatefulWidget {
   final String phoneNumber;
@@ -70,7 +70,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                 style: TextStyle(
                   color: AppTheme.getIconColor(context),
                   fontSize: 18,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -99,7 +99,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                     style: TextStyle(
                       color: AppTheme.getPrimaryColor(context),
                       fontSize: 20,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -132,7 +132,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                         context.translate('quoteCallcenter.whatsNext'),
                         style: TextStyle(
                           fontSize: 18,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w600,
                           color: AppTheme.getTitleTextColor(context),
                         ),
@@ -145,7 +145,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                         context.translate('quoteCallcenter.representative'),
                         style: TextStyle(
                           fontSize: 16,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           color: AppTheme.getTitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
@@ -159,7 +159,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                               _phoneController.text,
                               style: TextStyle(
                                 fontSize: 18,
-                                fontFamily: 'Open Sans',
+                                fontFamily: 'Lato',
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.getSubtitleTextColor(context),
                               ),
@@ -172,7 +172,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                         context.translate('quoteCallcenter.isCorrect'),
                         style: TextStyle(
                           fontSize: 16,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w500,
                           color: AppTheme.getTitleTextColor(context),
                         ),
@@ -185,7 +185,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
                         context.translate('quoteCallcenter.provideCorrect'),
                         style: TextStyle(
                           fontSize: 14,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           color: AppTheme.getSubtitleTextColor(context),
                         ),
                         textAlign: TextAlign.center,
@@ -255,7 +255,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
       ),
       style: const TextStyle(
         fontSize: 16,
-        fontFamily: 'Open Sans',
+        fontFamily: 'Lato',
       ),
     );
   }
@@ -285,7 +285,7 @@ class _QuoteCallcenterState extends State<QuoteCallcenter> {
         style: const TextStyle(
           color: AppTheme.white,
           fontSize: 14,
-          fontFamily: 'Open Sans',
+          fontFamily: 'Lato',
           fontWeight: FontWeight.bold,
         ),
       ),

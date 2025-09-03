@@ -1,7 +1,7 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart' show AppTheme;
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart' show AppTheme;
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 
 import '../../../models/quote_plan.dart';
 import 'quote_callcenter.dart';
@@ -133,7 +133,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                     style: const TextStyle(
                       color: AppTheme.white,
                       fontSize: 14,
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -162,7 +162,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
               context.translate('quotePlans.${widget.plan.title}'),
               style: TextStyle(
                 fontSize: 18,
-                fontFamily: 'Open Sans',
+                fontFamily: 'Lato',
                 fontWeight: FontWeight.bold,
                 color: widget.plan.accentColor,
               ),
@@ -180,7 +180,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                 '\$',
                 style: TextStyle(
                   fontSize: 24,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
                   color: widget.plan.accentColor,
                 ),
@@ -192,7 +192,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                     .toStringAsFixed(0),
                 style: TextStyle(
                   fontSize: 24,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w700,
                   color: widget.plan.accentColor,
                 ),
@@ -203,7 +203,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                     : context.translate('quotePlans.annualSuffix'),
                 style: TextStyle(
                   fontSize: 16,
-                  fontFamily: 'Open Sans',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,
                   color: widget.plan.accentColor,
                 ),
@@ -236,7 +236,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                       context.translate('quotePlans.features.${feature.title}'),
                       style: TextStyle(
                         fontSize: 14,
-                        fontFamily: 'Open Sans',
+                        fontFamily: 'Lato',
                         fontWeight: FontWeight.w600,
                         color: AppTheme.getTitleTextColor(context),
                       ),
@@ -248,7 +248,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
                         ),
                         style: TextStyle(
                           fontSize: 12,
-                          fontFamily: 'Open Sans',
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w400,
                           color: AppTheme.getSubtitleTextColor(context),
                         ),
@@ -314,7 +314,7 @@ class _QuotePlanCardState extends State<QuotePlanCard>
             style: const TextStyle(
               color: AppTheme.white,
               fontSize: 16,
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontWeight: FontWeight.w600,
             ),
           ),

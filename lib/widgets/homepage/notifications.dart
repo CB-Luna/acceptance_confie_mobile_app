@@ -1,7 +1,7 @@
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/responsive_font_sizes.dart';
+import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
-import 'package:freeway_app/utils/responsive_font_sizes.dart';
-import 'package:freeway_app/widgets/theme/app_theme.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -61,7 +61,7 @@ class NotificationsWidget extends StatelessWidget {
                     context.translate('home.notifications.title'),
                     style: TextStyle(
                       color: AppTheme.getSubtitleTextColor(context),
-                      fontFamily: 'Open Sans',
+                      fontFamily: 'Lato',
                       fontSize: responsiveFontSizes.bodyLarge(context),
                       fontWeight: FontWeight.w600,
                     ),
@@ -140,7 +140,7 @@ class NotificationsWidget extends StatelessWidget {
                   context.translate('home.notifications.title'),
                   style: TextStyle(
                     color: AppTheme.getSubtitleTextColor(context),
-                    fontFamily: 'Open Sans',
+                    fontFamily: 'Lato',
                     fontSize: responsiveFontSizes.bodyLarge(context),
                     fontWeight: FontWeight.w600,
                   ),
@@ -294,7 +294,7 @@ class NotificationsWidget extends StatelessWidget {
             context.translate('home.notifications.title'),
             style: TextStyle(
               color: AppTheme.getSubtitleTextColor(context),
-              fontFamily: 'Open Sans',
+              fontFamily: 'Lato',
               fontSize: responsiveFontSizes.bodyLarge(context),
               fontWeight: FontWeight.w600,
               height: 1.5,

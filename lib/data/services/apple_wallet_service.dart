@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/data/models/wallet/wallet_payload.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wallet_card/flutter_wallet_card.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/data/models/wallet/wallet_payload.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -65,7 +65,8 @@ class AppleWalletService {
       if (!available) {
         if (onError != null && context.mounted) {
           onError(
-              Exception(context.translate('idCard.appleWalletNotAvailable')));
+            Exception(context.translate('idCard.appleWalletNotAvailable')),
+          );
         }
         return false;
       }
@@ -118,7 +119,8 @@ class AppleWalletService {
         } else {
           if (context.mounted) {
             throw Exception(
-                context.translate('idCard.canceledAddingToAppleWallet'));
+              context.translate('idCard.canceledAddingToAppleWallet'),
+            );
           }
           return false;
         }
@@ -129,7 +131,8 @@ class AppleWalletService {
 
         if (context.mounted) {
           throw Exception(
-              '${context.translate('common.error')}: ${response.statusCode} ${response.reasonPhrase}');
+            '${context.translate('common.error')}: ${response.statusCode} ${response.reasonPhrase}',
+          );
         }
         return false;
       }

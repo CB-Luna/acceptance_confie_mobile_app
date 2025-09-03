@@ -3,11 +3,11 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/models/user_model.dart';
+import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:freeway_app/data/models/auth/policy_model.dart';
-import 'package:freeway_app/models/user_model.dart';
-import 'package:freeway_app/utils/app_localizations_extension.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -117,14 +117,9 @@ class IdCardPrinter {
   }
 
   /// Guarda la tarjeta de ID como PDF o imagen según el formato solicitado
-  static Future<void> saveIdCard(
-    BuildContext context,
-    GlobalKey key,
-    User user,
-    PolicyModel policy,
-    Function(bool) onComplete,
-    {bool asImage = false}
-  ) async {
+  static Future<void> saveIdCard(BuildContext context, GlobalKey key, User user,
+      PolicyModel policy, Function(bool) onComplete,
+      {bool asImage = false}) async {
     try {
       if (asImage) {
         // Guardar como imagen
@@ -144,7 +139,8 @@ class IdCardPrinter {
         };
 
         // Generar el PDF
-        final pdfBytes = await generatePdf(translations, imageBytes, user, policy,
+        final pdfBytes = await generatePdf(
+            translations, imageBytes, user, policy,
             context: context);
 
         // Guardar el PDF

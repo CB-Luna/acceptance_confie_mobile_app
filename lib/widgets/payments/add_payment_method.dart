@@ -4,7 +4,8 @@ class AddPaymentMethod extends StatelessWidget {
   final VoidCallback onTap;
 
   const AddPaymentMethod({
-    required this.onTap, super.key,
+    required this.onTap,
+    super.key,
   });
 
   @override
@@ -25,7 +26,7 @@ class AddPaymentMethod extends StatelessWidget {
               style: TextStyle(
                 color: Color(0xFF0047BB),
                 fontSize: 16,
-                fontFamily: 'Open Sans',
+                fontFamily: 'Lato',
                 fontWeight: FontWeight.w600,
               ),
             ),
