@@ -114,11 +114,6 @@ class _PropertyInsuranceGridState extends State<PropertyInsuranceGrid> {
                     context.translate('propertyInsurance.homeowners'),
                     'homeowners',
                   ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('propertyInsurance.mobileHome'),
-                    'mobile_home_insurance',
-                  ),
                 ],
               ),
             ],

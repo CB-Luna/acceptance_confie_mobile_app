@@ -107,48 +107,8 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
                 children: [
                   _buildInsuranceItem(
                     context,
-                    context.translate('personalProtection.health'),
-                    'health_insurance',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.dental'),
-                    'dental_insurance',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.telemedicine'),
-                    'telemedicine',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.pet'),
-                    'pet_insurance',
-                  ),
-                  _buildInsuranceItem(
-                    context,
                     context.translate('personalProtection.life'),
                     'life_insurance',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.accidentalDeath'),
-                    'travel_club_add',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.identityTheft'),
-                    'identity_theft_protection',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.mexicanCar'),
-                    'mexican_car_insurance',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('personalProtection.hospitalIndemnity'),
-                    'hospital_indemnity',
                   ),
                 ],
               ),

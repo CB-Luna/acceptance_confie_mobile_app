@@ -131,14 +131,14 @@ class AppTheme {
 
   static Color getOrangeColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? orange.withAlpha(51)
-        : backgroundOrange;
+        ? backgroundOrange
+        : orange;
   }
 
   static Color getGreenColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? acceptanceGreen.withAlpha(51)
-        : backgroundGreen;
+        ? backgroundGreen
+        : acceptanceGreen;
   }
 
   static Color getRedColor(BuildContext context) {

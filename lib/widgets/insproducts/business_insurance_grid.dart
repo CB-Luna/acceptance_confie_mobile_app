@@ -110,21 +110,6 @@ class _BusinessInsuranceGridState extends State<BusinessInsuranceGrid> {
                     context.translate('businessInsurance.businessInsurance'),
                     'business_insurance',
                   ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('businessInsurance.landlord'),
-                    'landlord',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('businessInsurance.commercialAuto'),
-                    'commercial_auto',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('businessInsurance.rideShareInsurance'),
-                    'rideshare_insurance',
-                  ),
                 ],
               ),
             ],

@@ -68,7 +68,7 @@ class IdCardWidget extends StatelessWidget {
                 const SizedBox(width: 10),
                 Flexible(
                   child: Text(
-                    'Freeway Insurance',
+                    'Acceptance Insurance',
                     style: TextStyle(
                       color: AppTheme.black,
                       fontSize: responsiveFontSizes.titleMedium(context),

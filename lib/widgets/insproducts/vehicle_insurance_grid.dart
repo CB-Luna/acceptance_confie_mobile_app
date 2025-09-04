@@ -116,16 +116,6 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                   ),
                   _buildInsuranceItem(
                     context,
-                    context.translate('vehicleInsurance.motorhome'),
-                    'motorhome',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('vehicleInsurance.rvMotorhome'),
-                    'rv_motorhome',
-                  ),
-                  _buildInsuranceItem(
-                    context,
                     context.translate('vehicleInsurance.atv'),
                     'atv',
                   ),
@@ -133,16 +123,6 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                     context,
                     context.translate('vehicleInsurance.snowmobile'),
                     'snowmobile',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('vehicleInsurance.sr22Insurance'),
-                    'sr_22',
-                  ),
-                  _buildInsuranceItem(
-                    context,
-                    context.translate('vehicleInsurance.classicCar'),
-                    'classic_car',
                   ),
                 ],
               ),
