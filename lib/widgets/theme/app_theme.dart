@@ -8,7 +8,7 @@ class AppTheme {
   static const Color acceptanceBlue =
       Color(0xFF001689); // HEX: #001689, RGB: 0, 22, 137
   static const Color acceptanceGreen =
-      Color(0xFF3C9C2E); // HEX: #3C9C2E, RGB: 76, 156, 46
+      Color(0xFF4C9C2E); // HEX: #3C9C2E, RGB: 76, 156, 46
 
   // Colores secundarios
   static const Color orange =
@@ -32,7 +32,7 @@ class AppTheme {
   static Color getPrimaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? acceptanceBlue.withValues(
-            alpha: 204,
+            alpha: 5,
           ) // Azul de Acceptance con opacidad para modo oscuro
         : acceptanceBlue; // Azul de Acceptance para modo claro
   }
@@ -40,7 +40,7 @@ class AppTheme {
   static Color getSecondaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? acceptanceGreen.withValues(
-            alpha: 204,
+            alpha: 5,
           ) // Verde de Acceptance con opacidad para modo oscuro
         : acceptanceGreen; // Verde de Acceptance para modo claro
   }
@@ -93,7 +93,7 @@ class AppTheme {
 
   static Color getBrightnessColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? Colors.blue.withAlpha(51)
+        ? acceptanceBlue.withAlpha(51)
         : Colors.grey.withAlpha(26);
   }
 
@@ -124,7 +124,7 @@ class AppTheme {
   static Color getBlueColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? acceptanceBlue.withValues(
-            alpha: 204,
+            alpha: 5,
           ) // Azul de Acceptance con opacidad para modo oscuro
         : acceptanceBlue; // Azul de Acceptance para modo claro
   }
@@ -137,7 +137,7 @@ class AppTheme {
 
   static Color getGreenColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? backgroundGreen
+        ? acceptanceGreen
         : acceptanceGreen;
   }
 

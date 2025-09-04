@@ -121,7 +121,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Freeway Insurance',
+                  'Acceptance Insurance',
                   style: TextStyle(
                     fontSize: responsiveFontSizes.titleSmall(context),
                     fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
             _buildInfoRow(
               context,
               context.translate('profile.appInfoPage.copyright'),
-              '© ${DateTime.now().year} Freeway Insurance',
+              '© ${DateTime.now().year} Acceptance Insurance',
             ),
             const SizedBox(height: 8),
             TextButton(

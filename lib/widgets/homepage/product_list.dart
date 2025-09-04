@@ -65,11 +65,6 @@ class _ProductListState extends State<ProductList> {
 
     final List<ProductItem> products = [
       ProductItem(
-        title: context.translate('home.products.roadsideAssistance'),
-        imagePath: 'assets/home/icons/icon-roadside.png',
-        backgroundColor: AppTheme.backgroundBlueColor,
-      ),
-      ProductItem(
         title: context.translate('home.products.motorcycleInsurance'),
         imagePath: 'assets/home/icons/icon-motorcycle.png',
         backgroundColor: AppTheme.backgroundGreenColor,
@@ -77,7 +72,7 @@ class _ProductListState extends State<ProductList> {
       ProductItem(
         title: context.translate('home.products.rentersInsurance'),
         imagePath: 'assets/home/icons/icon-renters.png',
-        backgroundColor: AppTheme.backgroundOrangeColor,
+        backgroundColor: AppTheme.backgroundGreenColor,
       ),
     ];
 
