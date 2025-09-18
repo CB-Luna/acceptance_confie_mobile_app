@@ -19,7 +19,7 @@ const String urlBaseEmbedQuote = 'https://quote.sanborns.com/';
 
 const String urlBaseEmbedSeguros = 'https://www.freewayseguros.com/';
 
-const String urlBaseEmbedQuickPay = 'https://quickpay.freeway.com/';
+const String urlBaseEmbedQuickPay = 'https://quickpay.acceptance.com/';
 
 /// <<<<<<<< User Profile & Policy >>>>>>>>>
 /// <<<<<<<< Login & Registration >>>>>>>>>

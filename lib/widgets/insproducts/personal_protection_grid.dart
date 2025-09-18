@@ -516,7 +516,7 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
           break;
         case 'life_insurance':
           urlString =
-              'https://www.freeway.com/life-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+              '${urlBaseEmbed}life-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title =
               '${context.translate('personalProtection.life')} - $placeName, $stateAbbreviation';
           break;
