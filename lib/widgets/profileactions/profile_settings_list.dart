@@ -5,6 +5,7 @@ import 'package:acceptance_app/pages/password_change_page.dart';
 import 'package:acceptance_app/pages/user_data_page.dart';
 import 'package:acceptance_app/providers/language_provider.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -175,15 +176,15 @@ class ProfileSettingsList extends StatelessWidget {
 
                     if (!success && value && context.mounted) {
                       // Si falló al habilitar, mostrar un mensaje
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            context.translateWithArgs(
-                              'profile.biometricEnableFailed',
-                              args: [biometricProvider.biometricType],
-                            ),
-                          ),
+                      if (!context.mounted) return;
+                      showAppSnackBar(
+                        context,
+                        context.translateWithArgs(
+                          'profile.biometricEnableFailed',
+                          args: [biometricProvider.biometricType],
                         ),
+                        const Duration(seconds: 2),
+                        backgroundColor: AppTheme.getRedColor(context),
                       );
                     }
                   },
@@ -219,15 +220,16 @@ class ProfileSettingsList extends StatelessWidget {
               },
             ),
             const ProfileDivider(),
-            ProfileSettingsSwitch(
-              title: context.translate('profile.notifications'),
-              icon: Icons.notifications_none,
-              value: true,
-              onChanged: (value) {
-                // TODO: Implementar cambio de notificaciones
-              },
-            ),
-            const ProfileDivider(),
+            // TODO: Implementar cambio de notificaciones
+            // ProfileSettingsSwitch(
+            //   title: context.translate('profile.notifications'),
+            //   icon: Icons.notifications_none,
+            //   value: true,
+            //   onChanged: (value) {
+            //
+            //   },
+            // ),
+            // const ProfileDivider(),
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: ProfileLogoutButton(),

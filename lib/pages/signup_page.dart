@@ -1,6 +1,7 @@
 import 'package:acceptance_app/locatordevice/presentation/widgets/loading_view.dart';
 import 'package:acceptance_app/models/country_phone_model.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/custom/country_phone_selector.dart';
 import 'package:flutter/material.dart';
@@ -138,11 +139,11 @@ class SignUpPageState extends State<SignUpPage> {
         // Verificar si hay un mensaje de error
         if (authProvider.errorMessage != null) {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(authProvider.errorMessage!),
-                backgroundColor: AppTheme.getRedColor(context),
-              ),
+            showAppSnackBar(
+              context,
+              authProvider.errorMessage!,
+              const Duration(seconds: 2),
+              backgroundColor: AppTheme.getRedColor(context),
             );
           }
         } else if (mounted) {
@@ -154,11 +155,11 @@ class SignUpPageState extends State<SignUpPage> {
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${context.translate('auth.error')}: $e'),
-              backgroundColor: AppTheme.getRedColor(context),
-            ),
+          showAppSnackBar(
+            context,
+            '${context.translate('auth.error')}: $e',
+            const Duration(seconds: 2),
+            backgroundColor: AppTheme.getRedColor(context),
           );
         }
       } finally {
@@ -324,24 +325,43 @@ class SignUpPageState extends State<SignUpPage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  CountryPhoneSelector(
-                    phoneController: _phoneController,
-                    labelText: context.translate('auth.phoneNumber'),
-                    helperText: context.translate('auth.phoneNumberHelper'),
-                    initialCountryCode:
-                        'US', // Código de país predeterminado (Estados Unidos)
-                    showFlag: true,
-                    onPhoneChanged: (completeNumber) {
-                      // Actualizar el número completo con código de país cuando cambia
-                      setState(() {
-                        _completePhoneNumber = completeNumber;
-                      });
-                    },
-                    onCountryChanged: (country) {
-                      setState(() {
-                        _selectedCountry = country;
-                      });
-                    },
+                  // Widget personalizado para número de teléfono con código de país fijo de EE. UU. (+1)
+                  Stack(
+                    children: [
+                      CountryPhoneSelector(
+                        showDropDownIcon: false,
+                        phoneController: _phoneController,
+                        labelText: context.translate('auth.phoneNumber'),
+                        helperText: context.translate('auth.phoneNumberHelper'),
+                        initialCountryCode:
+                            'US', // Código de país fijo (Estados Unidos)
+                        showFlag: true,
+                        onPhoneChanged: (completeNumber) {
+                          // Actualizar el número completo con código de país cuando cambia
+                          setState(() {
+                            _completePhoneNumber = completeNumber;
+                          });
+                        },
+                        onCountryChanged: (country) {
+                          // Aunque el usuario no podrá cambiar el país, mantenemos esta función
+                          // para compatibilidad con el widget
+                          setState(() {
+                            _selectedCountry = country;
+                          });
+                        },
+                      ),
+                      // Capa transparente para bloquear interacciones con el selector de país
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width:
+                            100, // Ancho suficiente para cubrir el selector de país
+                        child: Container(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   TextFormField(

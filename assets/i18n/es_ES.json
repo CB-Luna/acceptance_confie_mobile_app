@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Freeway Insurance"
+    "title": "Acceptance Insurance"
   },
   "auth": {
     "login": "Iniciar Sesión",
@@ -160,7 +160,7 @@
     "downloadCompleted": "Descarga completada",
     "preparingForPrint": "Preparando para imprimir...",
     "downloadCancelled": "Descarga cancelada",
-    "pdfTitle": "Tarjeta de ID de Freeway Insurance",
+    "pdfTitle": "Tarjeta de ID de Acceptance Insurance",
     "chooseFormat": "Elegir Formato",
     "chooseFormatDescription": "Selecciona el formato en el que deseas guardar tu tarjeta de ID",
     "formatPDF": "PDF",
@@ -256,7 +256,7 @@
     }
   },
   "quotePlans": {
-    "title": "Freeway Auto Club",
+    "title": "Acceptance Auto Club",
     "back": "Atrás",
     "selectPlan": "Selecciona un plan",
     "selectPlanSubtitle": "que usarás para esta cotización",
@@ -338,7 +338,7 @@
       "license": "Licencia",
       "valueLicense": "Propietaria",
       "copyright": "Derechos de Autor",
-      "termsAndConditions": "Ver Términos y Condiciones",
+      "termsAndConditions": "Ver Términos de Uso",
       "privacyPolicy": "Ver Política de Privacidad",
       "close": "Cerrar"
     },
@@ -395,7 +395,7 @@
     "noNearbyLocations": "No se encontraron ubicaciones cercanas, ¡pero te tenemos cubierto! Puedes:",
     "expandSearchRadius": "Ampliar tu radio de búsqueda",
     "help": "Ayuda",
-    "nationalCoverage": "Freeway sirve a los 50 estados: ¡dondequiera que estés, estamos aquí para tus necesidades de seguro!",
+    "nationalCoverage": "Acceptance sirve a los 50 estados: ¡dondequiera que estés, estamos aquí para tus necesidades de seguro!",
     "zipCode": {
       "geoDetectionNotAvailable": "Detección geográfica no disponible. Por favor, ingresa tu Código Postal.",
       "enterZipCode": "Ingresa tu Código Postal",

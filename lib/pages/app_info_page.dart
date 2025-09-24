@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:acceptance_app/data/constants.dart';
+import 'package:acceptance_app/pages/webview_page.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
@@ -99,8 +101,8 @@ class _AppInfoPageState extends State<AppInfoPage> {
   Widget _buildAppInfoCard(BuildContext context) {
     // Información de la aplicación
     const appVersion = '1.0.0';
-    const buildNumber = '30';
-    final buildDate = '08/21/2025';
+    const buildNumber = '32';
+    final buildDate = '09/11/2025';
 
     return Card(
       elevation: 2,
@@ -121,7 +123,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Acceptance Insurance',
+                  'Freeway Insurance',
                   style: TextStyle(
                     fontSize: responsiveFontSizes.titleSmall(context),
                     fontWeight: FontWeight.bold,
@@ -216,12 +218,22 @@ class _AppInfoPageState extends State<AppInfoPage> {
             _buildInfoRow(
               context,
               context.translate('profile.appInfoPage.copyright'),
-              '© ${DateTime.now().year} Acceptance Insurance',
+              '© ${DateTime.now().year} Freeway Insurance',
             ),
             const SizedBox(height: 8),
             TextButton(
               onPressed: () {
-                // Implementar navegación a términos y condiciones
+                // Navegar a términos de uso usando WebViewPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WebViewPage(
+                      url: '${urlBaseEmbed}terms-of-use/',
+                      title: context
+                          .translate('profile.appInfoPage.termsAndConditions'),
+                    ),
+                  ),
+                );
               },
               child: Text(
                 context.translate('profile.appInfoPage.termsAndConditions'),
@@ -233,7 +245,17 @@ class _AppInfoPageState extends State<AppInfoPage> {
             ),
             TextButton(
               onPressed: () {
-                // Implementar navegación a política de privacidad
+                // Navegar a política de privacidad usando WebViewPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WebViewPage(
+                      url: '${urlBaseEmbed}privacy-policy/',
+                      title: context
+                          .translate('profile.appInfoPage.privacyPolicy'),
+                    ),
+                  ),
+                );
               },
               child: Text(
                 context.translate('profile.appInfoPage.privacyPolicy'),

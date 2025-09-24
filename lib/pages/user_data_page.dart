@@ -4,6 +4,7 @@ import 'package:acceptance_app/models/country_phone_model.dart';
 import 'package:acceptance_app/pages/profile_page.dart';
 import 'package:acceptance_app/providers/auth_provider.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/contactcenter/request_call.dart';
 import 'package:acceptance_app/widgets/custom/country_phone_selector.dart';
@@ -177,6 +178,7 @@ class _UserDataPageState extends State<UserDataPage> {
 
           if (phoneConfirmationSent) {
             // Si se requiere verificación, mostrar el diálogo
+            if (!context.mounted) return;
             await _showVerificationDialog(context);
           } else {
             // Si no se requiere verificación, actualizar directamente
@@ -185,14 +187,12 @@ class _UserDataPageState extends State<UserDataPage> {
             );
 
             // Mostrar mensaje de éxito
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  context.translate('profile.userDataPage.phoneUpdateSuccess'),
-                ),
-                backgroundColor: AppTheme.getGreenColor(context),
-                duration: const Duration(seconds: 3),
-              ),
+            if (!context.mounted) return;
+            showAppSnackBar(
+              context,
+              context.translate('profile.userDataPage.phoneUpdateSuccess'),
+              const Duration(seconds: 2),
+              backgroundColor: AppTheme.getGreenColor(context),
             );
 
             setState(() {
@@ -202,16 +202,13 @@ class _UserDataPageState extends State<UserDataPage> {
         }
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              context.translate('profile.userDataPage.saveError'),
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+      if (!context.mounted) return;
+      showAppSnackBar(
+        context,
+        context.translate('profile.userDataPage.saveError'),
+        const Duration(seconds: 2),
+        backgroundColor: AppTheme.getRedColor(context),
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -227,15 +224,13 @@ class _UserDataPageState extends State<UserDataPage> {
     _verificationCodeController.clear();
 
     // Mostrar un SnackBar indicando que se envió un código
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          context.translate(
-            'profile.userDataPage.phoneUpdateRequiresVerification',
-          ),
-        ),
-        duration: const Duration(seconds: 3),
+    if (!context.mounted) return;
+    showAppSnackBar(
+      context,
+      context.translate(
+        'profile.userDataPage.phoneUpdateRequiresVerification',
       ),
+      const Duration(seconds: 3),
     );
 
     // Mostrar el diálogo para ingresar el código
@@ -300,15 +295,12 @@ class _UserDataPageState extends State<UserDataPage> {
                 Navigator.of(context).pop(); // Cerrar el diálogo
 
                 // Mostrar mensaje de éxito
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      context
-                          .translate('profile.userDataPage.phoneUpdateSuccess'),
-                    ),
-                    backgroundColor: AppTheme.getGreenColor(context),
-                    duration: const Duration(seconds: 3),
-                  ),
+                if (!context.mounted) return;
+                showAppSnackBar(
+                  context,
+                  context.translate('profile.userDataPage.phoneUpdateSuccess'),
+                  const Duration(seconds: 3),
+                  backgroundColor: AppTheme.getGreenColor(context),
                 );
 
                 setState(() {
@@ -393,13 +385,11 @@ class _UserDataPageState extends State<UserDataPage> {
             if (!mounted) return;
 
             // Mostrar mensaje de éxito
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  context.translate('profile.userDataPage.saveSuccess'),
-                ),
-                backgroundColor: Colors.green,
-              ),
+            showAppSnackBar(
+              context,
+              context.translate('profile.userDataPage.saveSuccess'),
+              const Duration(seconds: 2),
+              backgroundColor: AppTheme.getGreenColor(context),
             );
 
             // Resetear el estado de cambios
@@ -413,16 +403,13 @@ class _UserDataPageState extends State<UserDataPage> {
             }
 
             // Mostrar mensaje de error
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    context.translate('profile.userDataPage.saveError'),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
+            if (!mounted) return;
+            showAppSnackBar(
+              context,
+              context.translate('profile.userDataPage.saveError'),
+              const Duration(seconds: 2),
+              backgroundColor: AppTheme.getRedColor(context),
+            );
           }
         }
       } catch (e) {
@@ -431,16 +418,13 @@ class _UserDataPageState extends State<UserDataPage> {
           Navigator.pop(context);
         }
 
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                context.translate('profile.userDataPage.saveError'),
-              ),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        if (!mounted) return;
+        showAppSnackBar(
+          context,
+          context.translate('profile.userDataPage.saveError'),
+          const Duration(seconds: 2),
+          backgroundColor: AppTheme.getRedColor(context),
+        );
       } finally {
         // Actualizar estado para indicar que ya no está cargando
         if (mounted) {

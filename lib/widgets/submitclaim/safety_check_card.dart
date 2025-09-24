@@ -1,4 +1,5 @@
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -71,16 +72,13 @@ class SafetyCheckCard extends StatelessWidget {
                       );
                     } catch (e) {
                       // Mostrar un mensaje de error si no se puede abrir la aplicación de llamadas
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              context.translate('common.errorOpeningPhone'),
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
+                      if (!context.mounted) return;
+                      showAppSnackBar(
+                        context,
+                        context.translate('common.errorOpeningPhone'),
+                        const Duration(seconds: 2),
+                        backgroundColor: AppTheme.getRedColor(context),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(

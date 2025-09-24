@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Freeway Insurance"
+    "title": "Acceptance Insurance"
   },
   "auth": {
     "login": "Login",
@@ -161,7 +161,7 @@
     "downloadCompleted": "Download completed",
     "preparingForPrint": "Preparing for print...",
     "downloadCancelled": "Download cancelled",
-    "pdfTitle": "Freeway Insurance ID Card",
+    "pdfTitle": "Acceptance Insurance ID Card",
     "chooseFormat": "Choose Format",
     "chooseFormatDescription": "Select the format in which you want to share your ID card",
     "formatPDF": "PDF",
@@ -256,7 +256,7 @@
     }
   },
   "quotePlans": {
-    "title": "Freeway Auto Club",
+    "title": "Acceptance Auto Club",
     "back": "Back",
     "selectPlan": "Select plan",
     "selectPlanSubtitle": "you will use for this quote",
@@ -335,7 +335,7 @@
         "license": "License",
         "valueLicense": "Property",
         "copyright": "Copyright",
-        "termsAndConditions": "View Terms and Conditions",
+        "termsAndConditions": "View Terms of Use",
         "privacyPolicy": "View Privacy Policy",
         "close": "Close"
       },
@@ -385,7 +385,7 @@
       "license": "License",
       "valueLicense": "Property",
       "copyright": "Copyright",
-      "termsAndConditions": "View Terms and Conditions",
+      "termsAndConditions": "View Terms of Use",
       "privacyPolicy": "View Privacy Policy",
       "close": "Close"
     },
@@ -443,7 +443,7 @@
     "expandSearchRadius": "Expand your search radius",
     "viewAllOffices": "View All Offices",
     "help": "Help",
-    "nationalCoverage": "Freeway serves all 50 states—wherever you are, we're here for your insurance needs!",
+    "nationalCoverage": "Acceptance serves all 50 states—wherever you are, we're here for your insurance needs!",
     "zipCode": {
       "geoDetectionNotAvailable": "Geo-Detection not available. Please enter your Zip Code.",
       "enterZipCode": "Enter your Zip Code",

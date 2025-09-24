@@ -1,3 +1,4 @@
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -181,12 +182,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                           widget.onNotificationTap!();
                         } else {
                           // Si no hay función de navegación, mostrar un mensaje
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text('$notificationCount notificaciones'),
-                              duration: const Duration(seconds: 2),
-                            ),
+                          if (!mounted) return;
+                          showAppSnackBar(
+                            context,
+                            '$notificationCount notificaciones',
+                            const Duration(seconds: 2),
                           );
                         }
                       },
@@ -205,12 +205,8 @@ class _HeaderSectionState extends State<HeaderSection> {
                                   strokeWidth: 4,
                                   color: AppTheme.getIconColor(context),
                                 )
-                              // Usar un icono estático cuando no hay notificaciones
-                              : Icon(
-                                  Icons.notifications_outlined,
-                                  size: 24,
-                                  color: AppTheme.getIconColor(context),
-                                ),
+                              // Usar un espacio reservado cuando no hay notificaciones
+                              : Container(),
                         ),
                       ),
                     ),
@@ -299,6 +295,15 @@ class _HeaderSectionState extends State<HeaderSection> {
                   ),
                   onPressed: () {
                     themeProvider.toggleTheme();
+                    if (!context.mounted) return;
+                    showAppSnackBar(
+                      context,
+                      'Theme changed to ${themeProvider.isDarkMode ? 'dark' : 'light'}',
+                      const Duration(seconds: 2),
+                      backgroundColor: themeProvider.isDarkMode
+                          ? AppTheme.getBackgroundColor(context)
+                          : AppTheme.getBackgroundColor(context),
+                    );
                   },
                 ),
               ),

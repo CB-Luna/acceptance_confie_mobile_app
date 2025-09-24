@@ -50,6 +50,8 @@ const String envOffice = String.fromEnvironment(
 
 const String apiKeyOffice = 'fjzzkOuCefd8-Z86i9HMGWQ=';
 
+const String legalEntity = 'Acceptance Insurance Agency Of Tennessee, Inc.';
+
 /// <<<<<<<< Offices Map >>>>>>>>>
 /// <<<<<<<< Thirds Party >>>>>>>>>
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:acceptance_app/data/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,9 +8,7 @@ import '../models/office/office.dart';
 import '../models/office/office_request.dart';
 
 class OfficeService {
-  static const String baseUrl = 'https://stg-inquiry.confie.com';
   static const String officesEndpoint = '/api/StoreLocator';
-  static const String apiKey = 'fjzzkOuCefd8-Z86i9HMGWQ=';
 
   /// Busca oficinas cercanas a un código postal específico
   ///
@@ -20,15 +19,16 @@ class OfficeService {
     int radius = 100,
   }) async {
     try {
-      final request = OfficeRequest(zipCode: zipCode, radius: radius);
+      final request = OfficeRequest(
+          zipCode: zipCode, radius: radius, legalEntity: legalEntity);
 
       debugPrint('Buscando oficinas cercanas al código postal: $zipCode');
 
       final response = await http.post(
-        Uri.parse('$baseUrl$officesEndpoint'),
+        Uri.parse(envOffice + officesEndpoint),
         headers: {
           'Content-Type': 'application/json',
-          'Apikey': apiKey,
+          'Apikey': apiKeyOffice,
         },
         body: jsonEncode(request.toJson()),
       );
@@ -72,6 +72,7 @@ class OfficeService {
         latitude: latitude,
         longitude: longitude,
         radius: radius,
+        legalEntity: legalEntity,
       );
 
       debugPrint(
@@ -79,10 +80,10 @@ class OfficeService {
       );
 
       final response = await http.post(
-        Uri.parse('$baseUrl$officesEndpoint'),
+        Uri.parse(envOffice + officesEndpoint),
         headers: {
           'Content-Type': 'application/json',
-          'Apikey': apiKey,
+          'Apikey': apiKeyOffice,
         },
         body: jsonEncode(request.toJson()),
       );

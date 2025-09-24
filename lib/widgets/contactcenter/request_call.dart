@@ -1,6 +1,7 @@
 import 'package:acceptance_app/locatordevice/locator_device_module.dart';
 import 'package:acceptance_app/pages/add_insurance.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +36,12 @@ class _RequestCallPageState extends State<RequestCallPage> {
       await launchUrl(launchUri, mode: LaunchMode.externalApplication);
     } catch (e) {
       // Mostrar mensaje de error si no se puede abrir la aplicación de llamadas
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.translate('requestCall.callError'))),
-        );
-      }
+      if (!mounted) return;
+      showAppSnackBar(
+        context,
+        context.translate('requestCall.callError'),
+        const Duration(seconds: 2),
+      );
     }
   }
 
@@ -122,7 +124,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                         style: TextStyle(
                           color: AppTheme.getTitleTextColor(context),
                           fontSize: responsiveFontSizes.bodyMedium(context),
-                          fontFamily: 'Lato',
+                          fontFamily: 'Open Sans',
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -141,7 +143,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       style: TextStyle(
                         color: AppTheme.getSubtitleTextColor(context),
                         fontSize: responsiveFontSizes.bodySmall(context),
-                        fontFamily: 'Lato',
+                        fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -172,7 +174,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                                 color: AppTheme.white,
                                 fontSize:
                                     responsiveFontSizes.bodySmall(context),
-                                fontFamily: 'Lato',
+                                fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
                               ),
                               textAlign: TextAlign.center,
@@ -189,7 +191,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                       style: TextStyle(
                         color: AppTheme.getSubtitleTextColor(context),
                         fontSize: responsiveFontSizes.bodySmall(context),
-                        fontFamily: 'Lato',
+                        fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -220,7 +222,7 @@ class _RequestCallPageState extends State<RequestCallPage> {
                                 color: AppTheme.white,
                                 fontSize:
                                     responsiveFontSizes.bodySmall(context),
-                                fontFamily: 'Lato',
+                                fontFamily: 'Open Sans',
                                 fontWeight: FontWeight.w600,
                               ),
                               textAlign: TextAlign.center,

@@ -1,4 +1,5 @@
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -268,10 +269,12 @@ class ProfileLogoutButton extends StatelessWidget {
       debugPrint('Error executing logout from ProfileLogoutButton: $e');
 
       // Show a message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.translate('profile.logoutError')),
-        ),
+      if (!context.mounted) return;
+      showAppSnackBar(
+        context,
+        context.translate('profile.logoutError'),
+        const Duration(seconds: 2),
+        backgroundColor: AppTheme.getRedColor(context),
       );
 
       // Alternative navigation attempt

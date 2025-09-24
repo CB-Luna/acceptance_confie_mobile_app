@@ -3,6 +3,7 @@ import 'package:acceptance_app/data/services/web_dialog_service.dart';
 import 'package:acceptance_app/models/user_model.dart';
 import 'package:acceptance_app/providers/auth_provider.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -362,13 +363,11 @@ class _BusinessInsuranceGridState extends State<BusinessInsuranceGrid> {
         );
       } else if (context.mounted) {
         // Si el código postal no es válido, mostrar un mensaje de error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              context.translate('businessInsurance.location.invalidZipCode'),
-            ),
-            backgroundColor: AppTheme.getRedColor(context),
-          ),
+        showAppSnackBar(
+          context,
+          context.translate('businessInsurance.location.invalidZipCode'),
+          const Duration(seconds: 2),
+          backgroundColor: AppTheme.getRedColor(context),
         );
       }
     }

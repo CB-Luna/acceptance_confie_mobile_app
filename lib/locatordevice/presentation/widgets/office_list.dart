@@ -1,4 +1,6 @@
+import 'package:acceptance_app/data/constants.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/menu/snackbar_help.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -50,17 +52,11 @@ class _OfficeListState extends State<OfficeList> {
     if (zipCode.isEmpty ||
         zipCode.length != 5 ||
         !RegExp(r'^[0-9]{5}$').hasMatch(zipCode)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            context.translate('office.zipCode.invalidZipCode'),
-            style: TextStyle(
-              fontSize: responsiveFontSizes.snackBarText(context),
-            ),
-          ),
-          duration: const Duration(seconds: 2),
-          backgroundColor: AppTheme.getRedColor(context),
-        ),
+      showAppSnackBar(
+        context,
+        context.translate('office.zipCode.invalidZipCode'),
+        const Duration(seconds: 2),
+        backgroundColor: AppTheme.getRedColor(context),
       );
       return;
     }
@@ -75,20 +71,14 @@ class _OfficeListState extends State<OfficeList> {
     );
 
     // Mostrar un mensaje al usuario
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          context.translateWithArgs(
-            'office.zipCode.searchingNear',
-            args: [zipCode],
-          ),
-          style: TextStyle(
-            fontSize: responsiveFontSizes.snackBarText(context),
-          ),
-        ),
-        duration: const Duration(seconds: 2),
-        backgroundColor: AppTheme.getBlueColor(context),
+    showAppSnackBar(
+      context,
+      context.translateWithArgs(
+        'office.zipCode.searchingNear',
+        args: [zipCode],
       ),
+      const Duration(seconds: 2),
+      backgroundColor: AppTheme.getBlueColor(context),
     );
 
     // Llamar al método de búsqueda por código postal
@@ -162,6 +152,33 @@ class _OfficeListState extends State<OfficeList> {
                 itemCount: widget.offices.length +
                     3, // +3: título, espacio/botón al final, y sección de búsqueda por zipcode
                 itemBuilder: (context, index) {
+                  if (widget.offices.isEmpty && index == 0) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            context.translate('office.nearestOffice'),
+                            style: TextStyle(
+                              fontSize: responsiveFontSizes.bodyLarge(context),
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.getTextGreyColor(context),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          context.translate('office.noOfficesAvailable'),
+                          style: TextStyle(
+                            fontSize:
+                                responsiveFontSizes.bodyTextLocation(context),
+                            color: AppTheme.getTextGreyColor(context),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
                   // Primer elemento es el título
                   if (index == 0) {
                     return Column(
@@ -262,6 +279,7 @@ class _OfficeListState extends State<OfficeList> {
                                   keyboardType: TextInputType.number,
                                   maxLength: 5,
                                   style: TextStyle(
+                                    color: AppTheme.getTextGreyColor(context),
                                     fontSize:
                                         responsiveFontSizes.bodyMedium(context),
                                   ),
@@ -550,11 +568,11 @@ class OfficeListItem extends StatelessWidget {
                     String url;
                     if (Theme.of(context).platform == TargetPlatform.iOS) {
                       // URL para Apple Maps (iOS)
-                      url = 'https://maps.apple.com/?q=$name&ll=$lat,$lng';
+                      url = '$envThirdsPartyAppleMap?q=$name&ll=$lat,$lng';
                     } else {
                       // URL para Google Maps (Android y otros)
                       url =
-                          'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
+                          '$envThirdsPartyGoogleMap/search/?api=1&query=$lat,$lng';
                     }
 
                     // Abrir la URL
@@ -567,17 +585,11 @@ class OfficeListItem extends StatelessWidget {
                     } else {
                       // Mostrar un mensaje de error si no se puede abrir la URL
                       if (!context.mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            context.translate('office.couldNotOpenMaps'),
-                            style: TextStyle(
-                              fontSize:
-                                  responsiveFontSizes.snackBarText(context),
-                            ),
-                          ),
-                          backgroundColor: AppTheme.getRedColor(context),
-                        ),
+                      showAppSnackBar(
+                        context,
+                        context.translate('office.couldNotOpenMaps'),
+                        const Duration(seconds: 2),
+                        backgroundColor: AppTheme.getRedColor(context),
                       );
                     }
                   },
