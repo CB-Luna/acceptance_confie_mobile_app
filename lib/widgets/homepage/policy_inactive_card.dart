@@ -1,4 +1,5 @@
 import 'package:acceptance_app/data/models/auth/policy_model.dart';
+import 'package:acceptance_app/utils/policy_logo_utils.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,10 @@ class PolicyInactiveCard extends StatelessWidget {
         ? _getPolicyTypeFromLineOfBusiness(policy?.lineOfBusiness ?? '')
         : 'My Auto Policy';
 
+    // Determinar si tenemos la imagen del logo de la póliza en assets
+    final bool freewayLogo =
+        policy?.programName.toLowerCase().contains('freeway') ?? false;
+
     return Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -41,10 +46,14 @@ class PolicyInactiveCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset(
-                  'assets/home/icons/icon-car-1.png',
-                  width: 48,
-                  height: 48,
+                // Logo - Verificar si existe un logo específico para la póliza
+                PolicyLogoUtils.getPolicyLogo(
+                  context,
+                  policy?.carrierLogoUrl,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: freewayLogo
+                      ? MediaQuery.of(context).size.width * 0.1
+                      : MediaQuery.of(context).size.width * 0.05,
                 ),
                 const SizedBox(width: 16),
                 Column(
@@ -65,7 +74,7 @@ class PolicyInactiveCard extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: 'Lato',
+                          fontFamily: 'Open Sans',
                           fontSize:
                               responsiveFontSizes.policyCardSubtitle(context),
                           fontWeight: FontWeight.w600,
