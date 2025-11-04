@@ -112,6 +112,36 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
                     context.translate('personalProtection.life'),
                     'life_insurance',
                   ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.health'),
+                    'health_insurance',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.pet'),
+                    'pet_insurance',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.mexicanCar'),
+                    'mexican_car_insurance',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.telemedicine'),
+                    'telemedicine',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.hospitalIndemnity'),
+                    'hospital_indemnity',
+                  ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('personalProtection.identityTheft'),
+                    'identity_theft_protection',
+                  ),
                 ],
               ),
             ],
@@ -179,9 +209,6 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
             _handlePetInsurance(context);
           } else if (title == context.translate('personalProtection.life')) {
             _handleLifeInsurance(context);
-          } else if (title ==
-              context.translate('personalProtection.accidentalDeath')) {
-            _handleAccidentalDeath(context);
           } else if (title ==
               context.translate('personalProtection.identityTheft')) {
             _handleIdentityTheft(context);
@@ -337,10 +364,6 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
     await _handleInsurance(context, 'life_insurance');
   }
 
-  Future<void> _handleAccidentalDeath(BuildContext context) async {
-    await _handleInsurance(context, 'travel_club_add');
-  }
-
   Future<void> _handleIdentityTheft(BuildContext context) async {
     await _handleInsurance(context, 'identity_theft_protection');
   }
@@ -491,7 +514,7 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
       switch (insuranceType) {
         case 'health_insurance':
           urlString =
-              '${urlBaseEmbed}life-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+              '${urlBaseEmbed}health-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title =
               '${context.translate('personalProtection.health')} - $placeName, $stateAbbreviation';
           break;
@@ -503,12 +526,12 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
           break;
         case 'telemedicine':
           urlString =
-              'https://buy.freeway.com/product/telemedicine/step-2#form__step_2';
+              '${urlBaseEmbed}telemedicine-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title = context.translate('personalProtection.telemedicine');
           break;
         case 'pet_insurance':
           urlString =
-              'https://www.freeway.com/pet-insurance-quote/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+              '${urlBaseEmbed}pet-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title =
               '${context.translate('personalProtection.pet')} - $placeName, $stateAbbreviation';
           break;
@@ -518,27 +541,22 @@ class _PersonalProtectionGridState extends State<PersonalProtectionGrid> {
           title =
               '${context.translate('personalProtection.life')} - $placeName, $stateAbbreviation';
           break;
-        case 'travel_club_add':
-          urlString =
-              'https://buy.freeway.com/product/ad-d/step-2?#form__step_2';
-          title = context.translate('personalProtection.accidentalDeath');
-          break;
         case 'identity_theft_protection':
-          urlString =
-              'https://buy.freeway.com/product/identity-theft/step-2#form__step_2';
+          urlString = '${urlBaseEmbed}our-products/identity-theft/';
           title = context.translate('personalProtection.identityTheft');
           break;
         case 'mexican_car_insurance':
-          urlString = 'https://quote.sanborns.com/guest/fastquote/77001';
+          urlString =
+              '${urlBaseEmbed}travel-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title = context.translate('personalProtection.mexicanCar');
           break;
         case 'hospital_indemnity':
           urlString =
-              'https://buy.freeway.com/product/hospital-indemnity/step-2?#form__step_2';
+              '${urlBaseEmbed}hospital-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
           title = context.translate('personalProtection.hospitalIndemnity');
           break;
         default:
-          urlString = 'https://www.freeway.com/';
+          urlString = urlBaseEmbed;
           title = context.translate('personalProtection.title');
       }
 
