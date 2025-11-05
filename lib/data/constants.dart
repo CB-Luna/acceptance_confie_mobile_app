@@ -5,22 +5,10 @@ library;
 ///
 const String urlBaseEmbed = 'https://www.acceptance.com/';
 
-const String urlBaseEmbedBuyProduct = 'https://buy.acceptance.com/product/';
-
-const String urlBaseEmbedCarRegistration = 'https://www.carregistration.com/';
-
 const String urlBaseEmbedTriton = 'https://triton.acceptance.com/';
 
 const String urlBaseEmbedTritonInsurance =
     'https://triton.acceptanceinsurance.com/';
-
-const String urlBaseEmbedTaxmax = 'https://www.taxmax.com/';
-
-const String urlBaseEmbedRate = 'https://rate.acceptance.com/';
-
-const String urlBaseEmbedQuote = 'https://quote.sanborns.com/';
-
-const String urlBaseEmbedSeguros = 'https://www.freewayseguros.com/';
 
 const String urlBaseEmbedQuickPay = 'https://quickpay.acceptance.com/';
 
