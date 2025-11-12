@@ -106,8 +106,8 @@ class _AppInfoPageState extends State<AppInfoPage> {
   Widget _buildAppInfoCard(BuildContext context) {
     // Información de la aplicación
     const appVersion = '1.0.0';
-    const buildNumber = '7';
-    final buildDate = '11/05/2025';
+    const buildNumber = '8';
+    final buildDate = '11/12/2025';
 
     return Card(
       elevation: 2,

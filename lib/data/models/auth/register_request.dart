@@ -1,4 +1,7 @@
+import 'package:acceptance_app/data/constants.dart';
+
 class RegisterRequest {
+  String? brand;
   final String firstName;
   final String lastName;
   final String phoneNumber;
@@ -15,10 +18,12 @@ class RegisterRequest {
     required this.password,
     required this.birthDate,
     this.policyNumber,
+    this.brand = brandConstant,
   });
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {
+      'Brand': brand,
       'FirstName': firstName,
       'LastName': lastName,
       'PhoneNumber': phoneNumber,

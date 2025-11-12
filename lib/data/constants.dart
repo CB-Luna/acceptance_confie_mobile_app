@@ -51,3 +51,7 @@ const String envThirdsPartyZipcode = 'https://api.zippopotam.us/us/';
 const String envThirdsPartyAppleMap = 'https://maps.apple.com/';
 
 const String envThirdsPartyGoogleMap = 'https://www.google.com/maps/';
+
+/// <<<<<<<< Brand >>>>>>>>>
+
+const String brandConstant = 'Acceptance';

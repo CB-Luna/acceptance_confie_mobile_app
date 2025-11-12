@@ -238,6 +238,7 @@ class AuthService {
       final response = await _dio.post(
         '/api/Mobile/ChangePassword',
         data: {
+          'brand': brandConstant,
           'userName': username,
           'currentPassword': currentPassword,
           'newPassword': newPassword,
@@ -272,6 +273,7 @@ class AuthService {
       final response = await _dio.post(
         '/api/Mobile/User',
         data: {
+          'brand': brandConstant,
           'userName': username,
           'firstName': firstName,
           'lastName': lastName,
@@ -311,6 +313,7 @@ class AuthService {
       final response = await _dio.post(
         '/api/Mobile/SendForgotPasswordMessage',
         data: {
+          'brand': brandConstant,
           'userName': userName,
           'verificationType': verificationType,
         },
@@ -349,6 +352,7 @@ class AuthService {
       final response = await _dio.post(
         '/api/Mobile/ResetPassword',
         data: {
+          'brand': brandConstant,
           'userName': userName,
           'code': code,
           'newPassword': newPassword,

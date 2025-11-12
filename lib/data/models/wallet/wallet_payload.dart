@@ -61,7 +61,9 @@ class WalletPayload {
       systemConfig: SystemConfig(
         systemName: 'Triton',
         source: 'MobileApp',
-        attributes: null,
+        attributes: {
+          'ProducerID': '13',
+        },
       ),
     );
   }
@@ -239,7 +241,7 @@ class Vehicle {
 class SystemConfig {
   final String systemName;
   final String source;
-  final dynamic attributes;
+  final Map<String, dynamic>? attributes;
 
   SystemConfig({
     required this.systemName,
