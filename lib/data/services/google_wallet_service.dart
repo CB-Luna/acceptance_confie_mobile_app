@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
+import 'package:acceptance_app/data/constants.dart';
 import 'package:acceptance_app/data/models/auth/policy_model.dart';
 import 'package:acceptance_app/data/models/wallet/wallet_payload.dart';
 import 'package:acceptance_app/models/user_model.dart';
@@ -12,8 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 /// Servicio para manejar la integración con Google Wallet
 class GoogleWalletService {
   // URL del endpoint para Google Wallet
-  static const String _apiUrl =
-      'https://confie-wallet-api-np.azurewebsites.net/DownloadGooglePassTask';
+  static const String _apiUrl = '$envWallet/DownloadGooglePassTask';
   static const String _apiKey = 'GfhGdjdx3rfGBBFkf';
 
   // Headers para la petición

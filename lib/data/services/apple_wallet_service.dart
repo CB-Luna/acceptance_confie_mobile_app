@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:acceptance_app/data/constants.dart';
 import 'package:acceptance_app/data/models/auth/policy_model.dart';
 import 'package:acceptance_app/data/models/wallet/wallet_payload.dart';
 import 'package:acceptance_app/models/user_model.dart';
@@ -13,8 +14,7 @@ import 'package:path_provider/path_provider.dart';
 /// Servicio para manejar la integración con Apple Wallet
 class AppleWalletService {
   // URL del endpoint para Apple Wallet
-  static const String _apiUrl =
-      'https://confie-wallet-api-np.azurewebsites.net/DownloadApplePassTask';
+  static const String _apiUrl = '$envWallet/DownloadApplePassTask';
   static const String _apiKey = 'GfhGdjdx3rfGBBFkf';
 
   // Headers para la petición
