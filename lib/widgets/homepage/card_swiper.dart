@@ -301,10 +301,12 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
                               initialPage: initialPage,
                             );
                             debugPrint(
-                                'PageController inicializado con página: $initialPage');
+                              'PageController inicializado con página: $initialPage',
+                            );
                             debugPrint('Total de tarjetas: ${cards.length}');
                             debugPrint(
-                                'Índice inicial calculado: ${initialPage % cards.length}');
+                              'Índice inicial calculado: ${initialPage % cards.length}',
+                            );
                           }
 
                           return PageView.builder(
@@ -318,7 +320,8 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
                               debugPrint('Índice virtual: $virtualIndex');
                               debugPrint('Total de tarjetas: ${cards.length}');
                               debugPrint(
-                                  'Índice real calculado: $newActualIndex');
+                                'Índice real calculado: $newActualIndex',
+                              );
                               debugPrint('Índice anterior: $currentIndex');
                               setState(() {
                                 // Calcular el índice real usando módulo
@@ -331,7 +334,8 @@ class _CardSwiperSectionState extends State<CardSwiperSection> {
                               final int actualIndex =
                                   virtualIndex % cards.length;
                               debugPrint(
-                                  'Building card - Virtual index: $virtualIndex, Actual index: $actualIndex');
+                                'Building card - Virtual index: $virtualIndex, Actual index: $actualIndex',
+                              );
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0,

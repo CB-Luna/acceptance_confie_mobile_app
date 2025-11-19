@@ -15,12 +15,15 @@ class StorageService {
   }) async {
     if (aspNetCoreIdentity != null) {
       await _storage.write(
-          key: _aspNetCoreIdentityKey, value: aspNetCoreIdentity);
+        key: _aspNetCoreIdentityKey,
+        value: aspNetCoreIdentity,
+      );
     }
     if (identityTwoFactorRememberMe != null) {
       await _storage.write(
-          key: _identityTwoFactorRememberMeKey,
-          value: identityTwoFactorRememberMe);
+        key: _identityTwoFactorRememberMeKey,
+        value: identityTwoFactorRememberMe,
+      );
     }
   }
 

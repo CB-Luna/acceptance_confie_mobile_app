@@ -119,7 +119,7 @@ class _PropertyInsuranceGridState extends State<PropertyInsuranceGrid> {
                   _buildInsuranceItem(
                     context,
                     context.translate('propertyInsurance.mobileManufactures'),
-                    'mobileManufactures',
+                    'mobile_home_insurance',
                   ),
                 ],
               ),
@@ -470,7 +470,7 @@ class _PropertyInsuranceGridState extends State<PropertyInsuranceGrid> {
           title =
               '${context.translate('propertyInsurance.renters')} - $placeName, $stateAbbreviation';
           break;
-        case 'mobileManufactures':
+        case 'mobile_home_insurance':
           urlString =
               '${urlBaseEmbed}mobile-home-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=$placeName';
           title =

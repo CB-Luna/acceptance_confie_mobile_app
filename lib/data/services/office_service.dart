@@ -20,7 +20,10 @@ class OfficeService {
   }) async {
     try {
       final request = OfficeRequest(
-          zipCode: zipCode, radius: radius, legalEntity: legalEntity);
+        zipCode: zipCode,
+        radius: radius,
+        legalEntity: legalEntity,
+      );
 
       debugPrint('Buscando oficinas cercanas al código postal: $zipCode');
 

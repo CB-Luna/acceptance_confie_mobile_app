@@ -139,7 +139,7 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                   _buildInsuranceItem(
                     context,
                     context.translate('vehicleInsurance.sr22Insurance'),
-                    'sr22Insurance',
+                    'sr22',
                   ),
                   _buildInsuranceItem(
                     context,
