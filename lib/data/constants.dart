@@ -59,14 +59,15 @@ library;
 // TEST Services List
 
 /// <<<<<<<< Embebed Forms Web >>>>>>>>>
-///
-const String urlBaseEmbed = 'https://www.freeway.com/';
 
-const String urlBaseEmbedTriton = 'https://triton.freeway.com/';
+const String urlBaseEmbed = 'https://www.acceptance.com/';
 
-const String urlBaseEmbedTritonInsurance = 'https://triton.freeway.com/';
+const String urlBaseEmbedTriton = 'https://triton.acceptance.com/';
 
-const String urlBaseEmbedQuickPay = 'https://quickpay.freeway.com/';
+const String urlBaseEmbedTritonInsurance =
+    'https://triton.acceptanceinsurance.com/';
+
+const String urlBaseEmbedQuickPay = 'https://quickpay.acceptance.com/';
 
 /// <<<<<<<< User Profile & Policy >>>>>>>>>
 /// <<<<<<<< Login & Registration >>>>>>>>>
