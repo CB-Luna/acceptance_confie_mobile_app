@@ -107,7 +107,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
     // Información de la aplicación
     const appVersion = '1.0.0';
     const buildNumber = '9';
-    final buildDate = '11/19/2025';
+    final buildDate = '12/11/2025';
 
     return Card(
       elevation: 2,
