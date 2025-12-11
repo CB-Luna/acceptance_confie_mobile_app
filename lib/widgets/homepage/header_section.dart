@@ -5,7 +5,6 @@ import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rive_animated_icon/rive_animated_icon.dart';
 
 import '../../providers/auth_provider.dart';
 import '../../providers/notification_provider.dart';
@@ -198,13 +197,10 @@ class _HeaderSectionState extends State<HeaderSection> {
                           width: 24,
                           height: 24,
                           child: notificationCount > 0
-                              // Usar el icono animado de Rive cuando hay notificaciones
-                              ? RiveAnimatedIcon(
-                                  riveIcon: RiveIcon.bell,
-                                  loopAnimation: true,
-                                  width: 24,
-                                  height: 24,
-                                  strokeWidth: 4,
+                              // Usar el icono de notificación cuando hay notificaciones
+                              ? Icon(
+                                  Icons.notifications_active,
+                                  size: 24,
                                   color: AppTheme.getIconColor(context),
                                 )
                               // Usar un espacio reservado cuando no hay notificaciones
