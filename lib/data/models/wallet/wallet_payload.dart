@@ -24,6 +24,7 @@ class WalletPayload {
         firstName: user.firstName,
         middleName: '',
         lastName: user.lastName,
+        dateofBirth: user.birthDate.toIso8601String(),
         address: Address(
           street: user.street,
           streetNumber: '',
@@ -31,24 +32,23 @@ class WalletPayload {
           city: user.city,
           state: user.state,
           zip: user.zipCode,
-          zip4: '',
+          zip4: '0',
           county: '',
-          country: '',
+          country: 'USA',
         ),
       ),
       policy: Policy(
-        policyID: policyModel.policyId,
-        policyNumber: policyModel.policyNumber,
+        policyID: policyModel.policyNumber, // Usar policyNumber como PolicyID
         effectiveDate: policyModel.effectiveDate,
         term: '6', // Valor por defecto ya que no existe en PolicyModel
         carrierInfo: CarrierInfo(
           carrierName: policyModel.carrierName,
           programName: policyModel.programName,
           carrierReference: '',
-          carrierPhone: '',
+          carrierPhone: '888-888-8888',
         ),
         expireDate: policyModel.expirationDate,
-        nextPaymentDueDate: policyModel.nextPaymentDate,
+        nextPaymentDueDate: policyModel.nextPaymentDate ?? policyModel.effectiveDate,
       ),
       drivers: [
         Driver(
@@ -60,7 +60,6 @@ class WalletPayload {
       vehicles: [], // No hay acceso a vehículos en el modelo actual
       systemConfig: SystemConfig(
         systemName: 'Triton',
-        source: 'MobileApp',
         attributes: {
           'ProducerID': '13',
         },
@@ -83,18 +82,21 @@ class Applicant {
   final String firstName;
   final String middleName;
   final String lastName;
+  final String dateofBirth;
   final Address address;
 
   Applicant({
     required this.firstName,
     required this.middleName,
     required this.lastName,
+    required this.dateofBirth,
     required this.address,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'FirstName': firstName,
+      'DateofBirth': dateofBirth,
       'MiddleName': middleName,
       'LastName': lastName,
       'Address': address.toJson(),
@@ -142,27 +144,24 @@ class Address {
 
 class Policy {
   final String policyID;
-  final String policyNumber;
   final String effectiveDate;
   final String term;
   final CarrierInfo carrierInfo;
   final String expireDate;
-  final String? nextPaymentDueDate;
+  final String nextPaymentDueDate;
 
   Policy({
     required this.policyID,
-    required this.policyNumber,
     required this.effectiveDate,
     required this.term,
     required this.carrierInfo,
     required this.expireDate,
-    this.nextPaymentDueDate,
+    required this.nextPaymentDueDate,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'PolicyID': policyID,
-      'PolicyNumber': policyNumber,
       'EffectiveDate': effectiveDate,
       'Term': term,
       'CarrierInfo': carrierInfo.toJson(),
@@ -240,19 +239,16 @@ class Vehicle {
 
 class SystemConfig {
   final String systemName;
-  final String source;
   final Map<String, dynamic>? attributes;
 
   SystemConfig({
     required this.systemName,
-    required this.source,
     this.attributes,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'SystemName': systemName,
-      'Source': source,
       'Attributes': attributes,
     };
   }
