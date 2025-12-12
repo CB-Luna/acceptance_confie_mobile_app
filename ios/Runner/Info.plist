@@ -26,16 +26,20 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyDB7DprfB88jSMx-1R7cbZYo-Xm_MazXpU</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array/>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Why is my app authenticating using face id?</string>
+	<string>This app uses Face ID to securely authenticate your identity and provide faster access to your account.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app requires access to your location to show nearby offices and provide directions.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Esta aplicación necesita acceso a la ubicación para mostrar oficinas cercanas y proporcionar direcciones.</string>
+	<string>This app requires access to your location while it is open to show nearby offices and provide directions.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Esta aplicación necesita acceso a la ubicación cuando está abierta para mostrar oficinas cercanas y proporcionar direcciones.</string>
+	<string>This app requires access to your location while it is open to show nearby offices and provide directions.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
