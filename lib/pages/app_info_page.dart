@@ -8,6 +8,7 @@ import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppInfoPage extends StatefulWidget {
   const AppInfoPage({super.key});
@@ -20,6 +21,8 @@ class _AppInfoPageState extends State<AppInfoPage> {
   bool _isLoading = true;
   String _deviceModel = '';
   String _osVersion = '';
+  String _appVersion = '';
+  String _buildNumber = '';
 
   @override
   void initState() {
@@ -31,6 +34,12 @@ class _AppInfoPageState extends State<AppInfoPage> {
     final deviceInfo = DeviceInfoPlugin();
 
     try {
+      // Obtener información del paquete
+      final packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = packageInfo.version;
+      _buildNumber = packageInfo.buildNumber;
+
+      // Obtener información del dispositivo
       if (Platform.isAndroid) {
         final androidInfo = await deviceInfo.androidInfo;
         _deviceModel = '${androidInfo.manufacturer} ${androidInfo.model}';
@@ -43,6 +52,8 @@ class _AppInfoPageState extends State<AppInfoPage> {
     } catch (e) {
       _deviceModel = 'Desconocido';
       _osVersion = 'Desconocido';
+      _appVersion = '1.0.1';
+      _buildNumber = '2';
     } finally {
       if (mounted) {
         setState(() {
@@ -105,9 +116,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
 
   Widget _buildAppInfoCard(BuildContext context) {
     // Información de la aplicación
-    const appVersion = '1.0.0';
-    const buildNumber = '9';
-    final buildDate = '12/11/2025';
+    final buildDate = '12/22/2025';
 
     return Card(
       elevation: 2,
@@ -140,13 +149,14 @@ class _AppInfoPageState extends State<AppInfoPage> {
             const SizedBox(height: 16),
             _buildInfoRow(
               context,
-              context.translate('profile.appInfoPage.version'),
-              appVersion,
+              context.translate('profile.version'),
+              _appVersion,
             ),
+            const SizedBox(height: 12),
             _buildInfoRow(
               context,
-              context.translate('profile.appInfoPage.build'),
-              buildNumber,
+              context.translate('profile.buildNumber'),
+              _buildNumber,
             ),
             _buildInfoRow(
               context,
