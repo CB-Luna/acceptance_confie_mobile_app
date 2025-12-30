@@ -443,6 +443,7 @@
     "sr22Insurance": "Seguro\nSR-22",
     "classicCar": "Auto Clásico",
     "boatInsurance": "Seguro de Bote",
+    "mexicanCar": "Seguro de Auto Mexicano",
     "location": {
       "gettingLocation": "Obteniendo tu ubicación...",
       "zipCodeDialogTitle": "Ingresa tu código postal",

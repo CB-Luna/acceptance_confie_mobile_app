@@ -146,6 +146,11 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
                     context.translate('vehicleInsurance.classicCar'),
                     'classic_car',
                   ),
+                  _buildInsuranceItem(
+                    context,
+                    context.translate('vehicleInsurance.mexicanCar'),
+                    'mexican_car_insurance',
+                  ),
                 ],
               ),
             ],
@@ -224,6 +229,9 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           } else if (title ==
               context.translate('vehicleInsurance.boatInsurance')) {
             _handleBoatInsurance(context);
+          } else if (title ==
+              context.translate('vehicleInsurance.mexicanCar')) {
+            _handleMexicanCarInsurance(context);
           } else {
             // Para cualquier otro tipo no reconocido
             _showNotAvailableMessage(context, title);
@@ -379,6 +387,10 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
 
   Future<void> _handleAtvInsurance(BuildContext context) async {
     await _handleInsurance(context, 'atv');
+  }
+
+  Future<void> _handleMexicanCarInsurance(BuildContext context) async {
+    await _handleInsurance(context, 'mexican_car_insurance');
   }
 
   // Método para mostrar mensaje cuando un seguro no está disponible
@@ -567,6 +579,11 @@ class _VehicleInsuranceGridState extends State<VehicleInsuranceGrid> {
           urlString =
               '$urlBaseEmbedTriton?media_code=FWYCA-A-WW-WS-E-05884&phone=877-699-2436&zip_code=$zipCode&city=$placeName&state=$stateAbbreviation&system=atalaya&first_name=$firstName&last_name=$lastName&email=$email&phone_number=$phone';
           title = context.translate('vehicleInsurance.atv');
+          break;
+        case 'mexican_car_insurance':
+          urlString =
+              '${urlBaseEmbed}travel-insurance-quote-form/?zipcode=$zipCode&state=$stateAbbreviation&city=${Uri.encodeComponent(placeName)}';
+          title = context.translate('vehicleInsurance.mexicanCar');
           break;
         default:
           urlString = urlBaseEmbed;
