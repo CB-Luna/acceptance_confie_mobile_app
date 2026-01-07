@@ -86,3 +86,6 @@ password: Today_2025!
 
 user: uzzielpalmarodriguez@gmail.com
 password: Cbluna2025$
+
+user: uzziepalma99@gmail.com
+password: Cbluna2025$
