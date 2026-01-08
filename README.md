@@ -61,7 +61,7 @@ onPressed: () {
 
 Usuario 1
 
-- user: jorge.cacho-sousa@freeway.com
+- user: jorge.sousa@confie.com
 - password: Freeway!1
 
 Usuario 2
@@ -89,3 +89,6 @@ password: Cbluna2025$
 
 user: uzziepalma99@gmail.com
 password: Cbluna2025$
+
+user: jorge.sousa@confie.com
+password: Freeway!1
