@@ -31,9 +31,7 @@ class AppTheme {
   // Método para obtener colores según el tema
   static Color getPrimaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? acceptanceBlue.withValues(
-            alpha: 5,
-          ) // Azul de Acceptance con opacidad para modo oscuro
+        ? const Color(0xFF7AA2FF) // Azul Claro de Acceptance para modo oscuro
         : acceptanceBlue; // Azul de Acceptance para modo claro
   }
 
@@ -59,7 +57,7 @@ class AppTheme {
 
   static Color getTextGreyColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFFABB2BF) // Gris más claro para modo oscuro
+        ? Colors.white // Gris más claro para modo oscuro
         : coolGray; // Cool Gray para modo claro
   }
 
@@ -131,7 +129,7 @@ class AppTheme {
 
   static Color getOrangeColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? backgroundOrange
+        ? orange.withValues(alpha: 5)
         : orange;
   }
 

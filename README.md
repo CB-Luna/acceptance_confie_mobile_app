@@ -91,4 +91,4 @@ user: uzziepalma99@gmail.com
 password: Cbluna2025$
 
 user: jorge.sousa@confie.com
-password: Freeway!1
+password: Freeway1!

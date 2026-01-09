@@ -116,7 +116,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
 
   Widget _buildAppInfoCard(BuildContext context) {
     // Información de la aplicación
-    final buildDate = '01/07/2026';
+    final buildDate = '01/09/2026';
 
     return Card(
       elevation: 2,

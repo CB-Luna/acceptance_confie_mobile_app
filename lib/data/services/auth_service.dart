@@ -66,18 +66,20 @@ class AuthService {
       // Imprimir la respuesta para depuración
       debugPrint('API Response loginStep1: ${response.data}');
 
-      // Capturar el header Set-Cookie
-      final String? setCookieHeader = response.headers.value('set-cookie');
-      debugPrint('Set-Cookie header: $setCookieHeader');
-
       // Extraer el Identity.TwoFactorUserId del Set-Cookie
+      // Usar la lista de cookies ya obtenida en lugar de .value() que falla con múltiples cookies
       String? twoFactorUserId;
-      if (setCookieHeader != null) {
-        final regex = RegExp(r'Identity\.TwoFactorUserId=([^;]+)');
-        final match = regex.firstMatch(setCookieHeader);
-        if (match != null && match.groupCount >= 1) {
-          twoFactorUserId = match.group(1);
-          debugPrint('Extracted TwoFactorUserId: $twoFactorUserId');
+      if (setCookieHeaders != null && setCookieHeaders.isNotEmpty) {
+        // Buscar el TwoFactorUserId en todas las cookies
+        for (var cookieHeader in setCookieHeaders) {
+          debugPrint('Set-Cookie header: $cookieHeader');
+          final regex = RegExp(r'Identity\.TwoFactorUserId=([^;]+)');
+          final match = regex.firstMatch(cookieHeader);
+          if (match != null && match.groupCount >= 1) {
+            twoFactorUserId = match.group(1);
+            debugPrint('Extracted TwoFactorUserId: $twoFactorUserId');
+            break; // Salir del loop una vez encontrado
+          }
         }
       }
 
