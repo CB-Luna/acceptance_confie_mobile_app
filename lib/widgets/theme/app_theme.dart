@@ -37,8 +37,8 @@ class AppTheme {
 
   static Color getSecondaryColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? acceptanceGreen.withValues(
-            alpha: 5,
+        ? const Color(
+            0xFF5FBF6A,
           ) // Verde de Acceptance con opacidad para modo oscuro
         : acceptanceGreen; // Verde de Acceptance para modo claro
   }

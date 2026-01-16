@@ -279,7 +279,7 @@ class _OfficeListState extends State<OfficeList> {
                                   keyboardType: TextInputType.number,
                                   maxLength: 5,
                                   style: TextStyle(
-                                    color: AppTheme.getTextGreyColor(context),
+                                    color: AppTheme.getBodyTextColor(context),
                                     fontSize:
                                         responsiveFontSizes.bodyMedium(context),
                                   ),
