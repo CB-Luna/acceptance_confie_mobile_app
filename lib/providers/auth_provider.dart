@@ -84,10 +84,25 @@ class AuthProvider with ChangeNotifier {
       }
 
       // Si no requiere 2FA, completar el login directamente
-      return await _completeLogin(response, context);
+      if (context.mounted) {
+        return await _completeLogin(response, context);
+      }
+      return false;
     } on ApiError catch (e) {
+      debugPrint('ApiError en loginStep1: ${e.message}');
+      // Detectar errores de conexión primero
+      final errorString = e.message.toLowerCase();
+      if (errorString.contains('socketexception') ||
+          errorString.contains('failed host lookup') ||
+          errorString.contains('connection error') ||
+          errorString.contains('network is unreachable') ||
+          errorString.contains('no address associated with hostname')) {
+        if (context.mounted) {
+          _errorMessage = context.translate('auth.noInternetConnection');
+        }
+      }
       // Mejorar el mensaje de error para credenciales incorrectas
-      if (e.statusCode == 401 ||
+      else if (e.statusCode == 401 ||
           e.message.toLowerCase().contains('no autorizado') ||
           e.message.toLowerCase().contains('unauthorized')) {
         if (context.mounted) {
@@ -102,9 +117,22 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return false;
     } catch (e) {
-      if (context.mounted) {
-        _errorMessage =
-            context.translateWithArgs('auth.loginError', args: [e.toString()]);
+      debugPrint('Error en loginStep1: $e');
+      // Detectar errores de conexión
+      final errorString = e.toString().toLowerCase();
+      if (errorString.contains('socketexception') ||
+          errorString.contains('failed host lookup') ||
+          errorString.contains('connection error') ||
+          errorString.contains('network is unreachable') ||
+          errorString.contains('dioexception')) {
+        if (context.mounted) {
+          _errorMessage = context.translate('auth.noInternetConnection');
+        }
+      } else {
+        if (context.mounted) {
+          _errorMessage = context
+              .translateWithArgs('auth.loginError', args: [e.toString()]);
+        }
       }
       notifyListeners();
       return false;
@@ -156,7 +184,10 @@ class AuthProvider with ChangeNotifier {
       }
 
       // Completar el login con la respuesta del paso 2
-      return await _completeLogin(response, context);
+      if (context.mounted) {
+        return await _completeLogin(response, context);
+      }
+      return false;
     } on ApiError catch (e) {
       // Mejorar el mensaje de error para credenciales incorrectas
       if (e.statusCode == 401 ||
@@ -436,7 +467,13 @@ class AuthProvider with ChangeNotifier {
 
       debugPrint('Registro exitoso, intentando login automático');
       // Si el registro fue exitoso, iniciar sesión automáticamente
-      final loginSuccess = await login(email, password, context);
+
+      bool loginSuccess;
+      if (context.mounted) {
+        loginSuccess = await login(email, password, context);
+      } else {
+        loginSuccess = false;
+      }
 
       if (!loginSuccess) {
         debugPrint('Login automático después del registro falló');
@@ -449,19 +486,43 @@ class AuthProvider with ChangeNotifier {
       return loginSuccess;
     } on ApiError catch (e) {
       debugPrint('Error de API en registro: ${e.message}');
-      if (context.mounted) {
-        _errorMessage =
-            context.translateWithArgs('auth.signUpError', args: [e.message]);
-        notifyListeners();
+      // Detectar errores de conexión primero
+      final errorString = e.message.toLowerCase();
+      if (errorString.contains('socketexception') ||
+          errorString.contains('failed host lookup') ||
+          errorString.contains('connection error') ||
+          errorString.contains('network is unreachable') ||
+          errorString.contains('no address associated with hostname')) {
+        if (context.mounted) {
+          _errorMessage = context.translate('auth.noInternetConnection');
+        }
+      } else {
+        if (context.mounted) {
+          _errorMessage =
+              context.translateWithArgs('auth.signUpError', args: [e.message]);
+        }
       }
+      notifyListeners();
       return false;
     } catch (e) {
       debugPrint('Error general en registro: $e');
-      if (context.mounted) {
-        _errorMessage =
-            context.translateWithArgs('auth.signUpError', args: [e.toString()]);
-        notifyListeners();
+      // Detectar errores de conexión
+      final errorString = e.toString().toLowerCase();
+      if (errorString.contains('socketexception') ||
+          errorString.contains('failed host lookup') ||
+          errorString.contains('connection error') ||
+          errorString.contains('network is unreachable') ||
+          errorString.contains('dioexception')) {
+        if (context.mounted) {
+          _errorMessage = context.translate('auth.noInternetConnection');
+        }
+      } else {
+        if (context.mounted) {
+          _errorMessage = context
+              .translateWithArgs('auth.signUpError', args: [e.toString()]);
+        }
       }
+      notifyListeners();
       return false;
     }
   }
@@ -595,7 +656,13 @@ class AuthProvider with ChangeNotifier {
         return false;
       }
 
-      return await login(username, password, context);
+      bool loginSuccess;
+      if (context.mounted) {
+        loginSuccess = await login(username, password, context);
+      } else {
+        loginSuccess = false;
+      }
+      return loginSuccess;
     } catch (e) {
       if (context.mounted) {
         _errorMessage =
