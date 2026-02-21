@@ -82,7 +82,11 @@
     "twoFactorHint": "Ingresa el código de 6 dígitos enviado a tu teléfono vía SMS",
     "verify": "Verificar",
     "invalidTwoFactorCode": "Código de verificación inválido. Por favor, intenta de nuevo.",
-    "sessionExpired": "Sesión expirada. Por favor, inicia sesión nuevamente."
+    "sessionExpired": "Sesión expirada. Por favor, inicia sesión nuevamente.",
+    "splashScreen": {
+      "error": "Error al cargar la aplicación",
+      "retry": "Reintentar"
+    }
   },
   "home": {
     "welcome": "Bienvenido",

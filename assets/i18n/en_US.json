@@ -83,7 +83,11 @@
     "twoFactorHint": "Enter the 6-digit code sent to your phone via SMS",
     "verify": "Verify",
     "invalidTwoFactorCode": "Invalid verification code. Please try again.",
-    "sessionExpired": "Session expired. Please login again."
+    "sessionExpired": "Session expired. Please login again.",
+    "splashScreen": {
+      "error": "Error loading app",
+      "retry": "Retry"
+    }
   },
   "home": {
     "welcome": "Welcome",

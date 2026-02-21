@@ -1,4 +1,5 @@
 import 'package:acceptance_app/locatordevice/presentation/pages/location_details_view.dart';
+import 'package:acceptance_app/pages/auth_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,7 +9,6 @@ import 'pages/add_insurance.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/profile_page.dart';
-import 'pages/splash_screen.dart';
 import 'pages/submit_claim_page.dart';
 import 'providers/auth_provider.dart';
 import 'providers/biometric_provider.dart';
@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
             ],
             initialRoute: '/',
             routes: {
-              '/': (context) => const SplashScreen(nextScreen: LoginPage()),
+              '/': (context) => const AuthSplashScreen(),
               '/login': (context) => const LoginPage(),
               '/home': (context) => const HomePage(),
               '/submit-claim': (context) => const SubmitClaimPage(),

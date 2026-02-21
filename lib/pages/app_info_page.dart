@@ -233,7 +233,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
             _buildInfoRow(
               context,
               context.translate('profile.appInfoPage.copyright'),
-              '© ${DateTime.now().year} Freeway Insurance',
+              '© ${DateTime.now().year} Acceptance Insurance Agency Of TN, Inc.',
             ),
             const SizedBox(height: 8),
             TextButton(
