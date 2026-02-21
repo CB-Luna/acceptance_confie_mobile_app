@@ -1,5 +1,6 @@
 import 'package:acceptance_app/data/models/auth/policy_model.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
+import 'package:acceptance_app/utils/phone_call_helper.dart';
 import 'package:acceptance_app/utils/policy_logo_utils.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
@@ -14,9 +15,8 @@ class CustomClaimCard extends StatelessWidget {
     super.key,
   });
 
-  void _launchPhone(String phoneNumber) async {
-    final Uri phoneUri = Uri.parse('tel:$phoneNumber');
-    await launchUrl(phoneUri);
+  void _launchPhone(BuildContext context, String phoneNumber) async {
+    await PhoneCallHelper.makePhoneCall(context, phoneNumber);
   }
 
   void _launchUrl(String url) async {
@@ -138,7 +138,7 @@ class CustomClaimCard extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      _launchPhone(claimPhone);
+                      _launchPhone(context, claimPhone);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.getPrimaryColor(context),
@@ -261,7 +261,7 @@ class CustomClaimCard extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          _launchPhone(claimPhone);
+                          _launchPhone(context, claimPhone);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.getPrimaryColor(context),

@@ -2,6 +2,7 @@ import 'package:acceptance_app/data/constants.dart';
 import 'package:acceptance_app/main.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:acceptance_app/utils/menu/snackbar_help.dart';
+import 'package:acceptance_app/utils/phone_call_helper.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -172,6 +173,7 @@ class _OfficeListState extends State<OfficeList> {
 
     // Ajustar el padding según el tamaño de la pantalla
     final horizontalPadding = isSmallScreen ? 12.0 : 16.0;
+    final verticalPadding = isSmallScreen ? 24.0 : 32.0;
 
     return Container(
       decoration: BoxDecoration(
@@ -226,7 +228,10 @@ class _OfficeListState extends State<OfficeList> {
               child: ListView.builder(
                 controller: widget.scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
+                ),
                 // Incrementamos el itemCount en 2: uno para el título y otro para el espacio/botón al final
                 itemCount: widget.offices.length +
                     3, // +3: título, espacio/botón al final, y sección de búsqueda por zipcode
@@ -606,8 +611,8 @@ class OfficeListItem extends StatelessWidget {
                 // Botón para llamar
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Acción para llamar a la oficina
-                    launchUrl(Uri.parse('tel:${office.phone}'));
+                    // Acción para llamar a la oficina usando el helper
+                    PhoneCallHelper.makePhoneCall(context, office.phone);
                   },
                   icon: Icon(
                     Icons.phone_in_talk_outlined,
