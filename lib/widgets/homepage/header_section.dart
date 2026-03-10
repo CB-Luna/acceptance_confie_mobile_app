@@ -279,7 +279,10 @@ class _HeaderSectionState extends State<HeaderSection> {
                     if (!context.mounted) return;
                     showAppSnackBar(
                       context,
-                      'Theme changed to ${themeProvider.isDarkMode ? 'dark' : 'light'}',
+                      context.translateWithArgs(
+                        'common.themeChanged',
+                        args: [themeProvider.isDarkMode ? 'dark' : 'light'],
+                      ),
                       const Duration(seconds: 2),
                       backgroundColor: themeProvider.isDarkMode
                           ? AppTheme.getBackgroundColor(context)
