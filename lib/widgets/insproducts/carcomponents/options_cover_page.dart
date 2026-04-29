@@ -123,7 +123,7 @@ class _OptionsCoverPageState extends State<OptionsCoverPage> {
                 ],
               ),
             ),
-            // Freeway Insurance Card
+            // Acceptance Insurance Card
             OptionsCoverCard(
               logoPath: 'assets/home/banners/insurance4.0x/logo-freeway.png',
               price: 83.00,

@@ -1,6 +1,7 @@
 import 'package:acceptance_app/data/models/auth/policy_model.dart';
 import 'package:acceptance_app/locatordevice/locator_device_module.dart';
 import 'package:acceptance_app/pages/add_insurance.dart';
+import 'package:acceptance_app/pages/home_page.dart';
 import 'package:acceptance_app/utils/app_localizations_extension.dart';
 import 'package:acceptance_app/utils/responsive_font_sizes.dart';
 import 'package:acceptance_app/widgets/theme/app_theme.dart';
@@ -108,6 +109,14 @@ class _SubmitClaimPageState extends State<SubmitClaimPage> {
           });
 
           switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              ).then((_) => setState(() => _selectedIndex = 0));
+              break;
             case 1:
               Navigator.push(
                 context,

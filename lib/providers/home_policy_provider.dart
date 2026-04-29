@@ -19,10 +19,10 @@ class HomePolicyProvider with ChangeNotifier {
         )
       : null;
 
-  // Obtener la póliza con carrier Freeway Insurance
+  // Obtener la póliza con carrier AcceptanceInsurance
   PolicyModel? get freewayPolicy => _policies.isNotEmpty
       ? _policies.firstWhere(
-          (policy) => policy.carrierName.toLowerCase().contains('freeway'),
+          (policy) => policy.carrierName.toLowerCase().contains('acceptance'),
           orElse: () => _policies.first,
         )
       : null;
@@ -83,7 +83,7 @@ class HomePolicyProvider with ChangeNotifier {
         expirationDate: '2022-05-15', // Fecha expirada para simular inactividad
         createdDate: '2022-01-01',
         programName: 'Standard Auto',
-        organizationName: 'Freeway Insurance',
+        organizationName: 'Acceptance Insurance',
         organizationCode: 'FWI',
       );
     }

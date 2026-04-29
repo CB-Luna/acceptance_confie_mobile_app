@@ -1,8 +1,8 @@
-# Freeway Insurance - Localizador de Oficinas
+# Acceptance Insurance - Localizador de Oficinas
 
 ## Descripción
 
-Módulo de localización para la aplicación Freeway Insurance. Este módulo permite:
+Módulo de localización para la aplicación Acceptance Insurance. Este módulo permite:
 
 - Obtener la ubicación actual del dispositivo
 - Mostrar oficinas cercanas ordenadas por distancia

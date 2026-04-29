@@ -56,7 +56,7 @@ class IdCardPrinter {
               mainAxisAlignment: pw.MainAxisAlignment.center,
               children: [
                 pw.Text(
-                  translations['pdfTitle'] ?? 'Freeway Insurance ID Card',
+                  translations['pdfTitle'] ?? 'Acceptance Insurance ID Card',
                   style: pw.TextStyle(
                     fontSize: 24,
                     fontWeight: pw.FontWeight.bold,

@@ -29,7 +29,8 @@ class CustomClaimCard extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     // Obtener información de la póliza
-    final String insuranceCompany = policy?.carrierName ?? 'Freeway Insurance';
+    final String insuranceCompany =
+        policy?.carrierName ?? 'Acceptance Insurance';
     final String? claimPhone =
         policy?.carrierClaimPhone == '' ? null : policy?.carrierClaimPhone;
     final String? claimUrl =

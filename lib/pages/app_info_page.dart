@@ -116,7 +116,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
 
   Widget _buildAppInfoCard(BuildContext context) {
     // Información de la aplicación
-    final buildDate = '03/17/2026';
+    final buildDate = '04/28/2026';
 
     return Card(
       elevation: 2,
@@ -137,7 +137,7 @@ class _AppInfoPageState extends State<AppInfoPage> {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  'Freeway Insurance',
+                  'Acceptance Insurance',
                   style: TextStyle(
                     fontSize: responsiveFontSizes.titleSmall(context),
                     fontWeight: FontWeight.bold,
@@ -149,13 +149,13 @@ class _AppInfoPageState extends State<AppInfoPage> {
             const SizedBox(height: 16),
             _buildInfoRow(
               context,
-              context.translate('profile.version'),
+              context.translate('profile.appInfoPage.version'),
               _appVersion,
             ),
             const SizedBox(height: 12),
             _buildInfoRow(
               context,
-              context.translate('profile.buildNumber'),
+              context.translate('profile.appInfoPage.build'),
               _buildNumber,
             ),
             _buildInfoRow(

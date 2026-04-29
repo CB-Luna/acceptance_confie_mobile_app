@@ -52,7 +52,7 @@ void main() {
       systemNavigationBarDividerColor: Colors.transparent,
     ),
   );
-  debugPrint('Iniciando aplicación Freeway Insurance');
+  debugPrint('Iniciando aplicación Acceptance Insurance');
   runApp(
     MultiProvider(
       providers: [
@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
         builder: (context, themeProvider, languageProvider, child) {
           return MaterialApp(
             navigatorKey: navigatorKey,
-            title: 'Freeway Insurance',
+            title: 'Acceptance Insurance',
             theme: themeProvider.currentTheme,
             debugShowCheckedModeBanner: false,
             locale: languageProvider.currentLocale,
